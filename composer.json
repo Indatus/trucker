@@ -1,0 +1,39 @@
+{
+    "name": "indatus/trucker",
+    "description": "A simple active resource implementation written in PHP to consume any REST API",
+    "keywords":["trucker", "activeresource", "active resource"],
+    "type": "library",
+    "homepage": "http://indatus.com/",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Brian Webb",
+            "homepage": "http://indatus.com/",
+            "email": "bwebb@indatus.com",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/brianwebb01/filesystem"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "~4",
+        "illuminate/config": "~4",
+        "illuminate/container": "~4",
+        "guzzle/guzzle": "~3.7",
+        "doctrine/inflector": "1.0.*@dev"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master"
+    },
+    "autoload": {
+        "psr-0": {
+            "Trucker": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}

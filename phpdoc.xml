@@ -1,0 +1,33 @@
+<phpdocumentor>
+    <parser>
+        <default-package-name>Trucker</default-package-name>
+        <encoding>utf-8</encoding>
+        <target>doc</target>
+        <markers>
+            <item>TODO</item>
+            <item>FIXME</item>
+        </markers>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+        <visibility/>
+    </parser>
+    <files>
+        <directory>src/*</directory>
+        <ignore-hidden>on</ignore-hidden>
+        <ignore-symlinks>on</ignore-symlinks>
+    </files>
+    <transformer>
+        <target>doc</target>
+    </transformer>
+    <logging>
+        <level>info</level>
+        <paths>
+            <default>doc/{DATE}.log</default>
+            <errors>doc/{DATE}.errors.log</errors>
+        </paths>
+    </logging>
+    <transformations>
+        <template name="clean"/>
+    </transformations>
+</phpdocumentor>

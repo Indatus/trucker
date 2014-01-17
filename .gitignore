@@ -1,0 +1,11 @@
+todo.html
+CHANGELOG.html
+README.html
+doc/*!.gitignore
+tests/coverage
+tests/meta
+doc/*!.gitignore
+/vendor
+composer.phar
+composer.lock
+.DS_Store
