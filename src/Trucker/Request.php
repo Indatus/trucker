@@ -57,6 +57,29 @@ class Request
 
 
     /**
+     * Setter for the IoC Container
+     * 
+     * @param Container
+     * @return  void
+     */
+    public function setApp($app)
+    {
+        $this->app = $app;
+    }
+
+
+    /**
+     * Getter function to access the HTTP Client
+     * 
+     * @return Guzzle\Http\Client
+     */
+    public function &getClient()
+    {
+        return $this->client;
+    }
+
+
+    /**
      * Get an option from the config file
      *
      * @param  string $option

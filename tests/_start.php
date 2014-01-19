@@ -15,8 +15,6 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
      */
     protected $app;
 
-    protected $client;
-
     protected $history;
 
 
@@ -159,19 +157,15 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
         $prop->setValue($class, $value);
     }
 
-    public function newHttpClient($historyLimit = 5)
+    public function trackHistory(&$client, $historyLimit = 5)
     {
-        $this->client = new \Guzzle\Http\Client();
-
         //record history for this client
         $this->history = new \Guzzle\Plugin\History\HistoryPlugin();
         $this->history->setLimit($historyLimit);
-        $this->client->addSubscriber($this->history);
-
-        return $this->client;
+        $client->addSubscriber($this->history);
     }
 
-    public function mockHttpResponse($http_status = 200, $headers = array(), $body = '')
+    public function mockHttpResponse(&$client, $http_status = 200, $headers = array(), $body = '')
     {
         $mock = new \Guzzle\Plugin\Mock\MockPlugin();
         $mock->addResponse(
@@ -181,13 +175,7 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
                 $body
             )
         );
-        $this->client->addSubscriber($mock);
-    }
-
-    
-    public function getHttpClient()
-    {
-        return $this->client;
+        $client->addSubscriber($mock);
     }
 
     public function getHttpClientHistory()
