@@ -105,21 +105,6 @@ class TruckerServiceProvider extends ServiceProvider
         return $app;
     }
 
-    /**
-     * Bind the Trucker paths
-     *
-     * @param Container $app
-     *
-     * @return Container
-     */
-    public function bindPaths(Container $app)
-    {
-        $app->bind('trucker.bootstrapper', function ($app) {
-            return new Bootstrapper($app);
-        });
-
-        return $app;
-    }
 
     /**
      * Bind the core classes
@@ -155,11 +140,18 @@ class TruckerServiceProvider extends ServiceProvider
      */
     public function bindClasses(Container $app)
     {
-
-        $app->bind('trucker.requests', function ($app) {
-            return new RequestManager($app);
+        $app->singleton('trucker.urls', function ($app) {
+            return new UrlGenerator($app);
         });
 
+        $app->bind('trucker.request', function ($app) {
+            return new Request($app);
+        });
+
+        $app->bind('trucker.response', function ($app) {
+            return new Response($app);
+        });
+        
         $app->bind('trucker.model', function ($app) {
                 return new Model();
         });

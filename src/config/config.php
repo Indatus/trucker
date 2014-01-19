@@ -83,6 +83,42 @@
 
     /*
     |--------------------------------------------------------------------------
+    | API Errors Key
+    |--------------------------------------------------------------------------
+    |
+    | When returning a response for an API action this element may contain a
+    | string or an array of errors that prevented the success of the request.
+    |
+    */
+
+    'errors_key' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Base64 Property Indication
+    |--------------------------------------------------------------------------
+    |
+    | When working with an entity that will have properties which contain a 
+    | file the property's value may be set as a Base64 encoded string that 
+    | contains the file contents.  Before sending to the API endpoint the
+    | Base64 string will be written to a file at the scratch_disl_location,
+    | then added to the HTTP Request using HTTP-Chunk-Encoding.  
+    | 
+    | This config setting provides a way t indicate that the property value 
+    | to be set contains Base64 encoded content.  The indication can be anywhere
+    | in the property name.
+    | 
+    | Example: ( 'base_64_property_indication' => '_base64' )
+    |
+    | $instance->avatar_base64 = $base64EncodedAvatarImageString;
+    | echo $instance->avatar; // => /tmp/tmp_avatar_52dad37453c67.jpg
+    |
+    */
+
+    'base_64_property_indication' => '_base64',
+
+    /*
+    |--------------------------------------------------------------------------
     | API Collection Search
     |--------------------------------------------------------------------------
     |
@@ -135,6 +171,32 @@
 
         // Name of the parameter value for specifying descending result ordering
         'order_dir_descending' => 'DESC',
+    ),
+
+    /*
+    |--------------------------------------------------------------------------
+    | HTTP Status Codes
+    |--------------------------------------------------------------------------
+    |
+    | When making API requests the HTTP Status code returned with the data will
+    | be used to determine the success or error of the request.  
+    |
+    */
+
+    'http_status' => array(
+
+        //successful request
+        'success' => 200,
+
+        //not found
+        'not_found' => 401,
+
+        //invalid request. i.e. an entity couldn't be saved
+        'invalid' => 422,
+
+        //an error was encountered when processing the request
+        'success' => 500,
+
     ),
 
 );

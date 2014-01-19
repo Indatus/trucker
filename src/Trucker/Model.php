@@ -41,7 +41,7 @@
 
 namespace Trucker;
 
-use Trucker\Facades\RequestManager;
+use Trucker\Facades\Request;
 
 /**
  * Base class for interacting with a remote API.
@@ -156,6 +156,14 @@ class Model
      * @var string
      */
     protected $collectionKey;
+
+    /**
+     * Element name that should contain 1+ errors
+     * in a response that was invalid.
+     *
+     * @var string
+     */
+    protected $errorsKey;
 
     /**
      * Name of the parameter key used to contain search
@@ -300,6 +308,49 @@ class Model
      */
     protected $scratchDiskLocation;
 
+    /**
+     * The HTTP response status code that
+     * will accompany a successful API response
+     * 
+     * @var integer
+     */
+    protected $httpStatusSuccess;
+
+    /**
+     * The HTTP response status code that
+     * will accompany a not-found API response
+     * 
+     * @var integer
+     */
+    protected $httpStatusNotFound;
+
+    /**
+     * The HTTP response status code that
+     * will accompany an unsuccessful API response
+     * such as an entity could not be saved
+     * 
+     * @var integer
+     */
+    protected $httpStatusInvalid;
+
+    /**
+     * The HTTP response status code that
+     * will accompany an error encountered  while
+     * returning an API response
+     * 
+     * @var integer
+     */
+    protected $httpStatusError;
+
+    /**
+     * Portion of a property name that would indicate
+     * that the value would be Base64 encoded when the 
+     * property is set.
+     * 
+     * @var string
+     */
+    protected $base64Indicator;
+
 
 
 
@@ -312,37 +363,57 @@ class Model
     public function __construct($attributes = array())
     {
 
-        $this->baseUri             = RequestManager::getOption('base_uri');
-        $this->httpMethodParam     = RequestManager::getOption('http_method_param');
-        $this->scratchDiskLocation = RequestManager::getOption('scratch_disk_location');
-        $this->transporter         = RequestManager::getOption('transporter');
-        $this->identityProperty    = RequestManager::getOption('identity_property');
-        $this->collectionKey       = RequestManager::getOption('collection_key');
-        $this->searchParameter     = RequestManager::getOption('search.container_parameter');
-        $this->searchProperty      = RequestManager::getOption('search.property');
-        $this->searchOperator      = RequestManager::getOption('search.operator');
-        $this->searchValue         = RequestManager::getOption('search.value');
-        $this->logicalOperator     = RequestManager::getOption('search.logical_operator');
-        $this->orderBy             = RequestManager::getOption('search.order_by');
-        $this->orderDir            = RequestManager::getOption('search.order_dir');
-        $this->searchOperatorAnd   = RequestManager::getOption('search.and_operator');
-        $this->searchOperatorOr    = RequestManager::getOption('search.or_operator');
-        $this->orderDirAsc         = RequestManager::getOption('search.order_dir_ascending');
-        $this->orderDirDesc        = RequestManager::getOption('search.order_dir_descending');
+        $initFromConfig = [
+            'baseUri'             => 'base_uri',
+            'httpMethodParam'     => 'http_method_param',
+            'scratchDiskLocation' => 'scratch_disk_location',
+            'transporter'         => 'transporter',
+            'identityProperty'    => 'identity_property',
+            'collectionKey'       => 'collection_key',
+            'errorsKey'           => 'errors_key',
+            'searchParameter'     => 'search.container_parameter',
+            'searchProperty'      => 'search.property',
+            'searchOperator'      => 'search.operator',
+            'searchValue'         => 'search.value',
+            'logicalOperator'     => 'search.logical_operator',
+            'orderBy'             => 'search.order_by',
+            'orderDir'            => 'search.order_dir',
+            'searchOperatorAnd'   => 'search.and_operator',
+            'searchOperatorOr'    => 'search.or_operator',
+            'orderDirAsc'         => 'search.order_dir_ascending',
+            'orderDirDesc'        => 'search.order_dir_descending',
+            'httpStatusSuccess'   => 'http_status.success',
+            'httpStatusNotFound'  => 'http_status.not_found',
+            'httpStatusInvalid'   => 'http_status.invalid',
+            'base64Indicator'     => 'base_64_property_indication',
+        ];
 
-        //$this->inflateFromArray($attributes);
+        foreach ($initFromConfig as $property => $config_key) {
+            $this->{$property} = Request::getOption($config_key);
+        }
+
+        $this->fill($attributes);
     }
 
 
     /**
-     * Set the IoC container
-     * 
-     * @param Container
+     * Create a new instance of the given model.
+     *
+     * @param  array  $attributes
+     * @return \Trucker\Model
      */
-    public function setApp($app)
+    public function newInstance($attributes = array())
     {
-        $this->app = $app;
+        // This method just provides a convenient way for us to generate fresh model
+        // instances of this current model. It is particularly useful during the
+        // hydration of new objects.
+        $model = new static;
+
+        $model->fill((array) $attributes);
+    
+        return $model;
     }
+    
 
 
     /**
@@ -353,10 +424,6 @@ class Model
      */
     public function __get($key)
     {
-        if ($key === 'attributes') {
-            return $this->properties;
-        }
-
         if (array_key_exists($key, $this->properties)) {
             return $this->properties[$key];
         }
@@ -375,11 +442,11 @@ class Model
     public function __set($property, $value)
     {
         //if property contains '_base64'
-        if (!(stripos($property, '_base64') === false)) {
+        if (!(stripos($property, $this->base64Indicator) === false)) {
 
             //if the property IS a file field
-            $fileProperty = str_replace('_base64', '', $property);
-            if (in_array($fileProperty, self::getFileFields())) {
+            $fileProperty = str_replace($this->base64Indicator, '', $property);
+            if (in_array($fileProperty, $this->getFileFields())) {
                 $this->handleBase64File($fileProperty, $value);
             }//end if file field
 
@@ -405,8 +472,147 @@ class Model
     }//end __unset
 
 
+    /**
+     * Getter function to access the
+     * underlying attributes array for the
+     * entity
+     * 
+     * @return arrayhttpStatusError
+     */
     public function attributes()
     {
         return $this->properties;
+    }
+
+
+    /**
+     * Function to return any errors that
+     * may have prevented a save
+     *
+     * @return array
+     */
+    public function errors()
+    {
+        return $this->errors;
+    }
+
+
+    /**
+     * Function to fill an instance's properties from an
+     * array of keys and values
+     *
+     * @param  array  $attributes   Associative array of properties and values
+     * @return void
+     */
+    public function fill($attributes = array())
+    {
+        $guarded = $this->getGuardedAttributes();
+
+        foreach ($attributes as $property => $value) {
+            if (!in_array($property, $guarded)) {
+
+                //get the fields on the entity that are files
+                $fileFields = $this->getFileFields();
+
+                //if property contains base64 indicator
+                if (!(stripos($property, $this->base64Indicator) === false)) {
+
+                    //if the property IS a file field
+                    $fileProperty = str_replace($this->base64Indicator, '', $property);
+
+                    if (in_array($fileProperty, $fileFields)) {
+
+                        $this->handleBase64File($fileProperty, $value);
+
+                    }//end if file field
+
+                } else {
+
+                    //handle as normal property, but file fields can't be mass assigned
+                    if (!in_array($property, $fileFields)) {
+
+                        $this->properties[$property] = $value;
+
+                    }
+                }//end if-else base64
+            }//end if not guarded
+        }//end foreach
+    }
+
+
+    /**
+     * Function to return an array of properties that should not
+     * be set via mass assignment
+     *
+     * @return array
+     */
+    public function getGuardedAttributes()
+    {
+        $attrs = array_map('trim', explode(',', $this->guarded));
+
+        //the identityProperty should always be guarded
+        if (!in_array($this->identityProperty, $attrs)) {
+            $attrs[] = $this->identityProperty;
+        }
+
+        return $attrs;
+    }
+
+
+    /**
+     * Function to return an array of properties that will
+     * accept a file path
+     *
+     * @return array
+     */
+    public function getFileFields()
+    {
+        $attrs = array_map('trim', explode(',', $this->fileFields));
+        return array_filter($attrs);
+    }
+
+
+    /**
+     * Function to take base64 encoded image and write it to a
+     * temp file, then add that file to the property list to get
+     * added to a request.
+     *
+     * @param  string $property Entity attribute
+     * @param  string $value    Base64 encoded string
+     * @return void
+     */
+    protected function handleBase64File($property, $value)
+    {
+        $image = base64_decode($value);
+        $imgData = getimagesizefromstring($image);
+        $mimeExp = explode("/", $imgData['mime']);
+        $ext = end($mimeExp);
+        $output_file = implode(
+            DIRECTORY_SEPARATOR,
+            array($this->scratchDiskLocation, uniqid("tmp_{$property}_").".$ext")
+        );
+        $f = fopen($output_file, "wb");
+        fwrite($f, $image);
+        fclose($f);
+
+        $this->postRequestCleanUp[] = $output_file;
+        $this->{$property} = $output_file;
+
+    }//end handleBase64File
+
+
+    /**
+     * Function to get the instance ID, returns false if there
+     * is not one
+     *
+     * @return instanceId | false
+     */
+    public function getId()
+    {
+        if (array_key_exists($this->identityProperty, $this->properties)) {
+            return $this->properties[$this->identityProperty];
+        }
+
+        return false;
     }
 }

@@ -15,6 +15,11 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
      */
     protected $app;
 
+    protected $client;
+
+    protected $history;
+
+
     /**
      * Set up the tests
      *
@@ -67,33 +72,44 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
         $config = Mockery::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
 
+        $defaultConfig = [
+            'cache.driver'                         => 'file',
+            'database.default'                     => 'mysql',
+            'session.driver'                       => 'file',
+            'trucker::base_uri'                    => null,
+            'trucker::http_method_param'           => null,
+            'trucker::scratch_disk_location'       => '/tmp',
+            'trucker::identity_property'           => 'id',
+            'trucker::transporter'                 => 'json',
+            'trucker::collection_key'              => null,
+            'trucker::errors_key'                  => 'errors',
+            'trucker::search.container_parameter'  => 'search',
+            'trucker::search.property'             => 'property',
+            'trucker::search.operator'             => 'operator',
+            'trucker::search.value'                => 'value',
+            'trucker::search.logical_operator'     => 'logical_operator',
+            'trucker::search.order_by'             => 'order_by',
+            'trucker::search.order_dir'            => 'order_dir',
+            'trucker::search.and_operator'         => 'AND',
+            'trucker::search.or_operator'          => 'OR',
+            'trucker::search.order_dir_ascending'  => 'ASC',
+            'trucker::search.order_dir_descending' => 'DESC',
+            'trucker::http_status.success'         => 200,
+            'trucker::http_status.not_found'       => 401,
+            'trucker::http_status.invalid'         => 422,
+            'trucker::http_status.error'           => 500,
+            'trucker::base_64_property_indication' => '_base64',
+        ];
+
+        foreach ($defaultConfig as $key => $value) {
+            if (!array_key_exists($key, $options)) {
+                $config->shouldReceive('get')->with($key)->andReturn($value);
+            }
+        }
+
         foreach ($options as $key => $value) {
             $config->shouldReceive('get')->with($key)->andReturn($value);
         }
-
-        // Drivers
-        $config->shouldReceive('get')->with('cache.driver')->andReturn('file');
-        $config->shouldReceive('get')->with('database.default')->andReturn('mysql');
-        $config->shouldReceive('get')->with('session.driver')->andReturn('file');
-
-        // Trucker
-        $config->shouldReceive('get')->with('trucker::base_uri')->andReturn(null);
-        $config->shouldReceive('get')->with('trucker::http_method_param')->andReturn(null);
-        $config->shouldReceive('get')->with('trucker::scratch_disk_location')->andReturn('/tmp');
-        $config->shouldReceive('get')->with('trucker::identity_property')->andReturn('id');
-        $config->shouldReceive('get')->with('trucker::transporter')->andReturn('json');
-        $config->shouldReceive('get')->with('trucker::collection_key')->andReturn(null);
-        $config->shouldReceive('get')->with('trucker::search.container_parameter')->andReturn('search');
-        $config->shouldReceive('get')->with('trucker::search.property')->andReturn('property');
-        $config->shouldReceive('get')->with('trucker::search.operator')->andReturn('operator');
-        $config->shouldReceive('get')->with('trucker::search.value')->andReturn('value');
-        $config->shouldReceive('get')->with('trucker::search.logical_operator')->andReturn('logical_operator');
-        $config->shouldReceive('get')->with('trucker::search.order_by')->andReturn('order_by');
-        $config->shouldReceive('get')->with('trucker::search.order_dir')->andReturn('order_dir');
-        $config->shouldReceive('get')->with('trucker::search.and_operator')->andReturn('AND');
-        $config->shouldReceive('get')->with('trucker::search.or_operator')->andReturn('OR');
-        $config->shouldReceive('get')->with('trucker::search.order_dir_ascending')->andReturn('ASC');
-        $config->shouldReceive('get')->with('trucker::search.order_dir_descending')->andReturn('DESC');
 
         return $config;
     }
@@ -107,7 +123,6 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
      */
     protected function swapConfig($config)
     {
-        $this->app['trucker.trucker']->disconnect();
         $this->app['config'] = $this->getConfig($config);
     }
 
@@ -124,5 +139,59 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
         });
 
         return $artisan;
+    }
+
+
+    /**
+     * Test helper function that allows you to simulate
+     * that a private or protected property was set within a class
+     *         
+     * @param  Object $class    object to operate on
+     * @param  string $property the property to set
+     * @param  mixed  $value    the value to set
+     * @return void
+     */
+    protected function simulateSetInaccessableProperty($class, $property, $value)
+    {
+        $c = new ReflectionClass($class);
+        $prop = $c->getProperty($property);
+        $prop->setAccessible(true);
+        $prop->setValue($class, $value);
+    }
+
+    public function newHttpClient($historyLimit = 5)
+    {
+        $this->client = new \Guzzle\Http\Client();
+
+        //record history for this client
+        $this->history = new \Guzzle\Plugin\History\HistoryPlugin();
+        $this->history->setLimit($historyLimit);
+        $this->client->addSubscriber($this->history);
+
+        return $this->client;
+    }
+
+    public function mockHttpResponse($http_status = 200, $headers = array(), $body = '')
+    {
+        $mock = new \Guzzle\Plugin\Mock\MockPlugin();
+        $mock->addResponse(
+            new \Guzzle\Http\Message\Response(
+                $http_status,
+                $headers,
+                $body
+            )
+        );
+        $this->client->addSubscriber($mock);
+    }
+
+    
+    public function getHttpClient()
+    {
+        return $this->client;
+    }
+
+    public function getHttpClientHistory()
+    {
+        return $this->history;
     }
 }

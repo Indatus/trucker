@@ -10,3 +10,5 @@
 - Added dependencies on `illuminate/config ~4` and `iluminate/container ~4`
 - Added dependency on forked `illuminate/filesystem` [found here](https://github.com/brianwebb01/filesystem)
 - Renamed `ActiveResource::inflateFromArray()` to `Trucker::fill()`
+- Removed `$instance->updateAttributes()`
+- Replaced `$instance->attributes` with `$instance->attributes()`
