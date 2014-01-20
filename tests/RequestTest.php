@@ -151,6 +151,18 @@ class RequestTest extends TruckerTests
     }
 
 
+    /**
+     * Helper function to test various aspects of a Guzzle
+     * request / response
+     * 
+     * @param  string $method      HTTP method expected
+     * @param  string $baseUri     Base URL expected in request
+     * @param  string $uri         URI expected for request
+     * @param  array  $queryParams Assoc array of querystring params expected
+     * @param  array  $postParams  Assoc array of post params expected
+     * @param  array  $fileParams  Assoc array (name => path) of files expected
+     * @return void
+     */
     private function makeGuzzleAssertions(
         $method,
         $baseUri,
