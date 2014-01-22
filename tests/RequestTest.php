@@ -50,11 +50,6 @@ class RequestTest extends TruckerTests
 
     }
 
-    public function testRawRequest()
-    {
-
-    }
-
     public function testRawGet()
     {
         //some vars for our test
