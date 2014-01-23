@@ -1,5 +1,7 @@
 ## Trucker: A PHP ActiveResource Library
 
+[![build status](http://gitlab-ci.indatus.com/projects/3/status.png?ref=master)](http://gitlab-ci.indatus.com/projects/3?ref=master)
+
 Trucker is a PHP package for accessing REST APIs in an ActiveResource style of coding. The benefit is easier use of REST APIs in a fast and clean programming interface.
 
 The package follows convention over configuration. So you should be able to get up to speed consuming a REST API in a very short time.
