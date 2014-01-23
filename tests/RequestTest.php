@@ -7,7 +7,7 @@ class RequestTest extends TruckerTests
 
     public function testParseResponseToData()
     {
-        $this->assertEquals(1,2, 'My test broke the build');
+
     }
 
     public function testSetTransportLanguage()
