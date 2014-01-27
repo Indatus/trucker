@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__.'/stubs/user.php';
-
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\Trucker;
 
@@ -27,6 +25,13 @@ class UrlGeneratorTest extends TruckerTests
         $this->assertEquals(
             '/some_other_uri',
             UrlGenerator::getURI($x)
+        );
+
+        //test multi-word class / uri
+        $y = new UserPreferenceSetting;
+        $this->assertEquals(
+            '/user_preference_settings',
+            UrlGenerator::getURI($y)
         );
     }
 
@@ -87,5 +92,4 @@ class UrlGeneratorTest extends TruckerTests
             UrlGenerator::getCreateUri($x)
         );
     }
-
 }
