@@ -12,16 +12,22 @@ class ModelTest extends TruckerTests
         $this->assertEquals($t->attributes(), array());
     }
 
+
+
     public function testFacade()
     {
         $this->assertEquals(Trucker::attributes(), array());
     }
+
+
 
     public function testConfigDefaultsAreLoadedAndSwapable()
     {
         //$t = $this->app->make('trucker.model');
         //$this->assertEquals('/tmp', $t->getTest());
     }
+
+
 
     public function testSimplePropertyGettersAndSetters()
     {
@@ -30,6 +36,7 @@ class ModelTest extends TruckerTests
         $this->assertEquals('bar', $t->foo);
         $this->assertTrue(array_key_exists('foo', $t->attributes()), 'set value missing from attributes array');
     }
+
 
 
     public function testFillWithGuarded()
@@ -56,6 +63,7 @@ class ModelTest extends TruckerTests
         $this->assertEquals(null, $t->two);
         $this->assertEquals(3, $t->three);
     }
+
 
 
     public function testBase64PropertySetterMutators()
@@ -88,20 +96,21 @@ class ModelTest extends TruckerTests
         unlink($tmp2); //remove the test generated file
     }
 
+
+
     public function testBasicFindAll()
     {
 
     }
+
+
 
     public function testFindAllWithConditions()
     {
 
     }
 
-    public function testFindById()
-    {
 
-    }
 
     public function testGetId()
     {
@@ -111,30 +120,42 @@ class ModelTest extends TruckerTests
         $this->assertEquals(123456, $t->getId(), 'identity property could not properly resolve');
     }
 
+
+
     public function testSaveFunction()
     {
 
     }
+
+
 
     public function testCreateShouldSave()
     {
 
     }
 
+
+
     public function testCreateShouldFail()
     {
 
     }
+
+
 
     public function testUpdateShouldSave()
     {
 
     }
 
+
+
     public function testUpdateShouldFail()
     {
 
     }
+
+
 
     public function testDestroy()
     {

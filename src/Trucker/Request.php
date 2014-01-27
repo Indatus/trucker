@@ -215,12 +215,12 @@ class Request
      * @param Closure $func            [description]
      * @param boolean $stopPropagation [description]
      */
-    public function addErrorHandler($httpStatus, Closure $func, $stopPropagation = true)
+    public function addErrorHandler($httpStatus, \Closure $func, $stopPropagation = true)
     {
         $request = $this->request;
         $this->request->getEventDispatcher()->addListener(
             'request.error',
-            function (\Guzzle\Common\Event $event) use ($httpStatus, $stopPropagation, $request) {
+            function (\Guzzle\Common\Event $event) use ($httpStatus, $stopPropagation, $func, $request) {
                 if ($event['response']->getStatusCode() == $httpStatus) {
 
                     // Stop other events from firing if needed

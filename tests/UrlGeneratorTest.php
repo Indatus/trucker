@@ -17,6 +17,8 @@ class UrlGeneratorTest extends TruckerTests
         $this->assertEquals('Person', $x->getResourceName());
     }
 
+
+
     public function testGetUri()
     {
         //test custom uri setting
@@ -34,6 +36,8 @@ class UrlGeneratorTest extends TruckerTests
             UrlGenerator::getURI($y)
         );
     }
+
+
 
     public function testGetCollectionUri()
     {
@@ -62,6 +66,8 @@ class UrlGeneratorTest extends TruckerTests
         );
     }
 
+
+
     public function testInstanceUpdateDeleteURIs()
     {
         $x = new User;
@@ -82,6 +88,7 @@ class UrlGeneratorTest extends TruckerTests
             UrlGenerator::getDeleteUri($x, [':id' => 1234])
         );
     }
+
 
 
     public function testCreateUri()

@@ -42,6 +42,7 @@
 namespace Trucker;
 
 use Trucker\Facades\Request;
+use Trucker\Facades\Instance;
 
 /**
  * Base class for interacting with a remote API.
@@ -659,6 +660,7 @@ class Model
         return $klass;
     }
 
+
     /**
      * Getter function to return a URI
      * that has been manually set
@@ -668,5 +670,18 @@ class Model
     public function getURI()
     {
         return $this->uri ?: null;
+    }
+
+
+    /**
+     * Function to find an instance of an Entity record
+     *
+     * @param  int           $id          The primary identifier value for the record
+     * @param  array         $getParams   Array of GET parameters to pass
+     * @return Trucker\Model              An instance of the entity requested
+     */
+    public static function find($id, $getParams = array())
+    {
+        return Instance::fetch(new static, $id, $getParams);
     }
 }
