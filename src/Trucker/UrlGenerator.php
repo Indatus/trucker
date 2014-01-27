@@ -36,4 +36,137 @@ class UrlGenerator
     {
         return $this->app;
     }
+
+
+    /**
+     * Function to get the URI with placeholders for data
+     * that a POST request should be made to in order to create
+     * a new entity.
+     *
+     * @param  Trucker\Model
+     * @param  $options Array of options to replace placeholders with
+     * @return string
+     */
+    public function getCreateUri($model, $options = array())
+    {
+        return $this->getCollectionUri($model, $options);
+    }
+
+
+    /**
+     * Function to get the URI with placeholders for data
+     * that a PUT / PATCH request should be made to in order to
+     * update an existing entity.
+     *
+     * @param  Trucker\Model
+     * @param  $options Array of options to replace placeholders with
+     * @return string
+     */
+    public function getUpdateUri($model, $options = array())
+    {
+        return $this->getInstanceUri($model, $options);
+    }
+
+
+    /**
+     * Function to get the URI with placeholders for data
+     * that a DELETE request should be made to in order to delete
+     * an existing entity.
+     *
+     * @param  Trucker\Model
+     * @param  $options Array of options to replace placeholders with
+     * @return string
+     */
+    public function getDeleteUri($model, $options = array())
+    {
+        return $this->getInstanceUri($model, $options);
+    }
+
+
+    /**
+     * Function to get the URI with placeholders for data
+     * that a GET request should be made to in order to retreive
+     * a collection of Entities
+     *
+     * @param  Trucker\Model
+     * @param  $options Array of options to replace placeholders with
+     * @return string
+     */
+    public function getCollectionUri($model, $options = array())
+    {
+        $uri = $this->getUri($model);
+        foreach ($options as $key => $value) {
+            $uri = str_replace($key, $value, $uri);
+        }
+
+        return $uri;
+    }
+
+
+    /**
+     * Function to get the URI with placeholders for data
+     * that a GET request should be made to in order to retreive
+     * an instance of an Entity
+     *
+     * @param  Trucker\Model
+     * @param  $options Array of options to replace placeholders with
+     * @return string
+     */
+    public function getInstanceUri($model, $options = array())
+    {
+        $uri = implode("/", array($this->getUri($model), ':id'));
+        foreach ($options as $key => $value) {
+            $uri = str_replace($key, $value, $uri);
+        }
+
+        return $uri;
+    }
+
+
+    /**
+     * Function to return the name of the URI to hit based on
+     * the interpreted name of the class in question.  For example
+     * a Person class would resolve to /people
+     *
+     * @param  Trucker\Model
+     * @return string   The URI to hit
+     */
+    public function getURI($model)
+    {
+        if ($uri = $model->getURI()) {
+            return $uri;
+        }
+
+        $uri = Inflector::pluralize(
+            Inflector::tableize(
+                $model->getResourceName()
+            )
+        );
+
+        $uriResult = array();
+        if (!empty($model->nestedUnder)) {
+            $nesting = array_map(
+                function ($item) {
+                    return explode(':', trim($item));
+                },
+                explode(',', $model->nestedUnder)
+            );
+
+
+            foreach ($nesting as $nest) {
+                list($klass, $entityIdSegment) = $nest;
+                if (!is_numeric($entityIdSegment)) {
+                    $entityIdSegment = ":$entityIdSegment";
+                }
+
+                $entityTypeSegment = Inflector::pluralize(Inflector::tableize($klass));
+                $uriResult[] = $entityTypeSegment;
+                $uriResult[] = $entityIdSegment;
+
+                $uri = implode("/", $uriResult) . "/$uri";
+            }
+        }
+
+        return "/$uri";
+    }
 }

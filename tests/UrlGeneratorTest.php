@@ -1,37 +1,91 @@
 <?php
 
+require __DIR__.'/stubs/user.php';
+
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\Trucker;
 
 class UrlGeneratorTest extends TruckerTests
 {
 
+    public function testResourceNaming()
+    {
+        //test resource name w/ reflection & inflection
+        $x = new User;
+        $this->assertEquals('User', $x->getResourceName());
+
+        //test custom resource name
+        $this->simulateSetInaccessableProperty($x, 'resourceName', 'Person');
+        $this->assertEquals('Person', $x->getResourceName());
+    }
+
     public function testGetUri()
     {
-
+        //test custom uri setting
+        $x = new User;
+        $this->simulateSetInaccessableProperty($x, 'uri', '/some_other_uri');
+        $this->assertEquals(
+            '/some_other_uri',
+            UrlGenerator::getURI($x)
+        );
     }
 
     public function testGetCollectionUri()
     {
+        //test collection URI w/ inflection
+        $x = new User;
+        $this->assertEquals(
+            '/users',
+            UrlGenerator::getCollectionUri($x)
+        );
 
+
+        //test nestedUnder
+        $x->nestedUnder = 'Company:100';
+        $this->assertEquals(
+            '/companies/100/users',
+            UrlGenerator::getCollectionUri($x)
+        );
+        $x->nestedUnder = null;
+
+
+        //test collection URI w/ custom resource name
+        $this->simulateSetInaccessableProperty($x, 'resourceName', 'Person');
+        $this->assertEquals(
+            '/people',
+            UrlGenerator::getCollectionUri($x)
+        );
     }
 
-    public function testGetInstanceUri()
+    public function testInstanceUpdateDeleteURIs()
     {
+        $x = new User;
+        $x->__set('id', 1234);
+        $this->assertEquals('/users/:id', UrlGenerator::getInstanceUri($x));
+        $this->assertEquals(
+            '/users/1234',
+            UrlGenerator::getInstanceUri($x, [':id' => 1234])
+        );
 
+        $this->assertEquals(
+            '/users/1234',
+            UrlGenerator::getUpdateUri($x, [':id' => 1234])
+        );
+
+        $this->assertEquals(
+            '/users/1234',
+            UrlGenerator::getDeleteUri($x, [':id' => 1234])
+        );
     }
 
-    public function testGetCreateUri()
+
+    public function testCreateUri()
     {
-
+        $x = new User;
+        $this->assertEquals(
+            '/users',
+            UrlGenerator::getCreateUri($x)
+        );
     }
 
-    public function testGetUpdateUri()
-    {
-
-    }
-
-    public function testGetDeleteUri()
-    {
-
-    }
 }

@@ -122,7 +122,7 @@ class Model
      *
      * @var string
      */
-    protected $nestedUnder;
+    public $nestedUnder;
 
     /**
      * Username for remote API authentication if required
@@ -614,5 +614,59 @@ class Model
         }
 
         return false;
+    }
+
+
+    /**
+     * Function to get an associative array of fields
+     * with their values that are NOT read only
+     * 
+     * @return array
+     */
+    public function getMutableFields()
+    {
+        $cantSet = array_map('trim', explode(',', $this->readOnlyFields));
+
+        $mutableFields = array();
+
+        //set the property attributes
+        foreach ($this->properties as $key => $value) {
+            if (!in_array($key, $cantSet)) {
+                $mutableFields[$key] = $value;
+            }
+        }
+
+        return $mutableFields;
+    }
+
+
+    /**
+     * Function to interpret the URI resource name based on the class called.
+     * Generally this would be the name of the class.
+     *
+     * @return string   The sub name of the resource
+     */
+    public function getResourceName()
+    {
+        if (isset($this->resourceName)) {
+            return $this->resourceName;
+        }
+
+        $full_class_arr = explode("\\", get_called_class());
+        $klass = end($full_class_arr);
+        $this->resourceName = $klass;
+
+        return $klass;
+    }
+
+    /**
+     * Getter function to return a URI
+     * that has been manually set
+     * 
+     * @return string
+     */
+    public function getURI()
+    {
+        return $this->uri ?: null;
     }
 }
