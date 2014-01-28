@@ -1,7 +1,5 @@
 <?php
 
-use Trucker\Facades\Instance;
-
 require_once __DIR__.'/stubs/User.php';
 
 
@@ -27,6 +25,7 @@ class InstanceFinderTest extends TruckerTests
         $this->assertTrue($response->isSuccessful());
         $this->assertEquals($response_body, $response->getBody(true));
         $this->assertTrue($found instanceof User);
+        $this->assertEquals(1234, $found->id);
         $this->assertEquals('jdoe@noboddy.com', $found->email);
         $this->assertEquals('John Doe', $found->name);
     }

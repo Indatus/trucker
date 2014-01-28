@@ -44,13 +44,17 @@ namespace Trucker\Finders;
 use Illuminate\Container\Container;
 use Trucker\Facades\Request;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Responses\Collection;
+use Trucker\Finders\Conditions\QueryConditionInterface;
+use Trucker\Finders\Conditions\QueryResultOrderInterface;
+use Trucker\Model;
 
 /**
- * Class for finding model instances over the remote API
+ * Class for finding collections of models over the remote API
  *
  * @author Brian Webb <bwebb@indatus.com>
  */
-class InstanceFinder
+class CollectionFinder
 {
 
     /**
@@ -62,10 +66,9 @@ class InstanceFinder
 
 
     /**
-     * Build a new InstanceFinder
+     * Build a new CollectionFinder
      *
      * @param Container $app
-     * @param Client    $client
      */
     public function __construct(Container $app)
     {
@@ -97,41 +100,38 @@ class InstanceFinder
 
 
     /**
-     * Function to find an instance of an Entity record
-     *
-     * @param  Trucker\Model $model       Model to use for URL generation etc.
-     * @param  int           $id          The primary identifier value for the record
-     * @param  array         $getParams   Array of GET parameters to pass
-     * @return Trucker\Model              An instance of the entity requested
+     * Function to fetch a collection of Trucker\Model object
+     * from the remote API.
+     * 
+     * @param  Model                      $model       Instance of entity type being fetched
+     * @param  QueryConditionInterface    $condition   Query conditions for the request
+     * @param  QueryResultOrderInterface  $resultOrder Result ordering requirements for the request
+     * @param  array                      $getParams   Additional GET parameters to send w/ request
+     * @return Trucker\Responses\Collection
      */
-    public function fetch($model, $id, $getParams = array())
-    {
-        $instance = null;
+    public function fetch(
+        Model $model,
+        QueryConditionInterface $condition = null,
+        QueryResultOrderInterface $resultOrder = null,
+        array $getParams = []
+    ) {
 
         //init the request
         Request::createRequest(
             Request::getOption('base_uri'),
-            UrlGenerator::getInstanceUri($model, [':id' => $id]),
+            UrlGenerator::getCollectionUri($model),
             'GET'
         );
 
-        //handle not found
-        Request::addErrorHandler(
-            404,
-            function ($event, $request) use ($instance) {
-                $instance = false;
-            },
-            true
-        );
+        //add query conditions if needed
+        if ($condition) {
+            Request::addQueryCondition($condition);
+        }
 
-        //handle general error
-        Request::addErrorHandler(
-            500,
-            function ($event, $request) use ($instance) {
-                $instance = false;
-            },
-            true
-        );
+        //add result ordering if needed
+        if ($resultOrder) {
+            Request::addQueryResultOrderInterface($resultOrder);
+        }
 
         //set any get parameters on the request
         Request::setGetParameters($getParams);
@@ -139,21 +139,47 @@ class InstanceFinder
         //actually send the request
         $response = Request::sendRequest();
 
-        if ($response->getStatusCode() == 404 || $instance === false) {
-            return null;
+        //get api response
+        $data = $response->parseResponseToData();
+
+        //make an array to hold results
+        $records = array();
+
+        //figure out wether a collection key is used
+        $collection_key = $this->app['config']->get('trucker::search.collection_key');
+
+        //set records array appropriatley
+        if (isset($collection_key)) {
+            $recordCollection = $data[$collection_key];
+        } else {
+            $recordCollection = $data;
         }
 
-        //kraft the response into an object to return
-        $data     = $response->parseResponseToData();
-        $klass    = $model->getResourceName();
-        $instance = new $klass($data);
+        //create an array of popuplated results
+        foreach ($recordCollection as $values) {
+            $klass     = $model->getResourceName();
+            $instance = new $klass($values);
 
-        //inflate the ID property that should be guarded
-        $id = $instance->getIdentityProperty();
-        if (array_key_exists($id, $data)) {
-            $instance->{$id} = $data[$id];
+            //inflate the ID property that should be guarded
+            $id = $instance->getIdentityProperty();
+            if (array_key_exists($id, $data)) {
+                $instance->{$id} = $data[$id];
+            }
+
+            //add the instance to the records array
+            $records[] = $instance;
+
+        }//end foreach
+
+        //create a collection object to return
+        $collection = new Collection($records);
+
+        // if there was a collection_key, put any extra data that was returned
+        // outside the collection key in the metaData attribute
+        if (isset($collection_key)) {
+            $collection->metaData = array_diff_key($data, array_flip((array) array($collection_key)));
         }
 
-        return $instance;
+        return $collection;
     }
 }

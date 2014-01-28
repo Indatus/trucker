@@ -3,8 +3,10 @@
 namespace Trucker;
 
 use Illuminate\Container\Container;
-use Trucker\Responses\RawResponse;
 use Guzzle\Http\Client;
+use Trucker\Responses\RawResponse;
+use Trucker\Finders\Conditions\QueryConditionInterface;
+use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
 class Request
 {
@@ -233,6 +235,30 @@ class Request
                 }
             }
         );
+    }
+
+
+    /**
+     * Function to add Query conditions to the request
+     * 
+     * @param QueryConditionInterface $condition condition to add to the request
+     * @return  void
+     */
+    public function addQueryCondition(QueryConditionInterface $condition)
+    {
+        $condition->addToRequest($this->request);
+    }
+
+
+    /**
+     * Function to add Query result ordering conditions to the request
+     * 
+     * @param  QueryResultOrderInterface $resultOrder [description]
+     * @return void
+     */
+    public function addQueryResultOrderInterface(QueryResultOrderInterface $resultOrder)
+    {
+        $resultOrder->addToRequest($this->request);
     }
 
 

@@ -43,6 +43,9 @@ namespace Trucker;
 
 use Trucker\Facades\Request;
 use Trucker\Facades\Instance;
+use Trucker\Facades\Collection;
+use Trucker\Finders\Conditions\QueryConditionInterface;
+use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
 /**
  * Base class for interacting with a remote API.
@@ -361,7 +364,7 @@ class Model
      *
      * @param array $attributes Associative array of property names and values
      */
-    public function __construct($attributes = array())
+    public function __construct($attributes = [])
     {
 
         $initFromConfig = [
@@ -403,7 +406,7 @@ class Model
      * @param  array  $attributes
      * @return \Trucker\Model
      */
-    public function newInstance($attributes = array())
+    public function newInstance($attributes = [])
     {
         // This method just provides a convenient way for us to generate fresh model
         // instances of this current model. It is particularly useful during the
@@ -505,7 +508,7 @@ class Model
      * @param  array  $attributes   Associative array of properties and values
      * @return void
      */
-    public function fill($attributes = array())
+    public function fill($attributes = [])
     {
         $guarded = $this->getGuardedAttributes();
 
@@ -619,6 +622,17 @@ class Model
 
 
     /**
+     * Getter function to return the identity property
+     * 
+     * @return string
+     */
+    public function getIdentityProperty()
+    {
+        return $this->identityProperty;
+    }
+
+
+    /**
      * Function to get an associative array of fields
      * with their values that are NOT read only
      * 
@@ -680,8 +694,17 @@ class Model
      * @param  array         $getParams   Array of GET parameters to pass
      * @return Trucker\Model              An instance of the entity requested
      */
-    public static function find($id, $getParams = array())
+    public static function find($id, $getParams = [])
     {
         return Instance::fetch(new static, $id, $getParams);
+    }
+
+
+    public static function all(
+        QueryConditionInterface $condition = null,
+        QueryResultOrderInterface $resultOrder = null,
+        array $getParams = []
+    ) {
+        return Collection::fetch(new static, $condition, $resultOrder, $getParams);
     }
 }

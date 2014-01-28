@@ -152,6 +152,10 @@ class TruckerServiceProvider extends ServiceProvider
             return new Finders\InstanceFinder($app);
         });
 
+        $app->bind('trucker.collection-finder', function ($app) {
+            return new Finders\CollectionFinder($app);
+        });
+
         $app->bind('trucker.response', function ($app) {
             return new Response($app);
         });
