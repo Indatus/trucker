@@ -130,7 +130,7 @@ class CollectionFinder
 
         //add result ordering if needed
         if ($resultOrder) {
-            Request::addQueryResultOrderInterface($resultOrder);
+            Request::addQueryResultOrder($resultOrder);
         }
 
         //set any get parameters on the request

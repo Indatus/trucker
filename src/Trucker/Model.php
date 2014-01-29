@@ -633,6 +633,19 @@ class Model
 
 
     /**
+     * Function to return an array of property names
+     * that are read only
+     * 
+     * @return array
+     */
+    public function getReadOnlyFields()
+    {
+        $cantSet = array_map('trim', explode(',', $this->readOnlyFields));
+        return $cantSet;
+    }
+
+
+    /**
      * Function to get an associative array of fields
      * with their values that are NOT read only
      * 
@@ -640,7 +653,7 @@ class Model
      */
     public function getMutableFields()
     {
-        $cantSet = array_map('trim', explode(',', $this->readOnlyFields));
+        $cantSet = $this->getReadOnlyFields();
 
         $mutableFields = array();
 
@@ -714,5 +727,98 @@ class Model
         array $getParams = []
     ) {
         return Collection::fetch(new static, $condition, $resultOrder, $getParams);
+    }
+
+
+    /**
+     * Function to handle creating or updating an instance
+     *
+     * @return Boolean  Success of the save operation
+     */
+    public function save()
+    {
+        if ($this->getId() === false) {
+            return $this->create();
+        }
+
+        return $this->update();
+    }
+
+
+    /**
+     * Function to clean up any temp files written for a request
+     *
+     * @return void
+     */
+    protected function doPostRequestCleanUp()
+    {
+        while (count($this->postRequestCleanUp) > 0) {
+            $f = array_pop($this->postRequestCleanUp);
+            if (file_exists($f)) {
+                unlink($f);
+            }
+        }
+    }
+
+
+    /**
+     * Function to handle the creation of a NEW entity
+     *
+     * @return Boolean  Success of the create operation
+     */
+    protected function create()
+    {
+        //init the request
+        Request::createRequest(
+            Request::getOption('base_uri'),
+            UrlGenerator::getCreateUri(self),
+            'POST'
+        );
+
+        //handle error saving & any errors given
+        Request::addErrorHandler(
+            422,
+            function ($event, $request) {
+                $response = Response::newInstance(Request::getApp(), $event['response']);
+                $parsed = $response->parseResponseStringToObject();
+
+                if (property_exists($parsed, Request::getOption('errors_key'))) {
+                    $this->errors = $parsed->errors;
+                }
+
+                //return false, create failed
+                $this->doPostRequestCleanUp();
+                return false;
+            },
+            true
+        );
+
+
+        //set the property attributes on the request
+        Request::setModelProperties($this);
+
+        //actually send the request
+        $response = Request::sendRequest();
+
+        //handle clean response with errors
+        if ($response->getStatusCode() == 422) {
+
+            //get the errors and set them
+            $result = $response->parseResponseStringToObject();
+            if (property_exists($result, Request::getOption('errors_key'))) {
+                $this->errors = $result->errors;
+            }
+            $this->doPostRequestCleanUp();
+
+            return false;
+        }//end if
+
+        //get the response and inflate from that
+        $data = $response->parseResponseToData();
+        $this->fill($data);
+
+        $this->doPostRequestCleanUp();
+        return true;
+
     }
 }

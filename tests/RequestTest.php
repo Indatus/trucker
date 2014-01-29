@@ -130,4 +130,29 @@ class RequestTest extends TruckerTests
     {
         
     }
+
+    public function testBasicAuth()
+    {
+        
+    }
+
+    public function testSettingHeaders()
+    {
+
+    }
+
+    public function testAddQueryCondition()
+    {
+
+    }
+
+    public function testAddQueryResultOrder()
+    {
+
+    }
+
+    public function testHttpMethodParam()
+    {
+        
+    }
 }

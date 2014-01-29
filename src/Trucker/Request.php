@@ -7,6 +7,7 @@ use Guzzle\Http\Client;
 use Trucker\Responses\RawResponse;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
+use Trucker\Model;
 
 class Request
 {
@@ -187,6 +188,29 @@ class Request
 
 
     /**
+     * Function to set the entities properties on the
+     * request object taking into account any properties that
+     * are read only etc.
+     *
+     * @param  \Trucker\Model
+     */
+    public function setModelProperties(Model $model)
+    {
+        $cantSet = $model->getReadOnlyFields();
+
+        //set the property attributes
+        foreach ($model->attributes() as $key => $value) {
+            if (in_array($key, $model->getFileFields())) {
+                $request->addPostFile($key, $value);
+            } else {
+                if (!in_array($key, $cantSet)) {
+                    $request->setPostField($key, $value);
+                }
+            }
+        }
+    }
+
+    /**
      * Function to set the language of data transport.  I.e. XML, JSON etc
      *
      * @param string $transporter the transport language for the request
@@ -256,7 +280,7 @@ class Request
      * @param  QueryResultOrderInterface $resultOrder [description]
      * @return void
      */
-    public function addQueryResultOrderInterface(QueryResultOrderInterface $resultOrder)
+    public function addQueryResultOrder(QueryResultOrderInterface $resultOrder)
     {
         $resultOrder->addToRequest($this->request);
     }
