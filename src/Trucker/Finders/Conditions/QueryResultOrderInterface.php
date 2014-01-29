@@ -2,6 +2,8 @@
 
 namespace Trucker\Finders\Conditions;
 
+use Illuminate\Container\Container;
+
 interface QueryResultOrderInterface
 {
 

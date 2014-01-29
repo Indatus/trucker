@@ -700,6 +700,14 @@ class Model
     }
 
 
+    /**
+     * Function to find a collection of Entity records from the remote api
+     * 
+     * @param  QueryConditionInterface    $condition   query conditions
+     * @param  QueryResultOrderInterface  $resultOrder result ordering info
+     * @param  array                      $getParams   additional GET params
+     * @return Trucker\Responses\Collection
+     */
     public static function all(
         QueryConditionInterface $condition = null,
         QueryResultOrderInterface $resultOrder = null,

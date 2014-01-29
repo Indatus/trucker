@@ -156,6 +156,14 @@ class TruckerServiceProvider extends ServiceProvider
             return new Finders\CollectionFinder($app);
         });
 
+        $app->bind('trucker.get-array-query', function ($app) {
+            return new Finders\Conditions\GetArrayParamsQueryCondition($app);
+        });
+
+        $app->bind('trucker.get-array-result-order', function ($app) {
+            return new Finders\Conditions\GetArrayParamsResultOrder($app);
+        });
+
         $app->bind('trucker.response', function ($app) {
             return new Response($app);
         });

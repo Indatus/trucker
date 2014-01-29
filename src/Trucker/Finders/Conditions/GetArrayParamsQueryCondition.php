@@ -2,6 +2,8 @@
 
 namespace Trucker\Finders\Conditions;
 
+use Illuminate\Container\Container;
+
 class GetArrayParamsQueryCondition implements QueryConditionInterface
 {
 
@@ -26,8 +28,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
 
     public function newInstance()
     {
-        $instance = new static;
-        $instance->setApp($this->app);
+        $instance = new static($this->app);
         return $instance;
     }
 
@@ -35,9 +36,9 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
     public function addCondition($property, $operator, $value)
     {
         $this->conditions[] = [
-            PROPERTY => $property,
-            OPERATOR => $operator,
-            VALUE    => $value
+            self::PROPERTY => $property,
+            self::OPERATOR => $operator,
+            self::VALUE    => $value
         ];
     }
 
@@ -80,15 +81,15 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
 
             $query->add(
                 "{$conatiner}[$x][{$property}]",
-                $condition[PROPERTY]
+                $condition[self::PROPERTY]
             );
             $query->add(
                 "{$conatiner}[$x][{$operator}]",
-                $condition[OPERATOR]
+                $condition[self::OPERATOR]
             );
             $query->add(
                 "{$conatiner}[$x][{$value}]",
-                $condition[VALUE]
+                $condition[self::VALUE]
             );
 
             $x++;
@@ -101,5 +102,40 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
                 $this->logicalOperator
             );
         }
+    }
+
+
+    public function toArray()
+    {
+
+        $conatiner = $this->app['config']->get('trucker::search.container_parameter');
+        $property  = $this->app['config']->get('trucker::search.property');
+        $operator  = $this->app['config']->get('trucker::search.operator');
+        $value     = $this->app['config']->get('trucker::search.value');
+
+        $params = [];
+
+        $x = 0;
+        foreach ($this->conditions as $condition) {
+
+            $params["{$conatiner}[$x][{$property}]"] = $condition[self::PROPERTY];
+            $params["{$conatiner}[$x][{$operator}]"] = $condition[self::OPERATOR];
+            $params["{$conatiner}[$x][{$value}]"] = $condition[self::VALUE];
+
+            $x++;
+
+        }//end foreach $findConditions
+
+        if (isset($this->logicalOperator)) {
+            $params[$this->app['config']->get('trucker::search.logical_operator')] = $this->logicalOperator;
+        }
+
+        return $params;
+    }
+
+
+    public function toQueryString()
+    {
+        return http_build_query($this->toArray());
     }
 }

@@ -12,3 +12,4 @@
 - Renamed `ActiveResource::inflateFromArray()` to `Trucker::fill()`
 - Removed `$instance->updateAttributes()`
 - Replaced `$instance->attributes` with `$instance->attributes()`
+- Replaced `Class::findAll()` with `Class::all()` arguments have changed too

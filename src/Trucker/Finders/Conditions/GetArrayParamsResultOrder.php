@@ -2,6 +2,8 @@
 
 namespace Trucker\Finders\Conditions;
 
+use Illuminate\Container\Container;
+
 class GetArrayParamsResultOrder implements QueryResultOrderInterface
 {
 
@@ -20,8 +22,7 @@ class GetArrayParamsResultOrder implements QueryResultOrderInterface
 
     public function newInstance()
     {
-        $instance = new static;
-        $instance->setApp($this->app);
+        $instance = new static($this->app);
         return $instance;
     }
 
@@ -74,5 +75,24 @@ class GetArrayParamsResultOrder implements QueryResultOrderInterface
                 $this->orderDirection
             );
         }
+    }
+
+
+    public function toArray()
+    {
+        $order_by  = $this->app['config']->get('trucker::search.order_by');
+        $order_dir = $this->app['config']->get('trucker::search.order_dir');
+
+        $params             = [];
+        $params[$order_by]  = $this->orderByField;
+        $params[$order_dir] = $this->orderDirection;
+        
+        return $params;
+    }
+
+
+    public function toQueryString()
+    {
+        return http_build_query($this->toArray());
     }
 }

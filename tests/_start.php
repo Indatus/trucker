@@ -273,10 +273,13 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
             $request->getPath(),
             "The request path is wrong"
         );
-        $this->assertEquals(
-            http_build_query($queryParams),
-            $request->getQuery(true),
-            "The querystring params are wrong"
+
+        $this->assertTrue(
+            $this->arraysAreSimilar(
+                $queryParams,
+                $request->getQuery()->toArray()
+            ),
+            "The query parameters didn't match as expected"
         );
 
         //if request can have post / files
@@ -332,5 +335,33 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
             last(explode('/', $request->getHeader('Accept'))),
             "The transport language is wrong"
         );
+    }
+
+
+    /**
+     * Determine if two associative arrays are similar
+     *
+     * Both arrays must have the same indexes with identical values
+     * without respect to key ordering 
+     * 
+     * @param array $a
+     * @param array $b
+     * @return bool
+     */
+    public function arraysAreSimilar ($a, $b)
+    {
+        // if the indexes don't match, return immediately
+        if (count(array_diff_assoc($a, $b))) {
+            return false;
+        }
+        // we know that the indexes, but maybe not values, match.
+        // compare the values between the two arrays
+        foreach ($a as $k => $v) {
+            if ($v !== $b[$k]) {
+                return false;
+            }
+        }
+        // we have identical indexes, and no unequal values
+        return true;
     }
 }

@@ -2,6 +2,8 @@
 
 require_once __DIR__.'/stubs/User.php';
 use Trucker\Responses\Collection;
+use Trucker\Facades\GetArrayQueryCondition;
+use Trucker\Facades\GetArrayResultOrder;
 
 class CollectionFinderTest extends TruckerTests
 {
@@ -25,33 +27,100 @@ class CollectionFinderTest extends TruckerTests
         $this->assertEquals($response_body, $response->getBody(true));
         $this->assertTrue($found instanceof Collection);
         $this->assertEquals(5, $found->size(), "expected count is wrong");
-        //$this->assertEquals(1234, $found->first()->id);
+        $this->assertEquals(1234, $found->first()->id);
         $this->assertEquals('John Doe', $found->first()->name);
     }
 
 
 
-    // public function testFindWithGetParams()
-    // {
-    //     $this->setupIndividualTest($this->getTestOptions());
-    //     extract($this->getTestOptions());
+    public function testFindAllWithGetParams()
+    {
+        $this->setupIndividualTest($this->getTestOptions());
+        extract($this->getTestOptions());
 
-    //     $found = User::find(1234, $queryParams);
+        $found = User::all(null, null, $queryParams);
 
-    //     //get objects to assert on
-    //     $history     = $this->getHttpClientHistory();
-    //     $request     = $history->getLastRequest();
-    //     $response    = $history->getLastResponse();
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
 
-    //     $this->makeGuzzleAssertions('GET', $base_uri, $uri, $queryParams);
+        $this->makeGuzzleAssertions('GET', $base_uri, $uri, $queryParams);
 
-    //     //assert that the HTTP RESPONSE is what is expected
-    //     $this->assertTrue($response->isSuccessful());
-    //     $this->assertEquals($response_body, $response->getBody(true));
-    //     $this->assertTrue($found instanceof User);
-    //     $this->assertEquals('jdoe@noboddy.com', $found->email);
-    //     $this->assertEquals('John Doe', $found->name);
-    // }
+        //assert that the HTTP RESPONSE is what is expected
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response_body, $response->getBody(true));
+        $this->assertTrue($found instanceof Collection);
+        $this->assertEquals(5, $found->size(), "expected count is wrong");
+        $this->assertEquals(1234, $found->first()->id);
+        $this->assertEquals('John Doe', $found->first()->name);
+    }
+
+
+    public function testFindAllWithGetParamsQueryConditions()
+    {
+        $this->setupIndividualTest($this->getTestOptions());
+        extract($this->getTestOptions());
+
+        $conditions = GetArrayQueryCondition::newInstance();
+        $conditions->addCondition('name', '=', 'John Doe');
+        $conditions->addCondition('email', '=', 'jdoe@noboddy.com');
+        $conditions->addCondition('id', '>=', 100);
+        $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
+
+        $found = User::all($conditions);
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->makeGuzzleAssertions('GET', $base_uri, $uri, $conditions->toArray());
+
+        //assert that the HTTP RESPONSE is what is expected
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response_body, $response->getBody(true));
+        $this->assertTrue($found instanceof Collection);
+        $this->assertEquals(5, $found->size(), "expected count is wrong");
+        $this->assertEquals(1234, $found->first()->id);
+        $this->assertEquals('John Doe', $found->first()->name);
+    }
+
+
+    public function testFindAllWithGetParamsQueryConditionsAndGetOrderResults()
+    {
+        $this->setupIndividualTest($this->getTestOptions());
+        extract($this->getTestOptions());
+
+        $conditions = GetArrayQueryCondition::newInstance();
+        $conditions->addCondition('name', '=', 'John Doe');
+        $conditions->addCondition('email', '=', 'jdoe@noboddy.com');
+        $conditions->addCondition('id', '>=', 100);
+        $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
+
+        $order = GetArrayResultOrder::newInstance();
+        $order->setOrderByField('email');
+        $order->setOrderDirection($order->getOrderDirectionDescending());
+
+        $found = User::all($conditions, $order);
+
+        $getParams = array_merge($conditions->toArray(), $order->toArray());
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->makeGuzzleAssertions('GET', $base_uri, $uri, $getParams);
+
+        //assert that the HTTP RESPONSE is what is expected
+        $this->assertTrue($response->isSuccessful());
+        $this->assertEquals($response_body, $response->getBody(true));
+        $this->assertTrue($found instanceof Collection);
+        $this->assertEquals(5, $found->size(), "expected count is wrong");
+        $this->assertEquals(1234, $found->first()->id);
+        $this->assertEquals('John Doe', $found->first()->name);
+    }
 
 
     /**

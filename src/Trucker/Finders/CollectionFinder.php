@@ -162,8 +162,8 @@ class CollectionFinder
 
             //inflate the ID property that should be guarded
             $id = $instance->getIdentityProperty();
-            if (array_key_exists($id, $data)) {
-                $instance->{$id} = $data[$id];
+            if (array_key_exists($id, $values)) {
+                $instance->{$id} = $values[$id];
             }
 
             //add the instance to the records array
