@@ -731,49 +731,34 @@ class Model
 
 
     /**
-     * Function to handle creating or updating an instance
+     * Function to handle persistance of the entity across the
+     * remote API.  Function will handle either a CREATE or UPDATE
      *
      * @return Boolean  Success of the save operation
      */
     public function save()
     {
         if ($this->getId() === false) {
-            return $this->create();
+
+            //make a CREATE request
+            Request::createRequest(
+                Request::getOption('base_uri'),
+                UrlGenerator::getCreateUri(self),
+                'POST'
+            );
+
+        } else {
+
+            //make an UPDATE request
+            Request::createRequest(
+                Request::getOption('base_uri'),
+                UrlGenerator::getDeleteUri(
+                    self,
+                    [':'.$this->getIdentityProperty() => $this->getId()]
+                ),
+                'PATCH'
+            );
         }
-
-        return $this->update();
-    }
-
-
-    /**
-     * Function to clean up any temp files written for a request
-     *
-     * @return void
-     */
-    protected function doPostRequestCleanUp()
-    {
-        while (count($this->postRequestCleanUp) > 0) {
-            $f = array_pop($this->postRequestCleanUp);
-            if (file_exists($f)) {
-                unlink($f);
-            }
-        }
-    }
-
-
-    /**
-     * Function to handle the creation of a NEW entity
-     *
-     * @return Boolean  Success of the create operation
-     */
-    protected function create()
-    {
-        //init the request
-        Request::createRequest(
-            Request::getOption('base_uri'),
-            UrlGenerator::getCreateUri(self),
-            'POST'
-        );
 
         //handle error saving & any errors given
         Request::addErrorHandler(
@@ -819,6 +804,52 @@ class Model
 
         $this->doPostRequestCleanUp();
         return true;
+    }
 
+
+    /**
+     * Function to delete an existing entity
+     *
+     * @return Boolean  Success of the delete operation
+     */
+    public function destroy()
+    {
+
+        //init the request
+        Request::createRequest(
+            Request::getOption('base_uri'),
+            UrlGenerator::getDeleteUri(
+                self,
+                [':'.$this->getIdentityProperty() => $this->getId()]
+            ),
+            'DELETE'
+        );
+
+        //actually send the request
+        $response = Request::sendRequest();
+
+        $this->doPostRequestCleanUp();
+
+        if ($response->getStatusCode() == 200) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Function to clean up any temp files written for a request
+     *
+     * @return void
+     */
+    protected function doPostRequestCleanUp()
+    {
+        while (count($this->postRequestCleanUp) > 0) {
+            $f = array_pop($this->postRequestCleanUp);
+            if (file_exists($f)) {
+                unlink($f);
+            }
+        }
     }
 }
