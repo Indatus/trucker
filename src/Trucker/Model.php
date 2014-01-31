@@ -521,9 +521,10 @@ class Model
                 //if property contains base64 indicator
                 if (!(stripos($property, $this->base64Indicator) === false)) {
 
-                    //if the property IS a file field
+                    //get a list of file properties w/o the base64 indicator
                     $fileProperty = str_replace($this->base64Indicator, '', $property);
 
+                    //if the property IS a file field, handle appropriatley
                     if (in_array($fileProperty, $fileFields)) {
 
                         $this->handleBase64File($fileProperty, $value);

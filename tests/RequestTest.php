@@ -5,6 +5,11 @@ use Trucker\Facades\Request;
 class RequestTest extends TruckerTests
 {
 
+    public function testGetOption()
+    {
+
+    }
+
     public function testParseResponseToData()
     {
 
@@ -46,6 +51,16 @@ class RequestTest extends TruckerTests
     }
 
     public function testSetFileParameters()
+    {
+
+    }
+
+    public function testSettingModelProperties()
+    {
+
+    }
+
+    public function testAddingErrorHandler()
     {
 
     }
@@ -152,6 +167,21 @@ class RequestTest extends TruckerTests
     }
 
     public function testHttpMethodParam()
+    {
+        
+    }
+
+    public function testResponseWithCollectionKey()
+    {
+
+    }
+
+    public function testResponseWithoutCollectionKey()
+    {
+
+    }
+
+    public function testResponseWithErrorKey()
     {
         
     }

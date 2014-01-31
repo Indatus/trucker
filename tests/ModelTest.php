@@ -21,14 +21,6 @@ class ModelTest extends TruckerTests
 
 
 
-    public function testConfigDefaultsAreLoadedAndSwapable()
-    {
-        //$t = $this->app->make('trucker.model');
-        //$this->assertEquals('/tmp', $t->getTest());
-    }
-
-
-
     public function testSimplePropertyGettersAndSetters()
     {
         $t = $this->app->make('trucker.model');
@@ -98,14 +90,70 @@ class ModelTest extends TruckerTests
 
 
 
-    public function testBasicFindAll()
+    public function testGetUri()
     {
 
     }
 
 
 
-    public function testFindAllWithConditions()
+    public function testGetResourceName()
+    {
+
+    }
+
+
+
+    public function testGetMutableFields()
+    {
+
+    }
+
+
+
+    public function testGetReadOnlyFields()
+    {
+
+    }
+
+
+
+    public function testGetIdentityProperty()
+    {
+
+    }
+
+
+
+    public function testGetFileFields()
+    {
+
+    }
+
+
+
+    public function testGetGuardedAttributes()
+    {
+
+    }
+
+
+
+    public function testErrorsGetter()
+    {
+
+    }
+
+
+
+    public function testAttributesGetter()
+    {
+
+    }
+
+
+
+    public function testUnsetFunction()
     {
 
     }
@@ -118,13 +166,6 @@ class ModelTest extends TruckerTests
         $this->simulateSetInaccessableProperty($t, 'identityProperty', 'id');
         $t->id = 123456;
         $this->assertEquals(123456, $t->getId(), 'identity property could not properly resolve');
-    }
-
-
-
-    public function testSaveFunction()
-    {
-
     }
 
 
