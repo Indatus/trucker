@@ -1,70 +1,13 @@
 <?php
 
+require_once __DIR__.'/GuzzleTestingTrait.php';
+
 use Trucker\Facades\Request;
 
-class RequestTest extends TruckerTests
+class RawRequestMethodsTest extends TruckerTests
 {
 
-    public function testGetOption()
-    {
-
-    }
-
-    public function testParseResponseToData()
-    {
-
-    }
-
-    public function testSetTransportLanguage()
-    {
-
-    }
-
-    public function testParseResponseStringToObject()
-    {
-
-    }
-
-    public function testCreateNewRequest()
-    {
-
-    }
-
-    public function testSendRequest()
-    {
-
-    }
-
-    public function testSetPropertiesOnRequest()
-    {
-
-    }
-
-    public function testSetPostParameters()
-    {
-
-    }
-
-    public function testSetGetParameters()
-    {
-
-    }
-
-    public function testSetFileParameters()
-    {
-
-    }
-
-    public function testSettingModelProperties()
-    {
-
-    }
-
-    public function testAddingErrorHandler()
-    {
-
-    }
-
+    use GuzzleTestingTrait;
 
 
     public function testRawGet()
@@ -142,46 +85,6 @@ class RequestTest extends TruckerTests
     }
 
     public function testRawDelete()
-    {
-        
-    }
-
-    public function testBasicAuth()
-    {
-        
-    }
-
-    public function testSettingHeaders()
-    {
-
-    }
-
-    public function testAddQueryCondition()
-    {
-
-    }
-
-    public function testAddQueryResultOrder()
-    {
-
-    }
-
-    public function testHttpMethodParam()
-    {
-        
-    }
-
-    public function testResponseWithCollectionKey()
-    {
-
-    }
-
-    public function testResponseWithoutCollectionKey()
-    {
-
-    }
-
-    public function testResponseWithErrorKey()
     {
         
     }

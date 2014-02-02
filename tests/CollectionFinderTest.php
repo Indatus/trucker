@@ -1,12 +1,15 @@
 <?php
 
 require_once __DIR__.'/stubs/User.php';
+require_once __DIR__.'/GuzzleTestingTrait.php';
+
 use Trucker\Responses\Collection;
 use Trucker\Facades\GetArrayQueryCondition;
 use Trucker\Facades\GetArrayResultOrder;
 
 class CollectionFinderTest extends TruckerTests
 {
+    use GuzzleTestingTrait;
 
     public function testFindAll()
     {

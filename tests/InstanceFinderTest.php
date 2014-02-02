@@ -1,11 +1,13 @@
 <?php
 
 require_once __DIR__.'/stubs/User.php';
+require_once __DIR__.'/GuzzleTestingTrait.php';
 
 
 class InstanceFinderTest extends TruckerTests
 {
 
+    use GuzzleTestingTrait;
 
     public function testFind()
     {

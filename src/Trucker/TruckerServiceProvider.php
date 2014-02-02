@@ -145,7 +145,7 @@ class TruckerServiceProvider extends ServiceProvider
         });
 
         $app->bind('trucker.request', function ($app) {
-            return new Request($app, new \Guzzle\Http\Client());
+            return new Requests\RestRequest($app, new \Guzzle\Http\Client());
         });
 
         $app->bind('trucker.instance-finder', function ($app) {

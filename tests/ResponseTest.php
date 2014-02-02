@@ -1,7 +1,7 @@
 <?php
 
 
-class CollectionTest extends TruckerTests
+class ResponseTest extends TruckerTests
 {
 
     public function testDynamicGetterOnResponse()

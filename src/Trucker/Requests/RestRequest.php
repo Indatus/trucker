@@ -1,6 +1,6 @@
 <?php
 
-namespace Trucker;
+namespace Trucker\Requests;
 
 use Illuminate\Container\Container;
 use Guzzle\Http\Client;
@@ -9,7 +9,7 @@ use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 use Trucker\Model;
 
-class Request
+class RestRequest implements RequestableInterface
 {
 
     /**
@@ -162,6 +162,11 @@ class Request
     }
 
 
+    /**
+     * Function to set POST parameters onto the request
+     * 
+     * @param array $params Key value array of post params
+     */
     public function setPostParameters($params = array())
     {
         foreach ($params as $key => $value) {
@@ -170,6 +175,12 @@ class Request
     }
 
 
+    /**
+     * Functio to set GET parameters onto the 
+     * request
+     * 
+     * @param array $params Key value array of get params
+     */
     public function setGetParameters($params = array())
     {
         $query = $this->request->getQuery();
@@ -179,6 +190,12 @@ class Request
     }
 
 
+    /**
+     * Function to set given file parameters
+     * on the request
+     * 
+     * @param array $params File parameters to set
+     */
     public function setFileParameters($params = array())
     {
         foreach ($params as $key => $value) {
@@ -399,8 +416,8 @@ class Request
      */
     public function rawRequest($uri, $method, $params = array(), $getParams = array(), $files = array())
     {
-        $this->request = Request::createRequest(
-            Request::getOption('base_uri'),
+        $this->request = self::createRequest(
+            self::getOption('base_uri'),
             $uri,
             $method
         );
@@ -410,14 +427,14 @@ class Request
         $this->request->getEventDispatcher()->addListener(
             'request.error',
             function (\Guzzle\Common\Event $event) use ($app) {
-                if ($event['response']->getStatusCode() == Request::getOption('http.invalid')) {
+                if ($event['response']->getStatusCode() == self::getOption('http.invalid')) {
                     // Stop other events from firing
                     $event->stopPropagation();
 
                     //get the errors and set them
                     $response = new Response($app, $event['response']);
                     $responseObj = $response->parseResponseStringToObject();
-                    if (property_exists($responseObj, Request::getOption('errors_key'))) {
+                    if (property_exists($responseObj, self::getOption('errors_key'))) {
                         return new RawResponse(false, $response, $responseObj->errors);
                     }
 
@@ -434,10 +451,10 @@ class Request
         $response = $this->sendRequest();
 
         //handle clean response with errors
-        if ($response->getStatusCode() == Request::getOption('http.invalid')) {
+        if ($response->getStatusCode() == self::getOption('http.invalid')) {
             //get the errors and set them
             $responseObj = $response->parseResponseStringToObject();
-            if (property_exists($responseObj, Request::getOption('errors_key'))) {
+            if (property_exists($responseObj, self::getOption('errors_key'))) {
                 return new RawResponse(false, $response, $responseObj->errors);
             }
 
