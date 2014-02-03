@@ -212,13 +212,17 @@ class RestRequestTest extends TruckerTests
 
     public function testHttpMethodParam()
     {
-        $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
-            ['method' => 'setPostField', 'args' => ['biz', 'banng']],
-        ]);
+        $request = $this->simpleMockRequest(
+            [
+                ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+                ['method' => 'setPostField', 'args' => ['_method', 'PUT']],
+            ],
+            'http://example.com',
+            '/users/1',
+            'post'
+        );
 
         $request->createRequest('http://example.com', '/users/1', 'PUT', [], '_method');
-        $request->setPostParameters(['biz' => 'banng']);
     }
 
 
