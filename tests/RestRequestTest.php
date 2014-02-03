@@ -1,18 +1,21 @@
 <?php
 
+require_once __DIR__.'/stubs/User.php';
+
 use Trucker\Facades\Request;
+use Mockery as m;
 
 class RestRequestTest extends TruckerTests
 {
 
     public function testGetOption()
     {
-        $config = Mockery::mock('Illuminate\Config\Repository');
+        $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
         $config->shouldReceive('get')->with('trucker::transporter')
             ->andReturn('json');
 
-        $app = Mockery::mock('Illuminate\Container\Container');
+        $app = m::mock('Illuminate\Container\Container');
         $app->shouldIgnoreMissing();
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
@@ -20,116 +23,258 @@ class RestRequestTest extends TruckerTests
         $transporter = $request->getOption('transporter');
 
         $this->assertEquals('json', $transporter);
-
     }
 
-    public function testParseResponseToData()
-    {
 
-    }
 
     public function testSetTransportLanguage()
     {
-        $mockRequest = Mockery::mock('Guzzle\Http\Message\Request');
-        $mockRequest->shouldReceive('setHeader')
-            ->with('Accept', 'application/json');
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+        ]);
 
-        $client = Mockery::mock('Guzzle\Http\Client');
-        //$client->shouldIgnoreMissing();
-        $client->shouldReceive('setBaseUrl')->with('http://example.com');
-        $client->shouldReceive('get')->with('/users')->andReturn($mockRequest);
-
-        $request = new \Trucker\Requests\RestRequest($this->app, $client);
-
-        $r = $request->createRequest(
-            'http://example.com',
-            '/users',
-            'GET'
-        );
+        $r = $request->createRequest('http://example.com', '/users', 'GET');
     }
 
-    public function testParseResponseStringToObject()
-    {
 
-    }
 
     public function testCreateNewRequest()
     {
-
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+        ]);
+        $result = $request->createRequest('http://example.com', '/users', 'GET');
+        $this->assertTrue($result instanceof \Guzzle\Http\Message\Request);
     }
 
-    public function testSendRequest()
-    {
 
-    }
-
-    public function testSetPropertiesOnRequest()
-    {
-
-    }
 
     public function testSetPostParameters()
     {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'setPostField', 'args' => ['biz', 'banng']],
+        ]);
 
+        $request->createRequest('http://example.com', '/users', 'GET');
+        $request->setPostParameters(['biz' => 'banng']);
     }
+
+
 
     public function testSetGetParameters()
     {
+        $mQuery = m::mock('Guzzle\Http\QueryString');
+        $mQuery->shouldReceive('add')->with('foo', 'bar');
 
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'getQuery', 'return' => $mQuery],
+        ]);
+
+        $request->createRequest('http://example.com', '/users', 'GET');
+        $request->setGetParameters(['foo' => 'bar']);
     }
+
+
 
     public function testSetFileParameters()
     {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'addPostFile', 'args' => ['fileOne', '/path/to/fileOne']],
+        ]);
 
+        $request->createRequest('http://example.com', '/users', 'GET');
+        $request->setFileParameters(['fileOne' => '/path/to/fileOne']);
     }
+
+
 
     public function testSettingModelProperties()
     {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'setPostField', 'args' => ['foo', 'bar']],
+            ['method' => 'setPostField', 'args' => ['biz', 'bang']],
+            ['method' => 'addPostFile', 'args' => ['fOne', '/path/to/file/one']],
+            ['method' => 'addPostFile', 'args' => ['fTwo', '/path/to/file/two']],
+        ]);
 
+        $attributes = [
+            'foo'   => 'bar',
+            'biz'   => 'bang',
+            'roOne' => 'roOneVal',
+            'roTwo' => 'roTwoVal',
+            'fOne'  => '/path/to/file/one',
+            'fTwo'  => '/path/to/file/two'
+        ];
+
+        $mUser = m::mock('User');
+        $mUser->shouldReceive('getReadOnlyFields')->andReturn(['roOne', 'roTwo']);
+        $mUser->shouldReceive('attributes')->andReturn($attributes);
+        $mUser->shouldReceive('getFileFields')->andReturn(['fOne', 'fTwo']);
+
+        $request->createRequest('http://example.com', '/users', 'GET');
+        $request->setModelProperties($mUser);
     }
 
-    public function testAddingErrorHandler()
-    {
 
-    }
 
     public function testBasicAuth()
     {
-        
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'setAuth', 'args' => ['fooUsername', 'barPassword']],
+        ]);
+
+        $request->createRequest('http://example.com', '/users', 'GET');
+        $request->setBasicAuth('fooUsername', 'barPassword');
     }
+
+
 
     public function testSettingHeaders()
     {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'setHeader', 'args' => ['Cache-Control', 'no-cache, must-revalidate']],
+        ]);
 
+        $headers = ['Cache-Control' => 'no-cache, must-revalidate'];
+        $request->createRequest('http://example.com', '/users', 'GET', $headers);
     }
+
+
+
+    public function testAddingErrorHandler()
+    {
+        $dispatcher = m::mock('Symfony\Component\EventDispatcher\EventDispatcher');
+        $dispatcher->shouldReceive('addListener');
+
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'getEventDispatcher', 'return' => $dispatcher],
+        ]);
+
+        $func = function ($event, $request) {
+            return true;
+        };
+
+        $r = $request->createRequest('http://example.com', '/users', 'GET');
+        $request->addErrorHandler(200, $func, true);
+    }
+
+
 
     public function testAddQueryCondition()
     {
 
     }
 
+
+
     public function testAddQueryResultOrder()
     {
 
     }
+
+
+
+    public function testParseResponseToData()
+    {
+
+    }
+
+
+
+    public function testParseResponseStringToObject()
+    {
+
+    }
+
+
+
+    public function testSendRequest()
+    {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'send', 'return' => m::mock('Guzzle\Http\Message\Response')],
+        ]);
+
+        $request->createRequest('http://example.com', '/users', 'GET');
+        $request->sendRequest();
+    }
+
+
 
     public function testHttpMethodParam()
     {
         
     }
 
+
+
     public function testResponseWithCollectionKey()
     {
 
     }
+
+
 
     public function testResponseWithoutCollectionKey()
     {
 
     }
 
+
+
     public function testResponseWithErrorKey()
     {
         
+    }
+
+
+
+    /**
+     * Function to create and return a Trucker\Requests\RestRequest object
+     * with mock client & rquest objects injected
+     * 
+     * @param  array $shouldReceive 
+     * @param  string $baseUrl      
+     * @param  string $uri
+     * @param  string $method
+     * @return Trucker\Requests\RestRequest
+     */
+    private function simpleMockRequest(
+        $shouldReceive = [],
+        $baseUrl = 'http://example.com',
+        $uri = '/users',
+        $method = 'get'
+    ) {
+
+        $mockRequest = m::mock('Guzzle\Http\Message\Request');
+
+        foreach ($shouldReceive as $sr) {
+
+            $mr = $mockRequest->shouldReceive($sr['method']);
+
+            if (array_key_exists('args', $sr)) {
+                call_user_func_array([$mr, 'with'], $sr['args']);
+            }
+
+            if (array_key_exists('return', $sr)) {
+                $mr->andReturn($sr['return']);
+            }
+
+            $mr->times(array_key_exists('times', $sr) ? $sr['times'] : 1);
+        }
+
+        $client = m::mock('Guzzle\Http\Client');
+        $client->shouldReceive('setBaseUrl')->with($baseUrl);
+        $client->shouldReceive($method)->with($uri)->andReturn($mockRequest);
+
+        $request = new \Trucker\Requests\RestRequest($this->app, $client);
+        return $request;
     }
 }

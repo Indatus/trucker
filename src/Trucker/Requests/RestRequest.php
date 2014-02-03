@@ -218,10 +218,10 @@ class RestRequest implements RequestableInterface
         //set the property attributes
         foreach ($model->attributes() as $key => $value) {
             if (in_array($key, $model->getFileFields())) {
-                $request->addPostFile($key, $value);
+                $this->request->addPostFile($key, $value);
             } else {
                 if (!in_array($key, $cantSet)) {
-                    $request->setPostField($key, $value);
+                    $this->request->setPostField($key, $value);
                 }
             }
         }
