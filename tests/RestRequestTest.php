@@ -169,28 +169,30 @@ class RestRequestTest extends TruckerTests
 
     public function testAddQueryCondition()
     {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+        ]);
+        $r = $request->createRequest('http://example.com', '/users', 'GET');
 
+        $c = m::mock('Trucker\Finders\Conditions\QueryConditionInterface');
+        $c->shouldReceive('addToRequest')->with($r)->once();
+
+        $request->addQueryCondition($c);
     }
 
 
 
     public function testAddQueryResultOrder()
     {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+        ]);
+        $r = $request->createRequest('http://example.com', '/users', 'GET');
 
-    }
+        $o = m::mock('Trucker\Finders\Conditions\QueryResultOrderInterface');
+        $o->shouldReceive('addToRequest')->with($r)->once();
 
-
-
-    public function testParseResponseToData()
-    {
-
-    }
-
-
-
-    public function testParseResponseStringToObject()
-    {
-
+        $request->addQueryResultOrder($o);
     }
 
 
@@ -210,28 +212,13 @@ class RestRequestTest extends TruckerTests
 
     public function testHttpMethodParam()
     {
-        
-    }
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'setPostField', 'args' => ['biz', 'banng']],
+        ]);
 
-
-
-    public function testResponseWithCollectionKey()
-    {
-
-    }
-
-
-
-    public function testResponseWithoutCollectionKey()
-    {
-
-    }
-
-
-
-    public function testResponseWithErrorKey()
-    {
-        
+        $request->createRequest('http://example.com', '/users/1', 'PUT', [], '_method');
+        $request->setPostParameters(['biz' => 'banng']);
     }
 
 
