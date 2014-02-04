@@ -126,6 +126,19 @@ class CollectionFinderTest extends TruckerTests
     }
 
 
+    public function testFindAllWithCollectionKeyOption()
+    {
+
+    }
+
+
+
+    public function testFindAllWithoutCollectionKeyOption()
+    {
+        
+    }
+
+
     /**
      * Helper function to get commonly used testing data
      * 

@@ -110,25 +110,4 @@ class ResponseTest extends TruckerTests
             $response->parseResponseStringToObject()
         );
     }
-
-
-
-    public function testResponseWithCollectionKey()
-    {
-
-    }
-
-
-
-    public function testResponseWithoutCollectionKey()
-    {
-
-    }
-
-
-
-    public function testResponseWithErrorKey()
-    {
-        
-    }
 }

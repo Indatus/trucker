@@ -1,6 +1,10 @@
 <?php
 
+require_once __DIR__.'/stubs/User.php';
+
 use Trucker\Facades\Trucker;
+use Trucker\Facades\Request;
+use Mockery as m;
 
 class ModelTest extends TruckerTests
 {
@@ -92,70 +96,137 @@ class ModelTest extends TruckerTests
 
     public function testGetUri()
     {
+        $u = Trucker::newInstance();
+        $this->assertNull($u->getURI());
 
+        $this->simulateSetInaccessableProperty($u, 'uri', 'employees');
+
+        $this->assertEquals('employees', $u->getURI());
     }
 
 
 
     public function testGetResourceName()
     {
+        $u = new User;
+        $this->assertEquals('User', $u->getResourceName());
 
+        $this->simulateSetInaccessableProperty($u, 'resourceName', 'Employee');
+
+        $this->assertEquals('Employee', $u->getResourceName());
     }
 
 
 
     public function testGetMutableFields()
     {
+        $u = Trucker::newInstance(['foo' => 'bar', 'biz' => 'bang']);
 
+        $this->simulateSetInaccessableProperty($u, 'readOnlyFields', 'biz,bang');
+        $this->assertTrue(
+            $this->arraysAreSimilar(['foo' => 'bar'], $u->getMutableFields()),
+            'Mutable fields were not as expected'
+        );
     }
 
 
 
     public function testGetReadOnlyFields()
     {
+        $u = Trucker::newInstance();
 
+        $this->simulateSetInaccessableProperty($u, 'readOnlyFields', 'biz,bang');
+        $this->assertTrue(
+            $this->arraysAreSimilar(['biz'], $u->getReadOnlyFields()),
+            "Read only fields were not as expected"
+        );
     }
 
 
 
     public function testGetIdentityProperty()
     {
+        $u = Trucker::newInstance();
+        $this->assertEquals('id', $u->getIdentityProperty());
 
+        $this->swapConfig(['trucker::identity_property' => 'user_id']);
+        Request::setApp($this->app);
+
+        $u = Trucker::newInstance();
+        $this->assertEquals('user_id', $u->getIdentityProperty());
     }
 
 
 
     public function testGetFileFields()
     {
+        $u = Trucker::newInstance();
 
+        $this->simulateSetInaccessableProperty($u, 'fileFields', 'fooFile,bizFile');
+        $this->assertTrue(
+            $this->arraysAreSimilar(['fooFile', 'bizFile'], $u->getFileFields()),
+            'Returned file fields were not as expected'
+        );
     }
 
 
 
     public function testGetGuardedAttributes()
     {
+        $u = Trucker::newInstance();
 
+        $this->simulateSetInaccessableProperty($u, 'identityProperty', 'id');
+        $this->simulateSetInaccessableProperty($u, 'guarded', 'biz,bang');
+        $this->assertTrue(
+            $this->arraysAreSimilar(['biz', 'bang', 'id'], $u->getGuardedAttributes()),
+            'Guarded attributes were not as expected'
+        );
     }
 
 
 
     public function testErrorsGetter()
     {
+        $u = Trucker::newInstance();
 
+        $this->simulateSetInaccessableProperty($u, 'errors', ['foo', 'bar']);
+        $this->assertTrue(
+            $this->arraysAreSimilar(['foo', 'bar'], $u->errors()),
+            'Errors array was not as expected'
+        );
     }
 
 
 
     public function testAttributesGetter()
     {
-
+        $attrs = ['foo' => 'bar', 'biz' => 'bang'];
+        $u = Trucker::newInstance($attrs);
+        
+        $this->assertTrue(
+            $this->arraysAreSimilar($attrs, $u->attributes()),
+            'Attributes array was not as expected'
+        );
     }
 
 
 
     public function testUnsetFunction()
     {
+        $attrs = ['foo' => 'bar', 'biz' => 'bang'];
+        $u = Trucker::newInstance($attrs);
 
+        $this->assertTrue(
+            $this->arraysAreSimilar($attrs, $u->attributes()),
+            'Attributes array was not as expected'
+        );
+
+        $u->__unset('biz');
+
+        $this->assertTrue(
+            $this->arraysAreSimilar(['foo' => 'bar'], $u->attributes()),
+            'Attributes array was not as expected after __unset'
+        );
     }
 
 
@@ -201,5 +272,12 @@ class ModelTest extends TruckerTests
     public function testDestroy()
     {
 
+    }
+
+
+
+    public function testSaveWithErrorsResponseKey()
+    {
+        
     }
 }
