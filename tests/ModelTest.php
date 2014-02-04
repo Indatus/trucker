@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__.'/stubs/User.php';
+require_once __DIR__.'/GuzzleTestingTrait.php';
 
 use Trucker\Facades\Trucker;
 use Trucker\Facades\Request;
@@ -8,6 +9,8 @@ use Mockery as m;
 
 class ModelTest extends TruckerTests
 {
+
+    use GuzzleTestingTrait;
 
 
     public function testAppMake()
@@ -202,7 +205,7 @@ class ModelTest extends TruckerTests
     {
         $attrs = ['foo' => 'bar', 'biz' => 'bang'];
         $u = Trucker::newInstance($attrs);
-        
+
         $this->assertTrue(
             $this->arraysAreSimilar($attrs, $u->attributes()),
             'Attributes array was not as expected'
@@ -241,43 +244,279 @@ class ModelTest extends TruckerTests
 
 
 
-    public function testCreateShouldSave()
+    public function testCreateShouldSaveWithoutHttpMethodParam()
+    {
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest($this->getCreateTestOptions());
+
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($result, "Save() should have been true");
+        $this->assertEquals('POST', $request->getMethod(), "POST method expected");
+
+        $this->assertTrue(
+            $this->arraysAreSimilar(
+                $u->attributes(),
+                array_merge($request->getPostFields()->toArray(), ['id' => 1])
+            ),
+            "Expected post params to be equal to attributes"
+        );
+        $this->assertEquals('/users', $request->getPath(), "Expected request to go to /users");
+        $this->assertEquals(1, $u->getId(), "Expected respose to set ID");
+    }
+
+
+
+    public function testCreateShouldSaveWithHttpMethodParam()
+    {
+        //setup our creation mocks, expected results etc
+        $config = [
+            'trucker::base_uri'          => 'http://example.com',
+            'trucker::http_method_param' => '_method'
+        ];
+        $this->setupIndividualTest($this->getCreateTestOptions(), $config);
+
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($result, "Save() should have been true");
+        $this->assertEquals('POST', $request->getMethod(), "POST method expected");
+        $this->assertTrue(
+            $this->arraysAreSimilar(
+                $u->attributes(),
+                array_merge($request->getPostFields()->toArray(), ['id' => 1])
+            ),
+            "Expected post params to be equal to attributes"
+        );
+        $this->assertEquals('/users', $request->getPath(), "Expected request to go to /users");
+        $this->assertEquals(1, $u->getId(), "Expected respose to set ID");
+        $this->assertArrayHasKey('_method', $request->getPostFields(), 'Expected http method param');
+    }
+
+
+
+    public function testCreateShouldFailWithErrorsKey()
+    {
+        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest(
+            $this->getSaveErrorTestOptions(
+                $this->app['config']->get('trucker::errors_key')
+            ),
+            [],
+            $invalid_status
+        );
+
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertEquals(
+            $invalid_status,
+            $response->getStatusCode(),
+            "Expected different response code"
+        );
+        $this->assertCount(2, $u->errors(), 'Expected 2 errors');
+    }
+
+
+    
+    public function testCreateShouldFailWithoutErrorsKey()
+    {
+        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest(
+            $this->getSaveErrorTestOptions(),
+            [],
+            $invalid_status
+        );
+
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertEquals(
+            $invalid_status,
+            $response->getStatusCode(),
+            "Expected different response code"
+        );
+        $this->assertCount(2, $u->errors(), 'Expected 2 errors');
+    }
+
+
+//UPDATE
+
+    public function testUpdateShouldSaveWithoutHttpMethodParam()
+    {
+
+    }
+    public function testUpdateShouldSaveWithHttpMethodParam()
+    {
+
+    }
+    public function testUpdateShouldFailWithErrorsKey()
+    {
+
+    }
+    public function testUpdateShouldFailWithoutErrorsKey()
+    {
+
+    }
+
+    
+//DESTROY
+
+    public function testDestroyWithoutHttpMethodParam()
+    {
+
+    }
+    public function testDestroyWithHttpMethodParam()
     {
 
     }
 
 
 
-    public function testCreateShouldFail()
+    /**
+     * Helper function to get commonly used testing data
+     * for creating an entity
+     * 
+     * @return array
+     */
+    private function getCreateTestOptions()
     {
+        //some vars for our test
+        $data                  = [];
+        $data['uri']           = '/users';
+        $data['base_uri']      = 'http://example.com';
+        $data['response_body'] = json_encode(
+            [
+                'id'    => 1,
+                'name'  => 'John Doe',
+                'email' => 'jdoe@noboddy.com'
+            ]
+        );
 
+        return $data;
     }
 
 
 
-    public function testUpdateShouldSave()
+    /**
+     * Helper function to get commonly used testing data
+     * for updating an entity
+     * 
+     * @return array
+     */
+    private function getUpdateTestOptions()
     {
+        //some vars for our test
+        $data                  = [];
+        $data['uri']           = '/users/1';
+        $data['base_uri']      = 'http://example.com';
+        $data['response_body'] = json_encode(
+            [
+                'id'    => 1,
+                'name'  => 'John Doe',
+                'email' => 'jdoe@noboddy.com'
+            ]
+        );
 
+        return $data;
     }
 
 
-
-    public function testUpdateShouldFail()
+    /**
+     * Helper function to get commonly used testing data
+     * for error testing entity saving
+     * 
+     * @return array
+     */
+    private function getSaveErrorTestOptions($key = null)
     {
 
+        $errors = [
+            "Username can't be blank",
+            "Email format is invalid"
+        ];
+
+        if ($key) {
+            $errorsArray[$key] = $errors;
+        } else {
+            $errorsArray = $errors;
+        }
+
+        //some vars for our test
+        $data                  = [];
+        $data['uri']           = '/users/1';
+        $data['base_uri']      = 'http://example.com';
+        $data['response_body'] = json_encode($errorsArray);
+        return $data;
     }
 
 
+    /**
+     * Function to mock a request for us and 
+     * expect test data
+     * 
+     * @param  array $options 
+     * @return void
+     */
+    private function setupIndividualTest(
+        $options = [],
+        $config_overrides = [],
+        $status = 200,
+        $contentType = 'application/json'
+    ) {
 
-    public function testDestroy()
-    {
+        extract($options);
 
-    }
+        $config_overrides = empty($config_overrides) ? ['trucker::base_uri' => $base_uri] : $config_overrides;
 
-
-
-    public function testSaveWithErrorsResponseKey()
-    {
-        
+        //mock the response we expect
+        $this->mockHttpResponse(
+            //
+            //config overrides & return client
+            //
+            $this->initGuzzleRequestTest($config_overrides),
+            //
+            //expcted status
+            //
+            $status,
+            //
+            //HTTP response headers
+            //
+            [
+                'Location'     => $base_uri.'/'.$uri,
+                'Content-Type' => $contentType
+            ],
+            //
+            //response to return
+            //
+            $response_body
+        );
     }
 }

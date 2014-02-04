@@ -42,8 +42,10 @@
 namespace Trucker;
 
 use Trucker\Facades\Request;
+use Trucker\Facades\Response;
 use Trucker\Facades\Instance;
 use Trucker\Facades\Collection;
+use Trucker\Facades\UrlGenerator;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
@@ -744,8 +746,10 @@ class Model
             //make a CREATE request
             Request::createRequest(
                 Request::getOption('base_uri'),
-                UrlGenerator::getCreateUri(self),
-                'POST'
+                UrlGenerator::getCreateUri($this),
+                'POST',
+                [], //no extra headers
+                Request::getOption('http_method_param')
             );
 
         } else {
@@ -754,10 +758,12 @@ class Model
             Request::createRequest(
                 Request::getOption('base_uri'),
                 UrlGenerator::getDeleteUri(
-                    self,
+                    $this,
                     [':'.$this->getIdentityProperty() => $this->getId()]
                 ),
-                'PATCH'
+                'PATCH',
+                [], //no extra headers
+                Request::getOption('http_method_param')
             );
         }
 
@@ -766,10 +772,13 @@ class Model
             422,
             function ($event, $request) {
                 $response = Response::newInstance(Request::getApp(), $event['response']);
-                $parsed = $response->parseResponseStringToObject();
-
-                if (property_exists($parsed, Request::getOption('errors_key'))) {
-                    $this->errors = $parsed->errors;
+                $result = $response->parseResponseStringToObject();
+                if (is_object($result)) {
+                    if (property_exists($result, Request::getOption('errors_key'))) {
+                        $this->errors = $result->errors;
+                    }
+                } else {
+                    $this->errors = $result;
                 }
 
                 //return false, create failed
@@ -791,8 +800,12 @@ class Model
 
             //get the errors and set them
             $result = $response->parseResponseStringToObject();
-            if (property_exists($result, Request::getOption('errors_key'))) {
-                $this->errors = $result->errors;
+            if (is_object($result)) {
+                if (property_exists($result, Request::getOption('errors_key'))) {
+                    $this->errors = $result->errors;
+                }
+            } else {
+                $this->errors = $result;
             }
             $this->doPostRequestCleanUp();
 
@@ -802,6 +815,13 @@ class Model
         //get the response and inflate from that
         $data = $response->parseResponseToData();
         $this->fill($data);
+
+        //inflate the ID property that should be guarded
+        //and thus not fillable
+        $id = $this->getIdentityProperty();
+        if (array_key_exists($id, $data)) {
+            $this->{$id} = $data[$id];
+        }
 
         $this->doPostRequestCleanUp();
         return true;
@@ -820,10 +840,12 @@ class Model
         Request::createRequest(
             Request::getOption('base_uri'),
             UrlGenerator::getDeleteUri(
-                self,
+                $this,
                 [':'.$this->getIdentityProperty() => $this->getId()]
             ),
-            'DELETE'
+            'DELETE',
+            [], //no extra headers
+            Request::getOption('http_method_param')
         );
 
         //actually send the request
