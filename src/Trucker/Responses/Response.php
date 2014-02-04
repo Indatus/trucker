@@ -1,6 +1,6 @@
 <?php
 
-namespace Trucker;
+namespace Trucker\Responses;
 
 use Illuminate\Container\Container;
 
@@ -170,5 +170,4 @@ class Response
 
         return $data;
     }
-
 }

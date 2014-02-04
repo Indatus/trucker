@@ -165,7 +165,7 @@ class TruckerServiceProvider extends ServiceProvider
         });
 
         $app->bind('trucker.response', function ($app) {
-            return new Response($app);
+            return new Responses\Response($app);
         });
         
         $app->bind('trucker.model', function ($app) {
