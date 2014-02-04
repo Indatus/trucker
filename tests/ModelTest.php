@@ -338,7 +338,7 @@ class ModelTest extends TruckerTests
     }
 
 
-    
+
     public function testCreateShouldFailWithoutErrorsKey()
     {
         $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
@@ -367,23 +367,132 @@ class ModelTest extends TruckerTests
     }
 
 
-//UPDATE
 
     public function testUpdateShouldSaveWithoutHttpMethodParam()
     {
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest($this->getUpdateTestOptions());
 
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $u->id = 1;
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($result, "Save() should have been true");
+        $this->assertEquals('PUT', $request->getMethod(), "PUT method expected");
+
+        $this->assertTrue(
+            $this->arraysAreSimilar(
+                $u->attributes(),
+                array_merge($request->getPostFields()->toArray())
+            ),
+            "Expected post params to be equal to attributes"
+        );
+        $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
     }
+
+
     public function testUpdateShouldSaveWithHttpMethodParam()
     {
+        //setup our creation mocks, expected results etc
+        $config = [
+            'trucker::base_uri'          => 'http://example.com',
+            'trucker::http_method_param' => '_method'
+        ];
+        $this->setupIndividualTest($this->getUpdateTestOptions(), $config);
 
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $u->id = 1;
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($result, "Save() should have been true");
+
+        $this->assertEquals('POST', $request->getMethod(), "POST method expected");
+
+        $this->assertTrue(
+            $this->arraysAreSimilar(
+                $u->attributes(),
+                array_merge($request->getPostFields()->toArray())
+            ),
+            "Expected post params to be equal to attributes"
+        );
+        $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
+        $this->assertArrayHasKey('_method', $request->getPostFields(), 'Expected http method param');
     }
+
+
+
     public function testUpdateShouldFailWithErrorsKey()
     {
+        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest(
+            $this->getSaveErrorTestOptions(
+                $this->app['config']->get('trucker::errors_key')
+            ),
+            [],
+            $invalid_status
+        );
+
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $u->id = 1;
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertFalse($result, 'Expected save to return false');
+        $this->assertEquals(
+            $invalid_status,
+            $response->getStatusCode(),
+            "Expected different response code"
+        );
+        $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
+
+
+
     public function testUpdateShouldFailWithoutErrorsKey()
     {
+        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest(
+            $this->getSaveErrorTestOptions(),
+            [],
+            $invalid_status
+        );
+
+        $u = new User(['name' => 'John Doe', 'email' => 'jdoe@noboddy.com']);
+        $u->id = 1;
+        $result = $u->save();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertFalse($result, 'Expected save to return false');
+        $this->assertEquals(
+            $invalid_status,
+            $response->getStatusCode(),
+            "Expected different response code"
+        );
+        $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
 
     
@@ -394,6 +503,14 @@ class ModelTest extends TruckerTests
 
     }
     public function testDestroyWithHttpMethodParam()
+    {
+
+    }
+    public function testDestroyShouldFailWithErrorsKey()
+    {
+
+    }
+    public function testDestroyShouldFailWithoutErrorsKey()
     {
 
     }

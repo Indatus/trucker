@@ -761,7 +761,7 @@ class Model
                     $this,
                     [':'.$this->getIdentityProperty() => $this->getId()]
                 ),
-                'PATCH',
+                'PUT',
                 [], //no extra headers
                 Request::getOption('http_method_param')
             );
