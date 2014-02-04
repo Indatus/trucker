@@ -254,9 +254,9 @@ class RestRequest implements RequestableInterface
     /**
      * Function to add an error handler to the request.  This could be used
      * 
-     * @param [type]  $httpStatus      [description]
-     * @param Closure $func            [description]
-     * @param boolean $stopPropagation [description]
+     * @param int     $httpStatus      HTTP status to error handle (-1 matches all)
+     * @param Closure $func            Function to call on error
+     * @param boolean $stopPropagation Boolean as to wether to stop event propagation
      */
     public function addErrorHandler($httpStatus, \Closure $func, $stopPropagation = true)
     {
@@ -264,7 +264,7 @@ class RestRequest implements RequestableInterface
         $this->request->getEventDispatcher()->addListener(
             'request.error',
             function (\Guzzle\Common\Event $event) use ($httpStatus, $stopPropagation, $func, $request) {
-                if ($event['response']->getStatusCode() == $httpStatus) {
+                if ($httpStatus == -1 || $event['response']->getStatusCode() == $httpStatus) {
 
                     // Stop other events from firing if needed
                     if ($stopPropagation) {

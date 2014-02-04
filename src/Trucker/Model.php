@@ -848,6 +848,23 @@ class Model
             Request::getOption('http_method_param')
         );
 
+        Request::addErrorHandler(
+            -1,
+            function ($event, $request) {
+                $response = Response::newInstance(Request::getApp(), $event['response']);
+                $result = $response->parseResponseStringToObject();
+                if (is_object($result)) {
+                    if (property_exists($result, Request::getOption('errors_key'))) {
+                        $this->errors = $result->errors;
+                    }
+                } else {
+                    $this->errors = $result;
+                }
+                return false;
+            },
+            true
+        );
+
         //actually send the request
         $response = Request::sendRequest();
 

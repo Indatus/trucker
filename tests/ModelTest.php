@@ -496,23 +496,117 @@ class ModelTest extends TruckerTests
     }
 
     
-//DESTROY
 
     public function testDestroyWithoutHttpMethodParam()
     {
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest($this->getUpdateTestOptions());
 
+        $u = new User;
+        $u->id = 1;
+        $result = $u->destroy();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($result, "destroy() should have been true");
+        $this->assertEquals('DELETE', $request->getMethod(), "DELETE method expected");
+
+        $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
     }
+
+
+
     public function testDestroyWithHttpMethodParam()
     {
+        //setup our creation mocks, expected results etc
+        $config = [
+            'trucker::base_uri'          => 'http://example.com',
+            'trucker::http_method_param' => '_method'
+        ];
+        $this->setupIndividualTest($this->getCreateTestOptions(), $config);
 
+        $u = new User;
+        $u->id = 1;
+        $result = $u->destroy();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertTrue($response->isSuccessful());
+        $this->assertTrue($result, "destroy() should have been true");
+        $this->assertEquals('POST', $request->getMethod(), "POST method expected");
+        $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
+        $this->assertArrayHasKey('_method', $request->getPostFields(), 'Expected http method param');
     }
+
+
+
     public function testDestroyShouldFailWithErrorsKey()
     {
+        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest(
+            $this->getSaveErrorTestOptions(
+                $this->app['config']->get('trucker::errors_key')
+            ),
+            [],
+            $invalid_status
+        );
+
+        $u = new User;
+        $u->id = 1;
+        $result = $u->destroy();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertFalse($result, 'Expected destroy() to return false');
+        $this->assertEquals(
+            $invalid_status,
+            $response->getStatusCode(),
+            "Expected different response code"
+        );
+        $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
+
+
+
     public function testDestroyShouldFailWithoutErrorsKey()
     {
+        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        //setup our creation mocks, expected results etc
+        $this->setupIndividualTest(
+            $this->getSaveErrorTestOptions(),
+            [],
+            $invalid_status
+        );
+
+        $u = new User;
+        $u->id = 1;
+        $result = $u->destroy();
+
+        //get objects to assert on
+        $history     = $this->getHttpClientHistory();
+        $request     = $history->getLastRequest();
+        $response    = $history->getLastResponse();
+
+        $this->assertFalse($result, 'Expected destroy() to return false');
+        $this->assertEquals(
+            $invalid_status,
+            $response->getStatusCode(),
+            "Expected different response code"
+        );
+        $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
 
 
