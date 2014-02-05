@@ -5,6 +5,7 @@ namespace Trucker\Requests;
 use Illuminate\Container\Container;
 use Guzzle\Http\Client;
 use Trucker\Responses\RawResponse;
+use Trucker\Responses;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 use Trucker\Model;

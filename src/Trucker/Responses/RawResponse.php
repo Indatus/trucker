@@ -73,15 +73,34 @@ class RawResponse
     /**
      * Constructor
      * 
-     * @param boolean $successful 
-     * @param Object  $response  
-     * @param array   $errors     
+     * @param boolean                     $successful 
+     * @param Trucker\Responses\Response  $response  
+     * @param array                       $errors     
      */
-    public function __construct($successful = false, $response = null, $errors = array())
+    public function __construct($successful = false, \Trucker\Responses\Response $response = null, array $errors = array())
     {
         $this->success = $successful;
         $this->response = $response;
         $this->errors = $errors;
+    }
+
+    /**
+     * Magic function to pass methods not found
+     * on this class down to the Trucker\Responses\Response
+     * object that is being wrapped
+     * 
+     * @param  string $method name of called method
+     * @param  array  $args   arguments to the method
+     * @return mixed
+     */
+    public function __call($method, $args)
+    {
+        if (!method_exists($this, $method)) {
+            return call_user_func_array(
+                array($this->response, $method),
+                $args
+            );
+        }
     }
 
     /**
