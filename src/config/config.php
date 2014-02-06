@@ -50,7 +50,7 @@
     |--------------------------------------------------------------------------
     |
     | This setting defines the transport method for data to and from the remote
-    | API endpoint.  Supported methods are: json, xml.
+    | API endpoint.  Supported methods are: json
     |
     */
 
