@@ -43,7 +43,7 @@ class ResponseTest extends TruckerTests
     {
         $gResponse = m::mock('Guzzle\Http\Message\Response');
         $gResponse->shouldReceive('getStatusCode')
-            ->once()
+            ->times(2)
             ->andReturn(200);
 
         $i = Response::newInstance($this->app, $gResponse);
@@ -55,6 +55,7 @@ class ResponseTest extends TruckerTests
             $i->getApp()
         );
         $this->assertEquals(200, $i->getStatusCode());
+        $this->assertEquals(200, $i->__call('getStatusCode', []));
     }
 
 

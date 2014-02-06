@@ -10,10 +10,12 @@ class CollectionTest extends TruckerTests
     public function testIteratorRewind()
     {
         $c = $this->getTestObject();
+        $r = $c->rewind();
         $this->assertEquals(
             1234,
-            $c->rewind()->id
+            $r->id
         );
+        $this->assertTrue($r instanceof Trucker\Model);
     }
 
 
@@ -22,10 +24,12 @@ class CollectionTest extends TruckerTests
     {
         $c = $this->getTestObject();
         $c->next();
+        $cur = $c->current();
         $this->assertEquals(
             1235,
-            $c->current()->id
+            $cur->id
         );
+        $this->assertTrue($cur instanceof Trucker\Model);
     }
 
 
@@ -45,10 +49,12 @@ class CollectionTest extends TruckerTests
     public function testIteratorNext()
     {
         $c = $this->getTestObject();
+        $next = $c->next();
         $this->assertEquals(
             1235,
-            $c->next()->id
+            $next->id
         );
+        $this->assertTrue($next instanceof Trucker\Model);
     }
 
 
@@ -75,7 +81,9 @@ class CollectionTest extends TruckerTests
     public function testFirstGetter()
     {
         $c = $this->getTestObject();
-        $this->assertEquals(1234, $c->first()->id);
+        $first = $c->first();
+        $this->assertEquals(1234, $first->id);
+        $this->assertTrue($first instanceof Trucker\Model);
 
         $c = new Collection([]);
         $this->assertEquals(null, $c->first());
@@ -86,7 +94,9 @@ class CollectionTest extends TruckerTests
     public function testLastGetter()
     {
         $c = $this->getTestObject();
-        $this->assertEquals(1238, $c->last()->id);
+        $last = $c->last();
+        $this->assertEquals(1238, $last->id);
+        $this->assertTrue($last instanceof Trucker\Model);
 
 
         $c = new Collection([]);

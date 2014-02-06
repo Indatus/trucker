@@ -3,6 +3,7 @@
 namespace Trucker\Responses;
 
 use Illuminate\Container\Container;
+use Trucker\Transporters\TransporterFactory;
 
 class Response
 {
@@ -45,22 +46,6 @@ class Response
         return $this->app;
     }
 
-
-    /**
-     * Magic getter function to return any properties
-     * on the underlying Guzzle\Http\Message\Response object
-     * 
-     * @param  string $property the property 
-     * @return mixed
-     */
-    public function __get($property)
-    {
-        if (property_exists($this->response, $property)) {
-            return $this->response->{$property};
-        }
-
-        return null;
-    }
 
 
     /**
@@ -123,22 +108,11 @@ class Response
      */
     public function parseResponseToData()
     {
-        $transporter = $this->getOption('transporter');
+        $transportStr = $this->getOption('transporter');
 
-        //convert response data into usable PHP array
-        switch ($transporter) {
-            case 'json':
-                $data = $this->response->json();
-                break;
-            case 'xml':
-                $data = $this->response->xml();
-                break;
-            default:
-                $data = $this->response->json();
-                break;
-        }
+        $transporter = TransporterFactory::createTransporter($transportStr);
 
-        return $data;
+        return $transporter->parseResponseToData($this->response);
     }
 
 
@@ -151,23 +125,10 @@ class Response
     public function parseResponseStringToObject()
     {
 
-        $responseStr = $this->response->getBody(true);
-        $transporter = $this->getOption('transporter');
+        $transportStr = $this->getOption('transporter');
 
-        switch ($transporter) {
-            case 'json':
-                $data = json_decode($responseStr);
-                break;
-
-            case 'xml':
-                $data = simplexml_load_string($responseStr);
-                break;
-
-            default:
-                $data = json_decode($responseStr);
-                break;
-        }
-
-        return $data;
+        $transporter = TransporterFactory::createTransporter($transportStr);
+        
+        return $transporter->parseResponseStringToObject($this->response);
     }
 }

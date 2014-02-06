@@ -2,6 +2,7 @@
 
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\Trucker;
+use Mockery as m;
 
 class UrlGeneratorTest extends TruckerTests
 {
@@ -64,6 +65,13 @@ class UrlGeneratorTest extends TruckerTests
             '/people',
             UrlGenerator::getCollectionUri($x)
         );
+
+        //test collection URI w/ replacement
+        $this->simulateSetInaccessableProperty($x, 'uri', '/collection/:group_id/people');
+        $this->assertEquals(
+            '/collection/1234/people',
+            UrlGenerator::getCollectionUri($x, [':group_id' => 1234])
+        );
     }
 
 
@@ -97,6 +105,16 @@ class UrlGeneratorTest extends TruckerTests
         $this->assertEquals(
             '/users',
             UrlGenerator::getCreateUri($x)
+        );
+    }
+
+    public function testAppGetter()
+    {
+        $app = m::mock('Illuminate\Container\Container');
+        $urlGen = new \Trucker\UrlGenerator($app);
+        $this->assertEquals(
+            $app,
+            $urlGen->getApp()
         );
     }
 }

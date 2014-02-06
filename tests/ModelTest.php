@@ -694,13 +694,16 @@ class ModelTest extends TruckerTests
      * expect test data
      * 
      * @param  array $options 
+     * @param  array $config_overrides
+     * @param  int   $status 
+     * @param  string $content_type
      * @return void
      */
     private function setupIndividualTest(
         $options = [],
         $config_overrides = [],
         $status = 200,
-        $contentType = 'application/json'
+        $content_type = 'application/json'
     ) {
 
         extract($options);
@@ -722,7 +725,7 @@ class ModelTest extends TruckerTests
             //
             [
                 'Location'     => $base_uri.'/'.$uri,
-                'Content-Type' => $contentType
+                'Content-Type' => $content_type
             ],
             //
             //response to return

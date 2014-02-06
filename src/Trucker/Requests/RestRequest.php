@@ -6,6 +6,7 @@ use Illuminate\Container\Container;
 use Guzzle\Http\Client;
 use Trucker\Responses\RawResponse;
 use Trucker\Responses;
+use Trucker\Transporters\TransporterFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 use Trucker\Model;
@@ -231,24 +232,13 @@ class RestRequest implements RequestableInterface
     /**
      * Function to set the language of data transport.  I.e. XML, JSON etc
      *
-     * @param string $transporter the transport language for the request
+     * @param string $transportStr the transport language for the request
      * @return  void
      */
-    public function setTransportLanguage($transporter)
+    public function setTransportLanguage($transportStr)
     {
-        switch ($transporter) {
-            case 'json':
-                $this->request->setHeader('Accept', 'application/json');
-                break;
-
-            case 'xml':
-                $this->request->setHeader('Accept', 'application/xml');
-                break;
-
-            default:
-                $this->request->setHeader('Accept', 'application/json');
-                break;
-        }
+        $transporter = TransporterFactory::createTransporter($transportStr);
+        $transporter->setHeaderOnRequest($this->request);
     }
 
 

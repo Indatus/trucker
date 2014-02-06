@@ -146,7 +146,7 @@ class CollectionFinder
         $records = array();
 
         //figure out wether a collection key is used
-        $collection_key = $this->app['config']->get('trucker::search.collection_key');
+        $collection_key = Request::getOption('collection_key');
 
         //set records array appropriatley
         if (isset($collection_key)) {
