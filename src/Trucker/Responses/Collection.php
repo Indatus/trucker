@@ -179,17 +179,31 @@ class Collection implements \Iterator
     /**
      * Function to convert the collection to an array using
      * each collection elements attributes
-     * 
+     *
+     * @param  string $collectionKey 
+     * @param  string $metaKey
      * @return array
      */
-    public function toArray()
+    public function toArray($collectionKey = null, $metaKey = 'meta')
     {
         $entities = array();
         foreach ($this->collection as $entity) {
-            $entities[] = $entity->attributes;
+            $entities[] = $entity->attributes();
+        }
+
+        if ($collectionKey) {
+            $col = [$collectionKey => $entities];
+        } else {
+            $col = $entities;
+        }
+
+        if ($this->metaData) {
+            $met = [$metaKey => $this->metaData];
+        } else {
+            $met = [];
         }
     
-        return array_merge(array('collection' => $entities), array('meta' => $this->metaData));
+        return array_merge($col, $met);
     }
     
 
@@ -197,11 +211,13 @@ class Collection implements \Iterator
      * Function to convert the collection to json using
      * each collection elements attributes as an array then
      * encoding the array to json
-     * 
+     *
+     * @param  string $collectionKey 
+     * @param  string $metaKey
      * @return array
      */
-    public function toJson()
+    public function toJson($collectionKey = null, $metaKey = 'meta')
     {
-        return json_encode($this->toArray());
+        return json_encode($this->toArray($collectionKey, $metaKey));
     }
 }//end class
