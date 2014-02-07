@@ -234,7 +234,8 @@ If you have an entity where you know the value of it's `identity_property` you c
 `find()` takes a second parameter as well that allows you to pass in an arbitrary associative array that you want to be converted into query string arguments that get sent with the request.
 
 ```php
-<?php $p = Product::find(1);
+<?php
+$p = Product::find(1);
 ```
 
 <a name="fetch-collection"/>
@@ -243,6 +244,7 @@ If you have an entity where you know the value of it's `identity_property` you c
 When you want to fetch a collection of records you can use the `all()` function.
 
 ```php
+<?php
 $results = Product::all();
 ```
 
@@ -252,6 +254,7 @@ The `all()` function takes arguments that allow you to specify conditions on the
 ##### Fetch a collection using query conditions and result ordering
 
 ```php
+<?php
 $conditions = QueryConditionFactory::build();
 $conditions->addCondition('name', '=', 'Roomba 650');
 $conditions->addCondition('vendor', '=', 'Irobot');
@@ -274,6 +277,7 @@ You may also provide a third array parameter to the `all()` function containing 
 #### Create
 
 ```php
+<?php
 $attributes = ['name' => 'XYZ Headphones', 'vendor' => 'Acme', 'price' => '10000'];
 
 //pass attributes to the constructor
@@ -316,6 +320,7 @@ if ($success) {
 Update works quite similar to the create functionality, from the code perspective it is nearly identicial.
 
 ```php
+<?php
 $p = Product::find(1);
 $p->name = "My Product";
 
@@ -332,6 +337,7 @@ if ($p->save()) {
 The destroy function requires an existing instance, and returns a boolen based on the success of the request.
 
 ```php
+<?php
 $p = Product::find(1);
 
 if ($p->destroy()){
