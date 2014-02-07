@@ -88,7 +88,7 @@ class RawResponse
      * Magic function to pass methods not found
      * on this class down to the Trucker\Responses\Response
      * object that is being wrapped
-     * 
+     *
      * @param  string $method name of called method
      * @param  array  $args   arguments to the method
      * @return mixed
@@ -101,7 +101,8 @@ class RawResponse
                 $args
             );
         }
-    }
+    // @codeCoverageIgnoreStart
+    }// @codeCoverageIgnoreEnd
 
     /**
      * Getter for errors

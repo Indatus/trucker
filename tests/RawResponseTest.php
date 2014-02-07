@@ -25,7 +25,7 @@ class RawResponseTest extends TruckerTests
     public function testGetWrappedResponseObject()
     {
         $mock = m::mock('Trucker\Responses\Response');
-
+        $mock->shouldDeferMissing();
         $mock->shouldReceive('getStatusCode')
             ->once()
             ->andReturn(200);
@@ -41,6 +41,9 @@ class RawResponseTest extends TruckerTests
         $this->assertEquals(200, $r->getStatusCode());
         $this->assertEquals('OK', $r->getReasonPhrase());
         $this->assertEquals('HTTP', $r->getProtocol());
+
+        //$this->setExpectedException('BadMethodCallException');
+        //$this->assertNull($r->nonExistingMethod());
     }
 
 

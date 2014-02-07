@@ -297,26 +297,10 @@ class RestRequest implements RequestableInterface
     /**
      * Function to send the request to the remote API
      *
-     * @param boolean $debug wether or not to add debugging event handlers
      * @return  \Trucker\Response
      */
-    public function sendRequest($debug = false)
+    public function sendRequest()
     {
-
-        if ($debug) {
-            $this->addErrorHandler(
-                500,
-                function ($event, $request) {
-                    echo 'Oh no: ' . $event['response']->getMessage() ."\n\n\n";
-                    echo 'HTTP request URL: ' . $event['response']->getEffectiveUrl() . "\n\n\n";
-                    echo 'HTTP response status: ' . $event['response']->getStatusCode() . "\n\n\n";
-                    echo 'HTTP response: ' . $event['response'] . "\n\n\n";
-                    exit;
-                },
-                true
-            );
-        }//end if $debug
-
         $response = $this->request->send();
 
         return $this->app->make('trucker.response')->newInstance($this->app, $response);

@@ -45,5 +45,5 @@ interface RequestableInterface
 
     public function addQueryResultOrder(QueryResultOrderInterface $resultOrder);
 
-    public function sendRequest($debug = false);
+    public function sendRequest();
 }

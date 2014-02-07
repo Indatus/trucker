@@ -143,7 +143,7 @@ class UrlGenerator
             )
         );
 
-        $uriResult = array();
+        $uriResult = [];
         if (!empty($model->nestedUnder)) {
             $nesting = array_map(
                 function ($item) {
@@ -151,8 +151,6 @@ class UrlGenerator
                 },
                 explode(',', $model->nestedUnder)
             );
-
-
             foreach ($nesting as $nest) {
                 list($klass, $entityIdSegment) = $nest;
                 if (!is_numeric($entityIdSegment)) {
@@ -162,9 +160,8 @@ class UrlGenerator
                 $entityTypeSegment = Inflector::pluralize(Inflector::tableize($klass));
                 $uriResult[] = $entityTypeSegment;
                 $uriResult[] = $entityIdSegment;
-
-                $uri = implode("/", $uriResult) . "/$uri";
             }
+            $uri = implode("/", $uriResult) . "/$uri";
         }
 
         return "/$uri";

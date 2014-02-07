@@ -70,7 +70,27 @@ class CollectionFinderTest extends TruckerTests
         $conditions->addCondition('name', '=', 'John Doe');
         $conditions->addCondition('email', '=', 'jdoe@noboddy.com');
         $conditions->addCondition('id', '>=', 100);
+
+        $this->assertEquals(
+            http_build_query($conditions->toArray()),
+            $conditions->toQueryString(),
+            "Expected query string to look different"
+        );
+
+        $this->setExpectedException('InvalidArgumentException');
+        $conditions->setLogicalOperator('invalid-operator');
+
         $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
+
+        $this->assertEquals(
+            $this->app['config']->get('trucker::search.and_operator'),
+            $conditions->getLogicalOperatorAnd()
+        );
+
+        $this->assertEquals(
+            $this->app['config']->get('trucker::search.or_operator'),
+            $conditions->getLogicalOperatorOr()
+        );
 
         $found = User::all($conditions);
 
@@ -102,9 +122,21 @@ class CollectionFinderTest extends TruckerTests
         $conditions->addCondition('id', '>=', 100);
         $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
 
+        $this->assertEquals(
+            http_build_query($conditions->toArray()),
+            $conditions->toQueryString(),
+            "Expected query string to look different"
+        );
+
         $order = GetArrayResultOrder::newInstance();
         $order->setOrderByField('email');
         $order->setOrderDirection($order->getOrderDirectionDescending());
+
+        $this->assertEquals(
+            http_build_query($order->toArray()),
+            $order->toQueryString(),
+            "Expected query string to look different"
+        );
 
         $found = User::all($conditions, $order);
 

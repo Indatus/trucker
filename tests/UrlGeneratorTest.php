@@ -1,5 +1,8 @@
 <?php
 
+require_once __DIR__.'/stubs/User.php';
+require_once __DIR__.'/stubs/UserPreferenceSetting.php';
+
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\Trucker;
 use Mockery as m;
@@ -50,15 +53,6 @@ class UrlGeneratorTest extends TruckerTests
         );
 
 
-        //test nestedUnder
-        $x->nestedUnder = 'Company:100';
-        $this->assertEquals(
-            '/companies/100/users',
-            UrlGenerator::getCollectionUri($x)
-        );
-        $x->nestedUnder = null;
-
-
         //test collection URI w/ custom resource name
         $this->simulateSetInaccessableProperty($x, 'resourceName', 'Person');
         $this->assertEquals(
@@ -71,6 +65,38 @@ class UrlGeneratorTest extends TruckerTests
         $this->assertEquals(
             '/collection/1234/people',
             UrlGenerator::getCollectionUri($x, [':group_id' => 1234])
+        );
+    }
+
+
+    public function testGetCollectionUriNestedOnce()
+    {
+        //test nestedUnder
+        $x = new User;
+        $x->nestedUnder = 'Company:100';
+        $this->assertEquals(
+            '/companies/100/users',
+            UrlGenerator::getCollectionUri($x)
+        );
+    }
+
+
+    public function testGetCollectionUriMultiNested()
+    {
+        $x = new User;
+
+        //test multi-nesting with class / id
+        $x->nestedUnder = 'Group:999,Company:123';
+        $this->assertEquals(
+            '/groups/999/companies/123/users',
+            UrlGenerator::getCollectionUri($x)
+        );
+
+        //test multi-nesting with class / string
+        $x->nestedUnder = 'Group:999,Company:slug';
+        $this->assertEquals(
+            '/groups/999/companies/:slug/users',
+            UrlGenerator::getCollectionUri($x)
         );
     }
 

@@ -127,7 +127,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
         if ($operator != $this->getLogicalOperatorAnd() &&
             $operator != $this->getLogicalOperatorOr()
         ) {
-            throw new Exception("Invalid logical operator: {$operator}");
+            throw new \InvalidArgumentException("Invalid logical operator: {$operator}");
         }
 
         $this->logicalOperator = $operator;

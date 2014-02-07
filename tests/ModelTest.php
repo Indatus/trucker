@@ -97,6 +97,31 @@ class ModelTest extends TruckerTests
 
 
 
+    public function testPostRequestCleanUp()
+    {
+        $t = Trucker::newInstance();
+
+        //create our test files and assert that they exist
+        $path = __DIR__.'/fixtures';
+        $tmp1 = $path.'/'.time().'-'.rand().'.txt';
+        $tmp2 = $path.'/'.time().'-'.rand().'.txt';
+        file_put_contents($tmp1, "Data for {$tmp1}");
+        file_put_contents($tmp2, "Data for {$tmp1}");
+
+        $this->assertTrue(file_exists($tmp1), 'Expected {$tmp1} to exist prior to test');
+        $this->assertTrue(file_exists($tmp2), 'Expected {$tmp2} to exist prior to test');
+
+        //setup the instance to have these files for cleanup
+        $this->simulateSetInaccessableProperty($t, 'postRequestCleanUp', [$tmp1, $tmp2]);
+
+        $this->invokeInaccessibleMethod($t, 'doPostRequestCleanUp');
+
+        $this->assertFalse(file_exists($tmp1), 'Expected {$tmp1} to have been unlinked');
+        $this->assertFalse(file_exists($tmp2), 'Expected {$tmp2} to have been unlinked');
+    }
+
+
+
     public function testGetUri()
     {
         $u = Trucker::newInstance();

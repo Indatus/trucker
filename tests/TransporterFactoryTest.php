@@ -4,7 +4,7 @@ use Trucker\Transporters\TransporterFactory;
 
 class TransporterFactoryTest extends TruckerTests
 {
-    public function testCreateTransporter()
+    public function testCreateValidTransporter()
     {
         $json = TransporterFactory::createTransporter('json');
         $this->assertTrue(
@@ -16,5 +16,11 @@ class TransporterFactoryTest extends TruckerTests
             ($json instanceof \Trucker\Transporters\TransporterInterface),
             "Expected transporter to implement Trucker\Transporters\TransporterInterface"
         );
+    }
+
+    public function testCreateInvalidTransporter()
+    {
+        $this->setExpectedException('InvalidArgumentException');
+        $foo = TransporterFactory::createTransporter("invalid-transporter-name");
     }
 }

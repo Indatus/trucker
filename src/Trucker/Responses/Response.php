@@ -65,7 +65,8 @@ class Response
                 $args
             );
         }
-    }
+    // @codeCoverageIgnoreStart
+    }// @codeCoverageIgnoreEnd
 
 
     /**

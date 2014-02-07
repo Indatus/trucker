@@ -161,6 +161,28 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
 
 
     /**
+     * Test helper function that allows you to simulate that a private
+     * or protected function was called on a class
+     * 
+     * @param  Object $class  instance of an object to work with
+     * @param  string $method the method to call
+     * @param  mixed  $value  the arguments to pass to the method
+     * @return void
+     */
+    protected function invokeInaccessibleMethod($class, $method, $value = null)
+    {
+        $c = new ReflectionClass($class);
+        $meth = $c->getMethod($method);
+        $meth->setAccessible(true);
+        if ($value) {
+            $meth->invoke($class);
+        } else {
+            $meth->invoke($class, $value);
+        }
+    }
+
+
+    /**
      * Determine if two associative arrays are similar
      *
      * Both arrays must have the same indexes with identical values
