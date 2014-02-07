@@ -10,7 +10,7 @@ class TransporterFactory
      * @param  string $transport
      * @return \Trucker\Transporters\TransportableInterface
      */
-    public static function createTransporter($transport)
+    public static function build($transport)
     {
         switch ($transport)
         {

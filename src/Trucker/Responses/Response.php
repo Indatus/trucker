@@ -111,7 +111,7 @@ class Response
     {
         $transportStr = $this->getOption('transporter');
 
-        $transporter = TransporterFactory::createTransporter($transportStr);
+        $transporter = TransporterFactory::build($transportStr);
 
         return $transporter->parseResponseToData($this->response);
     }
@@ -128,7 +128,7 @@ class Response
 
         $transportStr = $this->getOption('transporter');
 
-        $transporter = TransporterFactory::createTransporter($transportStr);
+        $transporter = TransporterFactory::build($transportStr);
         
         return $transporter->parseResponseStringToObject($this->response);
     }

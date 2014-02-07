@@ -237,7 +237,7 @@ class RestRequest implements RequestableInterface
      */
     public function setTransportLanguage($transportStr)
     {
-        $transporter = TransporterFactory::createTransporter($transportStr);
+        $transporter = TransporterFactory::build($transportStr);
         $transporter->setHeaderOnRequest($this->request);
     }
 

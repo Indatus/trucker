@@ -6,7 +6,7 @@ class TransporterFactoryTest extends TruckerTests
 {
     public function testCreateValidTransporter()
     {
-        $json = TransporterFactory::createTransporter('json');
+        $json = TransporterFactory::build('json');
         $this->assertTrue(
             ($json instanceof \Trucker\Transporters\JsonTransporter),
             "Expected transporter to be Trucker\Transporters\JsonTransporter"
@@ -21,6 +21,6 @@ class TransporterFactoryTest extends TruckerTests
     public function testCreateInvalidTransporter()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $foo = TransporterFactory::createTransporter("invalid-transporter-name");
+        $foo = TransporterFactory::build("invalid-transporter-name");
     }
 }

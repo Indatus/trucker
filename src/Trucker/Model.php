@@ -870,7 +870,7 @@ class Model
 
         $this->doPostRequestCleanUp();
 
-        if ($response->getStatusCode() == 200) {
+        if ($response->getStatusCode() == Request::getOption('http_status.success')) {
             return true;
         }
 
