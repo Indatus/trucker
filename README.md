@@ -41,7 +41,7 @@ $results = Product::all();
   * [Fetching Records](#fetch)
     * [Fetch an Instance](#fetch-instance)
     * [Fetch a Collection](#fetch-collection)
-      * [Fetch a collection using query conditions and result ordering][#fetch-collection-complex]
+      * [Fetch a collection using query conditions and result ordering](#fetch-collection-complex)
   * [Create, Update & Destroy Operations](#crud)
     * [Create](#crud-create)
     * [Update](#crud-update)
@@ -234,7 +234,7 @@ If you have an entity where you know the value of it's `identity_property` you c
 `find()` takes a second parameter as well that allows you to pass in an arbitrary associative array that you want to be converted into query string arguments that get sent with the request.
 
 ```php
-$p = Product::find(1);
+<?php $p = Product::find(1);
 ```
 
 <a name="fetch-collection"/>
