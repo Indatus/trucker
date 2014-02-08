@@ -37,7 +37,7 @@ interface RequestableInterface
 
     public function setModelProperties(Model $model);
 
-    public function setTransportLanguage($transporter);
+    public function setTransportLanguage();
 
     public function addErrorHandler($httpStatus, \Closure $func, $stopPropagation = true);
 

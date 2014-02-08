@@ -3,6 +3,7 @@ include __DIR__.'/../vendor/autoload.php';
 
 use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Facade;
 use Trucker\TruckerServiceProvider;
 use Trucker\Facades\Request;
 
@@ -80,6 +81,8 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
             'trucker::transporter'                 => 'json',
             'trucker::collection_key'              => null,
             'trucker::errors_key'                  => 'errors',
+            'trucker::search.collection_query_condition_driver' => 'get_array',
+            'trucker::search.collection_result_order_driver' => 'get_param',
             'trucker::search.container_parameter'  => 'search',
             'trucker::search.property'             => 'property',
             'trucker::search.operator'             => 'operator',

@@ -4,8 +4,8 @@ require_once __DIR__.'/stubs/User.php';
 require_once __DIR__.'/GuzzleTestingTrait.php';
 
 use Trucker\Responses\Collection;
-use Trucker\Facades\GetArrayQueryCondition;
-use Trucker\Facades\GetArrayResultOrder;
+use Trucker\Facades\ConditionFactory;
+use Trucker\Facades\ResultOrderFactory;
 use Mockery as m;
 
 class CollectionFinderTest extends TruckerTests
@@ -66,7 +66,7 @@ class CollectionFinderTest extends TruckerTests
         $this->setupIndividualTest($this->getTestOptions());
         extract($this->getTestOptions());
 
-        $conditions = GetArrayQueryCondition::newInstance();
+        $conditions = ConditionFactory::build();
         $conditions->addCondition('name', '=', 'John Doe');
         $conditions->addCondition('email', '=', 'jdoe@noboddy.com');
         $conditions->addCondition('id', '>=', 100);
@@ -116,7 +116,7 @@ class CollectionFinderTest extends TruckerTests
         $this->setupIndividualTest($this->getTestOptions());
         extract($this->getTestOptions());
 
-        $conditions = GetArrayQueryCondition::newInstance();
+        $conditions = ConditionFactory::build();
         $conditions->addCondition('name', '=', 'John Doe');
         $conditions->addCondition('email', '=', 'jdoe@noboddy.com');
         $conditions->addCondition('id', '>=', 100);
@@ -128,7 +128,7 @@ class CollectionFinderTest extends TruckerTests
             "Expected query string to look different"
         );
 
-        $order = GetArrayResultOrder::newInstance();
+        $order = ResultOrderFactory::build();
         $order->setOrderByField('email');
         $order->setOrderDirection($order->getOrderDirectionDescending());
 

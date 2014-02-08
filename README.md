@@ -252,13 +252,13 @@ The `all()` function takes arguments that allow you to specify conditions on the
 ##### Fetch a collection using query conditions and result ordering
 
 ```php
-$conditions = QueryConditionFactory::build();
+$conditions = ConditionFactory::build();
 $conditions->addCondition('name', '=', 'Roomba 650');
 $conditions->addCondition('vendor', '=', 'Irobot');
 $conditions->addCondition('price', '>=', 10000);
 $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
 
-$order = QueryResultOrderFactory::build();
+$order = ResultOrderFactory::build();
 $order->setOrderByField('name');
 $order->setOrderDirection($order->getOrderDirectionDescending());
 

@@ -3,7 +3,7 @@
 namespace Trucker\Responses;
 
 use Illuminate\Container\Container;
-use Trucker\Transporters\TransporterFactory;
+use Trucker\Facades\TransporterFactory;
 
 class Response
 {
@@ -109,9 +109,7 @@ class Response
      */
     public function parseResponseToData()
     {
-        $transportStr = $this->getOption('transporter');
-
-        $transporter = TransporterFactory::build($transportStr);
+        $transporter = TransporterFactory::build();
 
         return $transporter->parseResponseToData($this->response);
     }
@@ -125,10 +123,7 @@ class Response
      */
     public function parseResponseStringToObject()
     {
-
-        $transportStr = $this->getOption('transporter');
-
-        $transporter = TransporterFactory::build($transportStr);
+        $transporter = TransporterFactory::build();
         
         return $transporter->parseResponseStringToObject($this->response);
     }

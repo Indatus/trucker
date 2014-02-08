@@ -43,11 +43,11 @@ use Illuminate\Support\Facades\Facade;
 use Trucker\TruckerServiceProvider;
 
  /**
-  * Facade class for interacting with the Trucker ModelFinder class
+  * Facade class for interacting with the QueryConditionFactory class
   *
   * @author Brian Webb <bwebb@indatus.com>
   */
-class GetArrayQueryCondition extends Facade
+class ConditionFactory extends Facade
 {
 
   /**
@@ -60,6 +60,6 @@ class GetArrayQueryCondition extends Facade
         if (!static::$app) {
             static::$app = TruckerServiceProvider::make();
         }
-        return 'trucker.get-array-query';
+        return 'trucker.conditions';
     }
 }

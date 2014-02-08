@@ -43,11 +43,11 @@ use Illuminate\Support\Facades\Facade;
 use Trucker\TruckerServiceProvider;
 
  /**
-  * Facade class for interacting with the Trucker ModelFinder class
+  * Facade class for interacting with the ApiTransporterFactory class
   *
   * @author Brian Webb <bwebb@indatus.com>
   */
-class GetArrayResultOrder extends Facade
+class TransporterFactory extends Facade
 {
 
   /**
@@ -60,6 +60,6 @@ class GetArrayResultOrder extends Facade
         if (!static::$app) {
             static::$app = TruckerServiceProvider::make();
         }
-        return 'trucker.get-array-result-order';
+        return 'trucker.transporter';
     }
 }
