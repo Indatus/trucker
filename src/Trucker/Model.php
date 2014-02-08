@@ -71,23 +71,6 @@ class Model
     protected $app;
 
     /**
-     * Post parameter to set with a string that
-     * contains the HTTP method type sent with a POST
-     * request rather than sending the true method.
-     *
-     * @var string
-     */
-    protected $httpMethodParam = null;
-
-    /**
-     * Protocol + host of base URI to remote API
-     * i.e. http://example.com
-     *
-     * @var string
-     */
-    protected $baseUri;
-
-    /**
      * Property to overwrite the getResourceName()
      * function with a static value
      *
@@ -129,19 +112,6 @@ class Model
      * @var string
      */
     public $nestedUnder;
-
-    /**
-     * Username for remote API authentication if required
-     *
-     * @var string
-     */
-    protected $authUser;
-
-    /**
-     * Password for remote API authentication if required
-     * @var string
-     */
-    protected $authPass;
 
     /**
      * Array of instance values
@@ -225,16 +195,6 @@ class Model
      */
     public function __construct($attributes = [])
     {
-
-        // $initFromConfig = [
-        //      'scratchDiskLocation' => 'scratch_disk_location',
-        //      'base64Indicator'     => 'base_64_property_indication',
-        // ];
-
-        // foreach ($initFromConfig as $property => $config_key) {
-        //     $this->{$property} = Request::getOption($config_key);
-        // }
-
         $this->fill($attributes);
     }
 
