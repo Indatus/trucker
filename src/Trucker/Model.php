@@ -144,119 +144,10 @@ class Model
     protected $authPass;
 
     /**
-     * Transport method of data from remote API
-     * @var string
-     */
-    protected $transporter;
-
-    /**
      * Array of instance values
      * @var array
      */
     protected $properties = array();
-
-    /**
-     * Element name that should contain a collection in a
-     * response where more than one result is returned
-     *
-     * @var string
-     */
-    protected $collectionKey;
-
-    /**
-     * Element name that should contain 1+ errors
-     * in a response that was invalid.
-     *
-     * @var string
-     */
-    protected $errorsKey;
-
-    /**
-     * Name of the parameter key used to contain search
-     * rules for fetching collections
-     *
-     * @var string
-     */
-    protected $searchParameter;
-
-    /**
-     * Name of the parameter key used to identify
-     * an entity attribute
-     *
-     * @var string
-     */
-    protected $searchProperty;
-
-    /**
-     * Name of the parameter key used to specify
-     * a search rule operator i.e.: = >= <= != LIKE
-     *
-     * @var string
-     */
-    protected $searchOperator;
-
-    /**
-     * Name of the parameter key used to identify
-     * an entity value when searching
-     * @var string
-     */
-    protected $searchValue;
-
-    /**
-     * Name of the parameter key used to identify
-     * how search criteria should be joined
-     *
-     * @var string
-     */
-    protected $logicalOperator;
-
-    /**
-     * Name of the parameter key used to identify
-     * the property to order search results by
-     *
-     * @var string
-     */
-    protected $orderBy;
-
-    /**
-     * Name of the parameter key used to identify
-     * the order direction of search results
-     *
-     * @var string
-     */
-    protected $orderDir;
-
-    /**
-     * Name of the parameter value for specifying
-     * "AND" search rule combination behavior
-     *
-     * @var string
-     */
-    protected $searchOperatorAnd;
-
-    /**
-     * Name of the parameter value for specifying
-     * "OR" search rule combination behavior
-     *
-     * @var string
-     */
-    protected $searchOperatorOr;
-
-    /**
-     * Name of the parameter value for specifying
-     * ascending result ordering
-     *
-     * @var string
-     */
-    protected $orderDirAsc;
-
-    /**
-     * Name of the parameter value for specifying
-     * descending result ordering
-     *
-     * @var string
-     */
-    protected $orderDirDesc;
 
     /**
      * Remote resource's primary key property
@@ -315,40 +206,6 @@ class Model
     protected $scratchDiskLocation;
 
     /**
-     * The HTTP response status code that
-     * will accompany a successful API response
-     * 
-     * @var integer
-     */
-    protected $httpStatusSuccess;
-
-    /**
-     * The HTTP response status code that
-     * will accompany a not-found API response
-     * 
-     * @var integer
-     */
-    protected $httpStatusNotFound;
-
-    /**
-     * The HTTP response status code that
-     * will accompany an unsuccessful API response
-     * such as an entity could not be saved
-     * 
-     * @var integer
-     */
-    protected $httpStatusInvalid;
-
-    /**
-     * The HTTP response status code that
-     * will accompany an error encountered  while
-     * returning an API response
-     * 
-     * @var integer
-     */
-    protected $httpStatusError;
-
-    /**
      * Portion of a property name that would indicate
      * that the value would be Base64 encoded when the 
      * property is set.
@@ -369,34 +226,14 @@ class Model
     public function __construct($attributes = [])
     {
 
-        $initFromConfig = [
-            'baseUri'             => 'base_uri',
-            'httpMethodParam'     => 'http_method_param',
-            'scratchDiskLocation' => 'scratch_disk_location',
-            'transporter'         => 'transporter',
-            'identityProperty'    => 'identity_property',
-            'collectionKey'       => 'collection_key',
-            'errorsKey'           => 'errors_key',
-            'searchParameter'     => 'search.container_parameter',
-            'searchProperty'      => 'search.property',
-            'searchOperator'      => 'search.operator',
-            'searchValue'         => 'search.value',
-            'logicalOperator'     => 'search.logical_operator',
-            'orderBy'             => 'search.order_by',
-            'orderDir'            => 'search.order_dir',
-            'searchOperatorAnd'   => 'search.and_operator',
-            'searchOperatorOr'    => 'search.or_operator',
-            'orderDirAsc'         => 'search.order_dir_ascending',
-            'orderDirDesc'        => 'search.order_dir_descending',
-            'httpStatusSuccess'   => 'http_status.success',
-            'httpStatusNotFound'  => 'http_status.not_found',
-            'httpStatusInvalid'   => 'http_status.invalid',
-            'base64Indicator'     => 'base_64_property_indication',
-        ];
+        // $initFromConfig = [
+        //      'scratchDiskLocation' => 'scratch_disk_location',
+        //      'base64Indicator'     => 'base_64_property_indication',
+        // ];
 
-        foreach ($initFromConfig as $property => $config_key) {
-            $this->{$property} = Request::getOption($config_key);
-        }
+        // foreach ($initFromConfig as $property => $config_key) {
+        //     $this->{$property} = Request::getOption($config_key);
+        // }
 
         $this->fill($attributes);
     }
@@ -448,10 +285,10 @@ class Model
     public function __set($property, $value)
     {
         //if property contains '_base64'
-        if (!(stripos($property, $this->base64Indicator) === false)) {
+        if (!(stripos($property, $this->getBase64Indicator()) === false)) {
 
             //if the property IS a file field
-            $fileProperty = str_replace($this->base64Indicator, '', $property);
+            $fileProperty = str_replace($this->getBase64Indicator(), '', $property);
             if (in_array($fileProperty, $this->getFileFields())) {
                 $this->handleBase64File($fileProperty, $value);
             }//end if file field
@@ -521,10 +358,10 @@ class Model
                 $fileFields = $this->getFileFields();
 
                 //if property contains base64 indicator
-                if (!(stripos($property, $this->base64Indicator) === false)) {
+                if (!(stripos($property, $this->getBase64Indicator()) === false)) {
 
                     //get a list of file properties w/o the base64 indicator
-                    $fileProperty = str_replace($this->base64Indicator, '', $property);
+                    $fileProperty = str_replace($this->getBase64Indicator(), '', $property);
 
                     //if the property IS a file field, handle appropriatley
                     if (in_array($fileProperty, $fileFields)) {
@@ -558,8 +395,8 @@ class Model
         $attrs = array_map('trim', explode(',', $this->guarded));
 
         //the identityProperty should always be guarded
-        if (!in_array($this->identityProperty, $attrs)) {
-            $attrs[] = $this->identityProperty;
+        if (!in_array($this->getIdentityProperty(), $attrs)) {
+            $attrs[] = $this->getIdentityProperty();
         }
 
         return $attrs;
@@ -596,7 +433,7 @@ class Model
         $ext = end($mimeExp);
         $output_file = implode(
             DIRECTORY_SEPARATOR,
-            array($this->scratchDiskLocation, uniqid("tmp_{$property}_").".$ext")
+            array($this->getScratchDiskLocation(), uniqid("tmp_{$property}_").".$ext")
         );
         $f = fopen($output_file, "wb");
         fwrite($f, $image);
@@ -616,8 +453,8 @@ class Model
      */
     public function getId()
     {
-        if (array_key_exists($this->identityProperty, $this->properties)) {
-            return $this->properties[$this->identityProperty];
+        if (array_key_exists($this->getIdentityProperty(), $this->properties)) {
+            return $this->properties[$this->getIdentityProperty()];
         }
 
         return false;
@@ -631,7 +468,29 @@ class Model
      */
     public function getIdentityProperty()
     {
-        return $this->identityProperty;
+        return $this->identityProperty ?: Request::getOption('identity_property');
+    }
+
+
+    /**
+     * Getter function to return the scratch disk location
+     * 
+     * @return string
+     */
+    public function getScratchDiskLocation()
+    {
+        return $this->scratchDiskLocation ?: Request::getOption('scratch_disk_location');
+    }
+
+
+    /**
+     * Getter function to return base64 param indicator
+     * 
+     * @return string
+     */
+    public function getBase64Indicator()
+    {
+        return $this->base64Indicator ?: Request::getOption('base_64_property_indication');
     }
 
 

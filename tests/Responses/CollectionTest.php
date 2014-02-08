@@ -159,6 +159,7 @@ class CollectionTest extends TruckerTests
         $objects = [];
         foreach ($records as $r) {
             $m = m::mock('Trucker\Model');
+            $m->shouldReceive('getBase64Indicator')->andReturn('_base64');
             $m->id = $r['id'];
             $m->shouldReceive('attributes')->andReturn($r);
             $objects[] = $m;
