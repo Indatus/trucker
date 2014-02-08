@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__.'/stubs/User.php';
-require_once __DIR__.'/GuzzleTestingTrait.php';
+require_once __DIR__.'/../stubs/User.php';
+require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
 use Trucker\Responses\Collection;
 use Trucker\Facades\ConditionFactory;
@@ -11,6 +11,14 @@ use Mockery as m;
 class CollectionFinderTest extends TruckerTests
 {
     use GuzzleTestingTrait;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->swapConfig([]);
+        ConditionFactory::setApp($this->app);
+        ResultOrderFactory::setApp($this->app);
+    }
 
     public function testFindAll()
     {

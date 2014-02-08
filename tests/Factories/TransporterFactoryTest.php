@@ -4,6 +4,14 @@ use Trucker\Facades\TransporterFactory;
 
 class TransporterFactoryTest extends TruckerTests
 {
+
+    public function tearDown()
+    {
+        parent::tearDown();
+        $this->swapConfig([]);
+        TransporterFactory::setApp($this->app);
+    }
+
     public function testCreateValidTransporter()
     {
         $this->swapConfig([

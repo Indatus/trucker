@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__.'/stubs/User.php';
-require_once __DIR__.'/GuzzleTestingTrait.php';
+require_once __DIR__.'/../stubs/User.php';
+require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
 use Trucker\Facades\Trucker;
 use Trucker\Facades\Request;
@@ -71,7 +71,7 @@ class ModelTest extends TruckerTests
 
         //TEST fill with base64 property
         $this->simulateSetInaccessableProperty($t, 'fileFields', 'meme,other_meme');
-        $testImagePath = __DIR__.'/fixtures/test-all-things.jpg';
+        $testImagePath = __DIR__.'/../fixtures/test-all-things.jpg';
         $md5 = md5_file($testImagePath);
         $imgData = file_get_contents($testImagePath);
         $base64Image = base64_encode($imgData);
@@ -102,7 +102,7 @@ class ModelTest extends TruckerTests
         $t = Trucker::newInstance();
 
         //create our test files and assert that they exist
-        $path = __DIR__.'/fixtures';
+        $path = __DIR__.'/../fixtures';
         $tmp1 = $path.'/'.time().'-'.rand().'.txt';
         $tmp2 = $path.'/'.time().'-'.rand().'.txt';
         file_put_contents($tmp1, "Data for {$tmp1}");

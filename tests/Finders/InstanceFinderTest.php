@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__.'/stubs/User.php';
-require_once __DIR__.'/GuzzleTestingTrait.php';
+require_once __DIR__.'/../stubs/User.php';
+require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
 use Mockery as m;
 

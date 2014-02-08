@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__.'/stubs/User.php';
-require_once __DIR__.'/stubs/UserPreferenceSetting.php';
+require_once __DIR__.'/../stubs/User.php';
+require_once __DIR__.'/../stubs/UserPreferenceSetting.php';
 
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\Trucker;

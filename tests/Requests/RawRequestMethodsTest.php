@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/GuzzleTestingTrait.php';
+require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
 use Trucker\Facades\Request;
 
