@@ -144,10 +144,6 @@ class TruckerServiceProvider extends ServiceProvider
             return new Url\UrlGenerator($app);
         });
 
-        $app->bind('trucker.request', function ($app) {
-            return new Requests\RestRequest($app, new \Guzzle\Http\Client());
-        });
-
         $app->bind('trucker.instance-finder', function ($app) {
             return new Finders\InstanceFinder($app);
         });
@@ -184,6 +180,10 @@ class TruckerServiceProvider extends ServiceProvider
 
         $app->bind('trucker.error-handler', function ($app) {
             return new Factories\ErrorHandlerFactory($app);
+        });
+
+        $app->bind('trucker.request-factory', function ($app) {
+            return new Factories\RequestFactory($app);
         });
 
         return $app;

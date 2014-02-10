@@ -43,11 +43,11 @@ use Illuminate\Support\Facades\Facade;
 use Trucker\TruckerServiceProvider;
 
  /**
-  * Facade class for interacting with the Trucker Request Manager class
+  * Facade class for interacting with the Requests class
   *
   * @author Brian Webb <bwebb@indatus.com>
   */
-class Request extends Facade
+class RequestFactory extends Facade
 {
 
   /**
@@ -60,6 +60,6 @@ class Request extends Facade
         if (!static::$app) {
             static::$app = TruckerServiceProvider::make();
         }
-        return 'trucker.request';
+        return 'trucker.request-factory';
     }
 }

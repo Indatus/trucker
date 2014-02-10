@@ -42,7 +42,7 @@
 namespace Trucker\Finders;
 
 use Illuminate\Container\Container;
-use Trucker\Facades\Request;
+use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\ResponseInterpreterFactory;
 
@@ -109,19 +109,22 @@ class InstanceFinder
     {
         $instance = null;
 
+        //get a request object
+        $request = RequestFactory::build();
+
         //init the request
-        Request::createRequest(
-            Request::getOption('base_uri'),
+        $request->createRequest(
+            RequestFactory::getOption('base_uri'),
             UrlGenerator::getInstanceUri($model, [':id' => $id]),
             'GET'
         );
 
 
         //set any get parameters on the request
-        Request::setGetParameters($getParams);
+        $request->setGetParameters($getParams);
 
         //actually send the request
-        $response = Request::sendRequest();
+        $response = $request->sendRequest();
 
 
         

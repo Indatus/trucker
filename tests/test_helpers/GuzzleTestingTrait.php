@@ -1,6 +1,6 @@
 <?php
 
-use Trucker\Facades\Request;
+use Trucker\Facades\RequestFactory;
 use Trucker\Facades\ErrorHandlerFactory;
 
 trait GuzzleTestingTrait
@@ -73,9 +73,9 @@ trait GuzzleTestingTrait
     protected function &initGuzzleRequestTest($config = array())
     {
         $this->swapConfig($config);
-        Request::setApp($this->app);
+        RequestFactory::setApp($this->app);
         ErrorHandlerFactory::setApp($this->app);
-        $client = Request::getClient();
+        $client = RequestFactory::getClient();
         $this->trackHistory($client);
 
         return $client;

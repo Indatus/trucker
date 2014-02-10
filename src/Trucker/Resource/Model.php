@@ -41,11 +41,11 @@
 
 namespace Trucker\Resource;
 
-use Trucker\Facades\Request;
 use Trucker\Facades\Response;
 use Trucker\Facades\Instance;
 use Trucker\Facades\Collection;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\RequestFactory;
 use Trucker\Facades\ResponseInterpreterFactory;
 use Trucker\Facades\ErrorHandlerFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
@@ -430,7 +430,7 @@ class Model
      */
     public function getIdentityProperty()
     {
-        return $this->identityProperty ?: Request::getOption('identity_property');
+        return $this->identityProperty ?: RequestFactory::getOption('identity_property');
     }
 
 
@@ -441,7 +441,7 @@ class Model
      */
     public function getScratchDiskLocation()
     {
-        return $this->scratchDiskLocation ?: Request::getOption('scratch_disk_location');
+        return $this->scratchDiskLocation ?: RequestFactory::getOption('scratch_disk_location');
     }
 
 
@@ -452,7 +452,7 @@ class Model
      */
     public function getBase64Indicator()
     {
-        return $this->base64Indicator ?: Request::getOption('base_64_property_indication');
+        return $this->base64Indicator ?: RequestFactory::getOption('base_64_property_indication');
     }
 
 
@@ -562,37 +562,40 @@ class Model
      */
     public function save()
     {
+        //get a request object
+        $request = RequestFactory::build();
+
         if ($this->getId() === false) {
 
             //make a CREATE request
-            Request::createRequest(
-                Request::getOption('base_uri'),
+            $request->createRequest(
+                RequestFactory::getOption('base_uri'),
                 UrlGenerator::getCreateUri($this),
                 'POST',
                 [], //no extra headers
-                Request::getOption('http_method_param')
+                RequestFactory::getOption('http_method_param')
             );
 
         } else {
 
             //make an UPDATE request
-            Request::createRequest(
-                Request::getOption('base_uri'),
+            $request->createRequest(
+                RequestFactory::getOption('base_uri'),
                 UrlGenerator::getDeleteUri(
                     $this,
                     [':'.$this->getIdentityProperty() => $this->getId()]
                 ),
                 'PUT',
                 [], //no extra headers
-                Request::getOption('http_method_param')
+                RequestFactory::getOption('http_method_param')
             );
         }
 
         //set the property attributes on the request
-        Request::setModelProperties($this);
+        $request->setModelProperties($this);
 
         //actually send the request
-        $response = Request::sendRequest();
+        $response = $request->sendRequest();
 
         //handle clean response with errors
         if (ResponseInterpreterFactory::build()->invalid($response)) {
@@ -629,22 +632,24 @@ class Model
      */
     public function destroy()
     {
+        //get a request object
+        $request = RequestFactory::build();
 
         //init the request
-        Request::createRequest(
-            Request::getOption('base_uri'),
+        $request->createRequest(
+            RequestFactory::getOption('base_uri'),
             UrlGenerator::getDeleteUri(
                 $this,
                 [':'.$this->getIdentityProperty() => $this->getId()]
             ),
             'DELETE',
             [], //no extra headers
-            Request::getOption('http_method_param')
+            RequestFactory::getOption('http_method_param')
         );
 
 
         //actually send the request
-        $response = Request::sendRequest();
+        $response = $request->sendRequest();
 
         //clean up anything no longer needed
         $this->doPostRequestCleanUp();

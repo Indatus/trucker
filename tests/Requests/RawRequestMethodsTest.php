@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
-use Trucker\Facades\Request;
+use Trucker\Facades\RequestFactory;
 
 class RawRequestMethodsTest extends TruckerTests
 {
@@ -24,7 +24,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri
+                'trucker::base_uri' => $base_uri,
+                'trucker::request_driver' => 'rest'
             ]),
             //
             //expcted status
@@ -44,7 +45,8 @@ class RawRequestMethodsTest extends TruckerTests
         );
         
         //execute what we're testing
-        $rawResponse = Request::rawGet($uri, $queryParams);
+        $request = RequestFactory::build();
+        $rawResponse = $request->rawGet($uri, $queryParams);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -83,7 +85,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri
+                'trucker::base_uri' => $base_uri,
+                'trucker::request_driver' => 'rest'
             ]),
             //
             //expcted status
@@ -103,7 +106,8 @@ class RawRequestMethodsTest extends TruckerTests
         );
         
         //execute what we're testing
-        $rawResponse = Request::rawPost($uri, $postParams);
+        $request = RequestFactory::build();
+        $rawResponse = $request->rawPost($uri, $postParams);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -143,7 +147,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri
+                'trucker::base_uri' => $base_uri,
+                'trucker::request_driver' => 'rest'
             ]),
             //
             //expcted status
@@ -163,7 +168,8 @@ class RawRequestMethodsTest extends TruckerTests
         );
         
         //execute what we're testing
-        $rawResponse = Request::rawPut($uri, $postParams);
+        $request = RequestFactory::build();
+        $rawResponse = $request->rawPut($uri, $postParams);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -203,7 +209,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri
+                'trucker::base_uri' => $base_uri,
+                'trucker::request_driver' => 'rest'
             ]),
             //
             //expcted status
@@ -223,7 +230,8 @@ class RawRequestMethodsTest extends TruckerTests
         );
         
         //execute what we're testing
-        $rawResponse = Request::rawPatch($uri, $postParams);
+        $request = RequestFactory::build();
+        $rawResponse = $request->rawPatch($uri, $postParams);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -263,7 +271,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri
+                'trucker::base_uri' => $base_uri,
+                'trucker::request_driver' => 'rest'
             ]),
             //
             //expcted status
@@ -283,7 +292,8 @@ class RawRequestMethodsTest extends TruckerTests
         );
         
         //execute what we're testing
-        $rawResponse = Request::rawDelete($uri, $queryParams);
+        $request = RequestFactory::build();
+        $rawResponse = $request->rawDelete($uri, $queryParams);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();

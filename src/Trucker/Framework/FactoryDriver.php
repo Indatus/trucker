@@ -50,6 +50,19 @@ abstract class FactoryDriver
 
 
     /**
+     * Get an option from the config file
+     *
+     * @param  string $option
+     *
+     * @return mixed
+     */
+    public function getOption($option)
+    {
+        return $this->app['config']->get('trucker::'.$option);
+    }
+
+
+    /**
      * Function to use other defined abstract methods to 
      * use a standard naming-convention based method of 
      * building classes by the factory

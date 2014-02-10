@@ -4,7 +4,7 @@ require_once __DIR__.'/../stubs/User.php';
 require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
 use Trucker\Facades\Trucker;
-use Trucker\Facades\Request;
+use Trucker\Facades\RequestFactory;
 use Mockery as m;
 
 class ModelTest extends TruckerTests
@@ -178,7 +178,7 @@ class ModelTest extends TruckerTests
         $this->assertEquals('id', $u->getIdentityProperty());
 
         $this->swapConfig(['trucker::identity_property' => 'user_id']);
-        Request::setApp($this->app);
+        RequestFactory::setApp($this->app);
 
         $u = Trucker::newInstance();
         $this->assertEquals('user_id', $u->getIdentityProperty());

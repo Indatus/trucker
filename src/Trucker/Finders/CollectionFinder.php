@@ -42,7 +42,7 @@
 namespace Trucker\Finders;
 
 use Illuminate\Container\Container;
-use Trucker\Facades\Request;
+use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
 use Trucker\Responses\Collection;
 use Trucker\Finders\Conditions\QueryConditionInterface;
@@ -116,28 +116,31 @@ class CollectionFinder
         array $getParams = []
     ) {
 
+        //get a request object
+        $request = RequestFactory::build();
+        
         //init the request
-        Request::createRequest(
-            Request::getOption('base_uri'),
+        $request->createRequest(
+            RequestFactory::getOption('base_uri'),
             UrlGenerator::getCollectionUri($model),
             'GET'
         );
 
         //add query conditions if needed
         if ($condition) {
-            Request::addQueryCondition($condition);
+            $request->addQueryCondition($condition);
         }
 
         //add result ordering if needed
         if ($resultOrder) {
-            Request::addQueryResultOrder($resultOrder);
+            $request->addQueryResultOrder($resultOrder);
         }
 
         //set any get parameters on the request
-        Request::setGetParameters($getParams);
+        $request->setGetParameters($getParams);
 
         //actually send the request
-        $response = Request::sendRequest();
+        $response = $request->sendRequest();
 
         //get api response
         $data = $response->parseResponseToData();
@@ -146,7 +149,7 @@ class CollectionFinder
         $records = array();
 
         //figure out wether a collection key is used
-        $collection_key = Request::getOption('collection_key');
+        $collection_key = RequestFactory::getOption('collection_key');
 
         //set records array appropriatley
         if (isset($collection_key)) {
