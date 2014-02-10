@@ -38,6 +38,7 @@ class TransporterFactoryTest extends TruckerTests
         ]);
         TransporterFactory::setApp($this->app);
 
+        $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');
         $foo = TransporterFactory::build();
     }

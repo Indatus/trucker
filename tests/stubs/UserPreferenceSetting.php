@@ -1,6 +1,6 @@
 <?php
 
-class UserPreferenceSetting extends \Trucker\Model
+class UserPreferenceSetting extends \Trucker\Resource\Model
 {
 
 }

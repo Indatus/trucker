@@ -1,6 +1,6 @@
 <?php
 
-class User extends \Trucker\Model
+class User extends \Trucker\Resource\Model
 {
 
 }

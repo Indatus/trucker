@@ -9,7 +9,7 @@ use Trucker\Responses;
 use Trucker\Facades\TransporterFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
-use Trucker\Model;
+use Trucker\Resource\Model;
 
 class RestRequest implements RequestableInterface
 {
@@ -211,7 +211,7 @@ class RestRequest implements RequestableInterface
      * request object taking into account any properties that
      * are read only etc.
      *
-     * @param  \Trucker\Model
+     * @param  \Trucker\Resource\Model
      */
     public function setModelProperties(Model $model)
     {

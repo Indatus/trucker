@@ -5,7 +5,7 @@ namespace Trucker\Requests;
 use Illuminate\Container\Container;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
-use Trucker\Model;
+use Trucker\Resource\Model;
 
 /**
  * Interface to dictate management of query conditions for a request

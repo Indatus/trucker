@@ -37,6 +37,9 @@
         "phpunit/phpunit": "3.9.*@dev"
     },
     "autoload": {
+        "files": [
+            "src/Trucker/Support/helpers.php"
+        ],
         "psr-0": {
             "Trucker": "src/"
         }

@@ -15,7 +15,7 @@ use Illuminate\Container\Container;
  * order_dir=ASC
  * </code>
  */
-class GetArrayParamsResultOrder implements QueryResultOrderInterface
+class GetParamsResultOrder implements QueryResultOrderInterface
 {
 
     /**

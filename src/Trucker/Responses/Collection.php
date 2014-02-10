@@ -83,7 +83,7 @@ class Collection implements \Iterator
      *
      * @see  Iterator
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function rewind()
     {
@@ -96,7 +96,7 @@ class Collection implements \Iterator
      *
      * @see  Iterator
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function current()
     {
@@ -109,7 +109,7 @@ class Collection implements \Iterator
      *
      * @see  Iterator
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function key()
     {
@@ -122,7 +122,7 @@ class Collection implements \Iterator
      *
      * @see  Iterator
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function next()
     {
@@ -135,7 +135,7 @@ class Collection implements \Iterator
      *
      * @see  Iterator
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function valid()
     {
@@ -157,7 +157,7 @@ class Collection implements \Iterator
     /**
      * Function to return the first item of the collection
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function first()
     {
@@ -168,7 +168,7 @@ class Collection implements \Iterator
     /**
      * Function to return the last item of the collection
      * 
-     * @return Trucker\Model
+     * @return Trucker\Resource\Model
      */
     public function last()
     {

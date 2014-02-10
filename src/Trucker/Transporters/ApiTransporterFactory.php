@@ -3,66 +3,68 @@
 namespace Trucker\Transporters;
 
 use Illuminate\Container\Container;
+use Trucker\Framework\FactoryDriver;
 
-class ApiTransporterFactory
+class ApiTransporterFactory extends FactoryDriver
 {
-
     /**
-     * The IoC Container
-     *
-     * @var Illuminate\Container\Container
+     * Function to return a string representaion of the namespace 
+     * that all classes built by the factory should be contained within
+     * 
+     * @return string - namespace string
      */
-    protected $app;
-
-
-    /**
-     * Build a new ApiTransporterFactory
-     *
-     * @param Container $app
-     */
-    public function __construct(Container $app)
+    public function getDriverNamespace()
     {
-        $this->app = $app;
+        return "\Trucker\Transporters";
     }
 
 
     /**
-     * Getter to access the IoC Container
+     * Function to return a string that should be suffixed
+     * to the studly-cased driver name of all the drivers
+     * that the factory can return 
      * 
-     * @return Container
+     * @return string
      */
-    public function getApp()
+    public function getDriverNameSuffix()
     {
-        return $this->app;
+        return "Transporter";
     }
 
 
     /**
-     * Setter for the IoC Container
+     * Function to return a string that should be prefixed
+     * to the studly-cased driver name of all the drivers
+     * that the factory can return
      * 
-     * @param Container
-     * @return  void
+     * @return string
      */
-    public function setApp($app)
+    public function getDriverNamePrefix()
     {
-        $this->app = $app;
+        return "";
     }
 
     /**
-     * Create a transporter instance based on configuration
+     * Function to return an array of arguments that should be
+     * passed to the constructor of a new driver instance
      * 
-     * @return \Trucker\Transporters\TransportableInterface
+     * @return array
      */
-    public function build()
+    public function getDriverArgumentsArray()
     {
-        $transport = $this->app['config']->get('trucker::transporter');
-        
-        switch ($transport)
-        {
-            case 'json':
-                return new JsonTransporter;
-        }
+        return [];
+    }
 
-        throw new \InvalidArgumentException("Unsupported transporter [{$transport}]");
+    /**
+     * Function to return the string representation of the driver 
+     * itslef based on a value fetched from the config file.  This
+     * function will itself access the config, and return the driver
+     * setting
+     * 
+     * @return string
+     */
+    public function getDriverConfigValue()
+    {
+        return $this->app['config']->get('trucker::transporter');
     }
 }

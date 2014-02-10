@@ -47,7 +47,7 @@ use Trucker\Facades\UrlGenerator;
 use Trucker\Responses\Collection;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
-use Trucker\Model;
+use Trucker\Resource\Model;
 
 /**
  * Class for finding collections of models over the remote API
@@ -100,7 +100,7 @@ class CollectionFinder
 
 
     /**
-     * Function to fetch a collection of Trucker\Model object
+     * Function to fetch a collection of Trucker\Resource\Model object
      * from the remote API.
      * 
      * @param  Model                      $model       Instance of entity type being fetched

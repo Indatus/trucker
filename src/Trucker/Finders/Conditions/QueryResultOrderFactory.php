@@ -3,67 +3,69 @@
 namespace Trucker\Finders\Conditions;
 
 use Illuminate\Container\Container;
+use Trucker\Framework\FactoryDriver;
 
-class QueryResultOrderFactory
+class QueryResultOrderFactory extends FactoryDriver
 {
 
     /**
-     * The IoC Container
-     *
-     * @var Illuminate\Container\Container
-     */
-    protected $app;
-
-
-    /**
-     * Build a new QueryResultOrderFactory
-     *
-     * @param Container $app
-     */
-    public function __construct(Container $app)
-    {
-        $this->app = $app;
-    }
-
-    /**
-     * Getter to access the IoC Container
+     * Function to return a string representaion of the namespace 
+     * that all classes built by the factory should be contained within
      * 
-     * @return Container
+     * @return string - namespace string
      */
-    public function getApp()
+    public function getDriverNamespace()
     {
-        return $this->app;
+        return "\Trucker\Finders\Conditions";
     }
 
 
     /**
-     * Setter for the IoC Container
+     * Function to return a string that should be suffixed
+     * to the studly-cased driver name of all the drivers
+     * that the factory can return 
      * 
-     * @param Container
-     * @return  void
+     * @return string
      */
-    public function setApp($app)
+    public function getDriverNameSuffix()
     {
-        $this->app = $app;
+        return "ResultOrder";
     }
 
 
     /**
-     * Create a result order instance based on configuration
+     * Function to return a string that should be prefixed
+     * to the studly-cased driver name of all the drivers
+     * that the factory can return
      * 
-     * @return \Trucker\finders\Conditions\QueryResultOrderInterface
+     * @return string
      */
-    public function build()
+    public function getDriverNamePrefix()
     {
-        $driver = $this->app['config']->get('trucker::search.collection_result_order_driver');
+        return "";
+    }
 
-        switch ($driver)
-        {
-            case 'get_param':
-                return new GetArrayParamsResultOrder($this->app);
-        }
+    /**
+     * Function to return an array of arguments that should be
+     * passed to the constructor of a new driver instance
+     * 
+     * @return array
+     */
+    public function getDriverArgumentsArray()
+    {
+        return [$this->app];
+    }
 
-        throw new \InvalidArgumentException("Unsupported query condition driver [{$driver}]");
-
+    /**
+     * Function to return the string representation of the driver 
+     * itslef based on a value fetched from the config file.  This
+     * function will itself access the config, and return the driver
+     * setting
+     * 
+     * @return string
+     */
+    public function getDriverConfigValue()
+    {
+        return $this->app['config']->get('trucker::search.collection_result_order_driver');
     }
 }

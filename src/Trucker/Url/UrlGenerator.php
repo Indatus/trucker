@@ -1,6 +1,6 @@
 <?php
 
-namespace Trucker;
+namespace Trucker\Url;
 
 use Illuminate\Container\Container;
 use Doctrine\Common\Inflector\Inflector;
@@ -43,7 +43,7 @@ class UrlGenerator
      * that a POST request should be made to in order to create
      * a new entity.
      *
-     * @param  Trucker\Model
+     * @param  Trucker\Resource\Model
      * @param  $options Array of options to replace placeholders with
      * @return string
      */
@@ -58,7 +58,7 @@ class UrlGenerator
      * that a PUT / PATCH request should be made to in order to
      * update an existing entity.
      *
-     * @param  Trucker\Model
+     * @param  Trucker\Resource\Model
      * @param  $options Array of options to replace placeholders with
      * @return string
      */
@@ -73,7 +73,7 @@ class UrlGenerator
      * that a DELETE request should be made to in order to delete
      * an existing entity.
      *
-     * @param  Trucker\Model
+     * @param  Trucker\Resource\Model
      * @param  $options Array of options to replace placeholders with
      * @return string
      */
@@ -88,7 +88,7 @@ class UrlGenerator
      * that a GET request should be made to in order to retreive
      * a collection of Entities
      *
-     * @param  Trucker\Model
+     * @param  Trucker\Resource\Model
      * @param  $options Array of options to replace placeholders with
      * @return string
      */
@@ -108,7 +108,7 @@ class UrlGenerator
      * that a GET request should be made to in order to retreive
      * an instance of an Entity
      *
-     * @param  Trucker\Model
+     * @param  Trucker\Resource\Model
      * @param  $options Array of options to replace placeholders with
      * @return string
      */
@@ -128,7 +128,7 @@ class UrlGenerator
      * the interpreted name of the class in question.  For example
      * a Person class would resolve to /people
      *
-     * @param  Trucker\Model
+     * @param  Trucker\Resource\Model
      * @return string   The URI to hit
      */
     public function getURI($model)

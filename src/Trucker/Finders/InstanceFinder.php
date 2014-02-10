@@ -99,10 +99,10 @@ class InstanceFinder
     /**
      * Function to find an instance of an Entity record
      *
-     * @param  Trucker\Model $model       Model to use for URL generation etc.
+     * @param  Trucker\Resource\Model $model       Model to use for URL generation etc.
      * @param  int           $id          The primary identifier value for the record
      * @param  array         $getParams   Array of GET parameters to pass
-     * @return Trucker\Model              An instance of the entity requested
+     * @return Trucker\Resource\Model              An instance of the entity requested
      */
     public function fetch($model, $id, $getParams = array())
     {

@@ -3,69 +3,69 @@
 namespace Trucker\Finders\Conditions;
 
 use Illuminate\Container\Container;
+use Trucker\Framework\FactoryDriver;
 
-class QueryConditionFactory
+class QueryConditionFactory extends FactoryDriver
 {
 
     /**
-     * The IoC Container
-     *
-     * @var Illuminate\Container\Container
+     * Function to return a string representaion of the namespace 
+     * that all classes built by the factory should be contained within
+     * 
+     * @return string - namespace string
      */
-    protected $app;
-
-
-    /**
-     * Build a new QueryConditionFactory
-     *
-     * @param Container $app
-     */
-    public function __construct(Container $app)
+    public function getDriverNamespace()
     {
-        $this->app = $app;
+        return "\Trucker\Finders\Conditions";
     }
 
 
     /**
-     * Getter to access the IoC Container
+     * Function to return a string that should be suffixed
+     * to the studly-cased driver name of all the drivers
+     * that the factory can return 
      * 
-     * @return Container
+     * @return string
      */
-    public function getApp()
+    public function getDriverNameSuffix()
     {
-        return $this->app;
+        return "QueryCondition";
     }
 
 
     /**
-     * Setter for the IoC Container
+     * Function to return a string that should be prefixed
+     * to the studly-cased driver name of all the drivers
+     * that the factory can return
      * 
-     * @param Container
-     * @return  void
+     * @return string
      */
-    public function setApp($app)
+    public function getDriverNamePrefix()
     {
-        $this->app = $app;
+        return "";
     }
 
+    /**
+     * Function to return an array of arguments that should be
+     * passed to the constructor of a new driver instance
+     * 
+     * @return array
+     */
+    public function getDriverArgumentsArray()
+    {
+        return [$this->app];
+    }
 
     /**
-     * Create a query condition instance based on configuration
+     * Function to return the string representation of the driver 
+     * itslef based on a value fetched from the config file.  This
+     * function will itself access the config, and return the driver
+     * setting
      * 
-     * @return \Trucker\finders\Conditions\QueryConditionInterface
+     * @return string
      */
-    public function build()
+    public function getDriverConfigValue()
     {
-
-        $driver = $this->app['config']->get('trucker::search.collection_query_condition_driver');
-
-        switch ($driver)
-        {
-            case 'get_array':
-                return new GetArrayParamsQueryCondition($this->app);
-        }
-
-        throw new \InvalidArgumentException("Unsupported query condition driver [{$driver}]");
-
+        return $this->app['config']->get('trucker::search.collection_query_condition_driver');
     }
 }

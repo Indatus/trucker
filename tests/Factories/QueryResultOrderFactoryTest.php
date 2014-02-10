@@ -7,7 +7,7 @@ class QueryResultOrderFactoryTest extends TruckerTests
     public function testCreateValidResultOrderDriver()
     {
         $this->swapConfig([
-            'trucker::search.collection_result_order_driver' => 'get_param'
+            'trucker::search.collection_result_order_driver' => 'get_params'
         ]);
         ResultOrderFactory::setApp($this->app);
 
@@ -18,8 +18,8 @@ class QueryResultOrderFactoryTest extends TruckerTests
         );
 
         $this->assertTrue(
-            ($cond instanceof \Trucker\Finders\Conditions\GetArrayParamsResultOrder),
-            "Expected transporter to be \Trucker\Finders\Conditions\GetArrayParamsResultOrder"
+            ($cond instanceof \Trucker\Finders\Conditions\GetParamsResultOrder),
+            "Expected transporter to be \Trucker\Finders\Conditions\GetParamsResultOrder"
         );
     }
 
@@ -30,6 +30,7 @@ class QueryResultOrderFactoryTest extends TruckerTests
         ]);
         ResultOrderFactory::setApp($this->app);
 
+        $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');
         $foo = ResultOrderFactory::build();
     }

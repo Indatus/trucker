@@ -137,7 +137,7 @@ class UrlGeneratorTest extends TruckerTests
     public function testAppGetter()
     {
         $app = m::mock('Illuminate\Container\Container');
-        $urlGen = new \Trucker\UrlGenerator($app);
+        $urlGen = new \Trucker\Url\UrlGenerator($app);
         $this->assertEquals(
             $app,
             $urlGen->getApp()

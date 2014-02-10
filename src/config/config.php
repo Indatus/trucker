@@ -193,7 +193,7 @@
         |
         |
         */
-        'collection_query_condition_driver' => 'get_array',
+        'collection_query_condition_driver' => 'get_array_params',
  
         /*
         |--------------------------------------------------------------------------
@@ -211,7 +211,7 @@
         |             search.order_dir
         |
         */
-        'collection_result_order_driver' => 'get_param',
+        'collection_result_order_driver' => 'get_params',
 
 
         // The request parameter which will contain the array of search conditions

@@ -141,7 +141,7 @@ class TruckerServiceProvider extends ServiceProvider
     public function bindClasses(Container $app)
     {
         $app->singleton('trucker.urls', function ($app) {
-            return new UrlGenerator($app);
+            return new Url\UrlGenerator($app);
         });
 
         $app->bind('trucker.request', function ($app) {
@@ -173,7 +173,7 @@ class TruckerServiceProvider extends ServiceProvider
         });
         
         $app->bind('trucker.model', function ($app) {
-                return new Model();
+                return new Resource\Model();
         });
 
         return $app;

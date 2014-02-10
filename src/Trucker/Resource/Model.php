@@ -39,7 +39,7 @@
  * @license     http://opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
  */
 
-namespace Trucker;
+namespace Trucker\Resource;
 
 use Trucker\Facades\Request;
 use Trucker\Facades\Response;
@@ -203,7 +203,7 @@ class Model
      * Create a new instance of the given model.
      *
      * @param  array  $attributes
-     * @return \Trucker\Model
+     * @return \Trucker\Resource\Model
      */
     public function newInstance($attributes = [])
     {
@@ -527,7 +527,7 @@ class Model
      *
      * @param  int           $id          The primary identifier value for the record
      * @param  array         $getParams   Array of GET parameters to pass
-     * @return Trucker\Model              An instance of the entity requested
+     * @return Trucker\Resource\Model              An instance of the entity requested
      */
     public static function find($id, $getParams = [])
     {
