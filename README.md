@@ -90,6 +90,12 @@ Trucker comes with its own configuration file where you can specify options that
 * Supported Options:
   * `http_status_code` - This driver uses status codes set in the `http_status` config section.
 
+* `error_handler_driver` - default: `array_response`
+* This parameter specifies the driver to use for interpreting error messages provided by the remote API.
+* Supported Options:
+  * `array_response` - This driver assumes that when there is an error any error messages will be given as the full response body as an array.
+  * `parameter_key` - This driver uses finds the response parameter with a key that matches what is defined in `errors_key` and parses the error messages contained therein.
+
 * `http_method_param` - default: `null`
   * This is a parameter to send with the request that will contain a string disclosing the desired HTTP method ('put', 'post', 'patch', 'delete' etc.).  If specified PUT, POST, PATCH and DELETE requests will all be made as a POST and the given parameter will be added with the http method as it's value. An example might be "_method". 
   * Otherwise a true PUT, POST, PATCH or DELETE request will be made 

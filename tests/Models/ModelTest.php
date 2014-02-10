@@ -337,12 +337,18 @@ class ModelTest extends TruckerTests
     {
         $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        $config = [
+            'trucker::base_uri'          => 'http://example.com',
+            'trucker::error_handler_driver' => 'parameter_key',
+            'trucker::errors_key' => 'errors'
+        ];
+
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
                 $this->app['config']->get('trucker::errors_key')
             ),
-            [],
+            $config,
             $invalid_status
         );
 
@@ -462,12 +468,18 @@ class ModelTest extends TruckerTests
     {
         $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        $config = [
+            'trucker::base_uri'          => 'http://example.com',
+            'trucker::error_handler_driver' => 'parameter_key',
+            'trucker::errors_key' => 'errors'
+        ];
+
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
                 $this->app['config']->get('trucker::errors_key')
             ),
-            [],
+            $config,
             $invalid_status
         );
 
@@ -576,12 +588,18 @@ class ModelTest extends TruckerTests
     {
         $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
 
+        $config = [
+            'trucker::base_uri'          => 'http://example.com',
+            'trucker::error_handler_driver' => 'parameter_key',
+            'trucker::errors_key' => 'errors'
+        ];
+
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
                 $this->app['config']->get('trucker::errors_key')
             ),
-            [],
+            $config,
             $invalid_status
         );
 

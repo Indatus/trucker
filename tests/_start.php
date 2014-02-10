@@ -77,6 +77,7 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
             'trucker::base_uri'                    => 'http://example.com',
             'trucker::request_driver'              => 'rest',
             'trucker::response_interpreter_driver' => 'http_status_code',
+            'trucker::error_handler_driver'        => 'array_response',
             'trucker::http_method_param'           => null,
             'trucker::scratch_disk_location'       => '/tmp',
             'trucker::identity_property'           => 'id',

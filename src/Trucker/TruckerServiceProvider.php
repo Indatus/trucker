@@ -182,6 +182,10 @@ class TruckerServiceProvider extends ServiceProvider
             return new Factories\ResponseInterpreterFactory($app);
         });
 
+        $app->bind('trucker.error-handler', function ($app) {
+            return new Factories\ErrorHandlerFactory($app);
+        });
+
         return $app;
     }
 

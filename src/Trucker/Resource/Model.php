@@ -47,6 +47,7 @@ use Trucker\Facades\Instance;
 use Trucker\Facades\Collection;
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\ResponseInterpreterFactory;
+use Trucker\Facades\ErrorHandlerFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
@@ -596,15 +597,10 @@ class Model
         //handle clean response with errors
         if (ResponseInterpreterFactory::build()->invalid($response)) {
 
-            //get the errors and set them
-            $result = $response->parseResponseStringToObject();
-            if (is_object($result)) {
-                if (property_exists($result, Request::getOption('errors_key'))) {
-                    $this->errors = $result->errors;
-                }
-            } else {
-                $this->errors = $result;
-            }
+            //get the errors and set them to our local collection
+            $this->errors = ErrorHandlerFactory::build()->parseErrors($response);
+
+            //do any needed cleanup
             $this->doPostRequestCleanUp();
 
             return false;
@@ -662,15 +658,8 @@ class Model
 
         } else if ($interpreter->invalid($response)) {
 
-            //get the errors and set them
-            $result = $response->parseResponseStringToObject();
-            if (is_object($result)) {
-                if (property_exists($result, Request::getOption('errors_key'))) {
-                    $this->errors = $result->errors;
-                }
-            } else {
-                $this->errors = $result;
-            }
+            //get the errors and set them to our local collection
+            $this->errors = ErrorHandlerFactory::build()->parseErrors($response);
 
         }//end if-else
 

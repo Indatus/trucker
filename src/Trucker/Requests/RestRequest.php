@@ -4,9 +4,10 @@ namespace Trucker\Requests;
 
 use Illuminate\Container\Container;
 use Guzzle\Http\Client;
-use Trucker\Responses\RawResponse;
-use Trucker\Responses;
 use Trucker\Facades\TransporterFactory;
+use Trucker\Facades\ResponseInterpreterFactory;
+use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Responses\RawResponse;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 use Trucker\Resource\Model;
@@ -402,27 +403,6 @@ class RestRequest implements RequestableInterface
             $method
         );
 
-        //handle error saving & any errors given
-        $app = $this->app;
-        $this->request->getEventDispatcher()->addListener(
-            'request.error',
-            function (\Guzzle\Common\Event $event) use ($app) {
-                if ($event['response']->getStatusCode() == self::getOption('http.invalid')) {
-                    // Stop other events from firing
-                    $event->stopPropagation();
-
-                    //get the errors and set them
-                    $response = new Response($app, $event['response']);
-                    $responseObj = $response->parseResponseStringToObject();
-                    if (property_exists($responseObj, self::getOption('errors_key'))) {
-                        return new RawResponse(false, $response, $responseObj->errors);
-                    }
-
-                    return new RawResponse(false, $response);
-                }
-            }
-        );
-
         $this->setPostParameters($params);
         $this->setGetParameters($getParams);
         $this->setFileParameters($files);
@@ -431,21 +411,16 @@ class RestRequest implements RequestableInterface
         $response = $this->sendRequest();
 
         //handle clean response with errors
-        if ($response->getStatusCode() == self::getOption('http.invalid')) {
-            //get the errors and set them
-            $responseObj = $response->parseResponseStringToObject();
-            if (property_exists($responseObj, self::getOption('errors_key'))) {
-                return new RawResponse(false, $response, $responseObj->errors);
-            }
+        if (ResponseInterpreterFactory::build()->invalid($response)) {
 
-            return new RawResponse(false, $response);
+            //get the errors and set them to our local collection
+            $errors = [];
+            $errors = ErrorHandlerFactory::build()->parseErrors($response);
+
+            return new RawResponse(false, $response, $errors);
+     
         }//end if
 
-
-        //get the response and inflate from that
-        //$data = $response->parseResponseToData();
-
-        //return new RawResponse(true, $data);
         return new RawResponse(true, $response);
 
     }//end rawRequest
