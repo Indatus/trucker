@@ -1,11 +1,11 @@
 <?php
 
-namespace Trucker\Transporters;
+namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
 
-class ApiTransporterFactory extends FactoryDriver
+class ResponseInterpreterFactory extends FactoryDriver
 {
     /**
      * Function to return a string representaion of the namespace 
@@ -15,7 +15,7 @@ class ApiTransporterFactory extends FactoryDriver
      */
     public function getDriverNamespace()
     {
-        return "\Trucker\Transporters";
+        return "\Trucker\Responses\Interpreters";
     }
 
 
@@ -28,7 +28,7 @@ class ApiTransporterFactory extends FactoryDriver
      */
     public function getDriverNameSuffix()
     {
-        return "Transporter";
+        return "Interpreter";
     }
 
 
@@ -52,7 +52,7 @@ class ApiTransporterFactory extends FactoryDriver
      */
     public function getDriverArgumentsArray()
     {
-        return [];
+        return [$this->app];
     }
 
     /**
@@ -65,6 +65,6 @@ class ApiTransporterFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::transporter');
+        return $this->app['config']->get('trucker::response_interpreter_driver');
     }
 }

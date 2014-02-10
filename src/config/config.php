@@ -29,6 +29,22 @@
     */
    'request_driver' => 'rest',
 
+   /*
+    |--------------------------------------------------------------------------
+    | Response Interpreter Driver
+    |--------------------------------------------------------------------------
+    |
+    | This parameter specifies the driver to use for interpreting API responses
+    | as successful, invalid, error etc.
+    |
+    | Supported Options: http_status_code
+    |
+    | http_status_code - This driver uses status codes set in the `http_status`
+    |                    config section.
+    |
+    */
+   'response_interpreter_driver' => 'http_status_code',
+
     /*
     |--------------------------------------------------------------------------
     | HTTP method request parameter
@@ -272,7 +288,7 @@
         'success' => 200,
 
         //not found
-        'not_found' => 401,
+        'not_found' => 404,
 
         //invalid request. i.e. an entity couldn't be saved
         'invalid' => 422,

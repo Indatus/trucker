@@ -44,6 +44,7 @@ namespace Trucker\Finders;
 use Illuminate\Container\Container;
 use Trucker\Facades\Request;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\ResponseInterpreterFactory;
 
 /**
  * Class for finding model instances over the remote API
@@ -115,23 +116,6 @@ class InstanceFinder
             'GET'
         );
 
-        //handle not found
-        Request::addErrorHandler(
-            404,
-            function ($event, $request) use ($instance) {
-                $instance = false;
-            },
-            true
-        );
-
-        //handle general error
-        Request::addErrorHandler(
-            500,
-            function ($event, $request) use ($instance) {
-                $instance = false;
-            },
-            true
-        );
 
         //set any get parameters on the request
         Request::setGetParameters($getParams);
@@ -139,7 +123,9 @@ class InstanceFinder
         //actually send the request
         $response = Request::sendRequest();
 
-        if ($response->getStatusCode() == 404 || $instance === false) {
+
+        
+        if (! ResponseInterpreterFactory::build()->success($response)) {
             return null;
         }
 

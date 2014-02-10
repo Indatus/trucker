@@ -85,6 +85,11 @@ Trucker comes with its own configuration file where you can specify options that
   * Supported Options: 
     * `rest` - The rest driver makes HTTP request using GET, PUT, POST and DELETE HTTP methods to indicate what type of CRUD operation should be completed. Optional usage of the `http_method_param` config option can also be used.
 
+* `response_interpreter_driver` - default: `http_status_code`
+* This parameter specifies the driver to use for interpreting API responses as successful, invalid, error etc.
+* Supported Options:
+  * `http_status_code` - This driver uses status codes set in the `http_status` config section.
+
 * `http_method_param` - default: `null`
   * This is a parameter to send with the request that will contain a string disclosing the desired HTTP method ('put', 'post', 'patch', 'delete' etc.).  If specified PUT, POST, PATCH and DELETE requests will all be made as a POST and the given parameter will be added with the http method as it's value. An example might be "_method". 
   * Otherwise a true PUT, POST, PATCH or DELETE request will be made 

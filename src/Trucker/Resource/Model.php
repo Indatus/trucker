@@ -46,6 +46,7 @@ use Trucker\Facades\Response;
 use Trucker\Facades\Instance;
 use Trucker\Facades\Collection;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\ResponseInterpreterFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
@@ -586,26 +587,26 @@ class Model
             );
         }
 
-        //handle error saving & any errors given
-        Request::addErrorHandler(
-            422,
-            function ($event, $request) {
-                $response = Response::newInstance(Request::getApp(), $event['response']);
-                $result = $response->parseResponseStringToObject();
-                if (is_object($result)) {
-                    if (property_exists($result, Request::getOption('errors_key'))) {
-                        $this->errors = $result->errors;
-                    }
-                } else {
-                    $this->errors = $result;
-                }
+        // //handle error saving & any errors given
+        // Request::addErrorHandler(
+        //     Request::getOption('http_status.invalid'),
+        //     function ($event, $request) {
+        //         $response = Response::newInstance(Request::getApp(), $event['response']);
+        //         $result = $response->parseResponseStringToObject();
+        //         if (is_object($result)) {
+        //             if (property_exists($result, Request::getOption('errors_key'))) {
+        //                 $this->errors = $result->errors;
+        //             }
+        //         } else {
+        //             $this->errors = $result;
+        //         }
 
-                //return false, create failed
-                $this->doPostRequestCleanUp();
-                return false;
-            },
-            true
-        );
+        //         //return false, create failed
+        //         $this->doPostRequestCleanUp();
+        //         return false;
+        //     },
+        //     true
+        // );
 
 
         //set the property attributes on the request
@@ -615,7 +616,7 @@ class Model
         $response = Request::sendRequest();
 
         //handle clean response with errors
-        if ($response->getStatusCode() == 422) {
+        if (ResponseInterpreterFactory::build()->invalid($response)) {
 
             //get the errors and set them
             $result = $response->parseResponseStringToObject();
@@ -667,31 +668,33 @@ class Model
             Request::getOption('http_method_param')
         );
 
-        Request::addErrorHandler(
-            -1,
-            function ($event, $request) {
-                $response = Response::newInstance(Request::getApp(), $event['response']);
-                $result = $response->parseResponseStringToObject();
-                if (is_object($result)) {
-                    if (property_exists($result, Request::getOption('errors_key'))) {
-                        $this->errors = $result->errors;
-                    }
-                } else {
-                    $this->errors = $result;
-                }
-                return false;
-            },
-            true
-        );
 
         //actually send the request
         $response = Request::sendRequest();
 
+        //clean up anything no longer needed
         $this->doPostRequestCleanUp();
 
-        if ($response->getStatusCode() == Request::getOption('http_status.success')) {
+        $interpreter = ResponseInterpreterFactory::build();
+
+        //handle clean response with errors
+        if ($interpreter->success($response)) {
+
             return true;
-        }
+
+        } else if ($interpreter->invalid($response)) {
+
+            //get the errors and set them
+            $result = $response->parseResponseStringToObject();
+            if (is_object($result)) {
+                if (property_exists($result, Request::getOption('errors_key'))) {
+                    $this->errors = $result->errors;
+                }
+            } else {
+                $this->errors = $result;
+            }
+
+        }//end if-else
 
         return false;
     }

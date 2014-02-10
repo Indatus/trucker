@@ -302,8 +302,12 @@ class RestRequest implements RequestableInterface
      */
     public function sendRequest()
     {
-        $response = $this->request->send();
-
+        try {
+            $response = $this->request->send();
+        } catch (\Guzzle\Http\Exception\BadResponseException $e) {
+            $response = $e->getResponse();
+        }
+        
         return $this->app->make('trucker.response')->newInstance($this->app, $response);
     }
 

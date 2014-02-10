@@ -1,13 +1,12 @@
 <?php
 
-namespace Trucker\Finders\Conditions;
+namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
 
-class QueryConditionFactory extends FactoryDriver
+class ApiTransporterFactory extends FactoryDriver
 {
-
     /**
      * Function to return a string representaion of the namespace 
      * that all classes built by the factory should be contained within
@@ -16,7 +15,7 @@ class QueryConditionFactory extends FactoryDriver
      */
     public function getDriverNamespace()
     {
-        return "\Trucker\Finders\Conditions";
+        return "\Trucker\Transporters";
     }
 
 
@@ -29,7 +28,7 @@ class QueryConditionFactory extends FactoryDriver
      */
     public function getDriverNameSuffix()
     {
-        return "QueryCondition";
+        return "Transporter";
     }
 
 
@@ -53,7 +52,7 @@ class QueryConditionFactory extends FactoryDriver
      */
     public function getDriverArgumentsArray()
     {
-        return [$this->app];
+        return [];
     }
 
     /**
@@ -66,6 +65,6 @@ class QueryConditionFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::search.collection_query_condition_driver');
+        return $this->app['config']->get('trucker::transporter');
     }
 }

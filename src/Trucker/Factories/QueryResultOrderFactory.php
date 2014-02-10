@@ -1,6 +1,6 @@
 <?php
 
-namespace Trucker\Finders\Conditions;
+namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;

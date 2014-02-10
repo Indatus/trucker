@@ -160,20 +160,26 @@ class TruckerServiceProvider extends ServiceProvider
             return new Responses\Response($app);
         });
 
+        $app->bind('trucker.model', function ($app) {
+                return new Resource\Model();
+        });
+
+
+        //Factories
         $app->bind('trucker.conditions', function ($app) {
-            return new Finders\Conditions\QueryConditionFactory($app);
+            return new Factories\QueryConditionFactory($app);
         });
 
         $app->bind('trucker.transporter', function ($app) {
-            return new Transporters\ApiTransporterFactory($app);
+            return new Factories\ApiTransporterFactory($app);
         });
 
         $app->bind('trucker.order', function ($app) {
-            return new Finders\Conditions\QueryResultOrderFactory($app);
+            return new Factories\QueryResultOrderFactory($app);
         });
-        
-        $app->bind('trucker.model', function ($app) {
-                return new Resource\Model();
+
+        $app->bind('trucker.interpreter', function ($app) {
+            return new Factories\ResponseInterpreterFactory($app);
         });
 
         return $app;
