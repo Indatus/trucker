@@ -3,6 +3,7 @@
 namespace Trucker\Finders\Conditions;
 
 use Illuminate\Container\Container;
+use Trucker\Facades\Config;
 
 /**
  * Class to manage query conditions for a request, where the
@@ -142,7 +143,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
      */
     public function getLogicalOperatorAnd()
     {
-        return $this->app['config']->get('trucker::search.and_operator');
+        return Config::get('search.and_operator');
     }
 
 
@@ -154,7 +155,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
      */
     public function getLogicalOperatorOr()
     {
-        return $this->app['config']->get('trucker::search.or_operator');
+        return Config::get('search.or_operator');
     }
 
 
@@ -169,10 +170,10 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
     {
         $query     = $request->getQuery();
         
-        $conatiner = $this->app['config']->get('trucker::search.container_parameter');
-        $property  = $this->app['config']->get('trucker::search.property');
-        $operator  = $this->app['config']->get('trucker::search.operator');
-        $value     = $this->app['config']->get('trucker::search.value');
+        $conatiner = Config::get('search.container_parameter');
+        $property  = Config::get('search.property');
+        $operator  = Config::get('search.operator');
+        $value     = Config::get('search.value');
 
         $x = 0;
         foreach ($this->conditions as $condition) {
@@ -196,7 +197,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
 
         if (isset($this->logicalOperator)) {
             $query->add(
-                $this->app['config']->get('trucker::search.logical_operator'),
+                Config::get('search.logical_operator'),
                 $this->logicalOperator
             );
         }
@@ -213,10 +214,10 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
     public function toArray()
     {
 
-        $conatiner = $this->app['config']->get('trucker::search.container_parameter');
-        $property  = $this->app['config']->get('trucker::search.property');
-        $operator  = $this->app['config']->get('trucker::search.operator');
-        $value     = $this->app['config']->get('trucker::search.value');
+        $conatiner = Config::get('search.container_parameter');
+        $property  = Config::get('search.property');
+        $operator  = Config::get('search.operator');
+        $value     = Config::get('search.value');
 
         $params = [];
 
@@ -232,7 +233,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
         }//end foreach $findConditions
 
         if (isset($this->logicalOperator)) {
-            $params[$this->app['config']->get('trucker::search.logical_operator')] = $this->logicalOperator;
+            $params[Config::get('search.logical_operator')] = $this->logicalOperator;
         }
 
         return $params;

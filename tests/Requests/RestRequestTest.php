@@ -3,6 +3,7 @@
 require_once __DIR__.'/../stubs/User.php';
 
 use Trucker\Facades\Request;
+use Trucker\Facades\Config;
 use Mockery as m;
 
 class RestRequestTest extends TruckerTests
@@ -20,7 +21,7 @@ class RestRequestTest extends TruckerTests
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
         $request = new \Trucker\Requests\RestRequest($app);
-        $transporter = $request->getOption('transporter');
+        $transporter = Config::get('transporter');
 
         $this->assertEquals('json', $transporter);
     }

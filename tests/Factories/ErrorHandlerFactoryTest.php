@@ -1,6 +1,7 @@
 <?php
 
 use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Facades\Config;
 
 class ErrorHandlerFactoryTest extends TruckerTests
 {
@@ -9,7 +10,7 @@ class ErrorHandlerFactoryTest extends TruckerTests
     {
         parent::tearDown();
         $this->swapConfig([]);
-        ErrorHandlerFactory::setApp($this->app);
+        Config::setApp($this->app);
     }
 
     public function testCreateValidErrorHandler()
@@ -17,7 +18,7 @@ class ErrorHandlerFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::error_handler_driver' => 'array_response'
         ]);
-        ErrorHandlerFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $json = ErrorHandlerFactory::build();
         $this->assertTrue(
@@ -36,7 +37,7 @@ class ErrorHandlerFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::error_handler_driver' => 'invalid'
         ]);
-        ErrorHandlerFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');

@@ -2,6 +2,7 @@
 
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Facades\Config;
 
 trait GuzzleTestingTrait
 {
@@ -73,8 +74,8 @@ trait GuzzleTestingTrait
     protected function &initGuzzleRequestTest($config = array())
     {
         $this->swapConfig($config);
-        RequestFactory::setApp($this->app);
-        ErrorHandlerFactory::setApp($this->app);
+        Config::setApp($this->app);
+        Config::setApp($this->app);
         $client = RequestFactory::getClient();
         $this->trackHistory($client);
 
@@ -177,7 +178,7 @@ trait GuzzleTestingTrait
             "The HTTP method is wrong"
         );
         $this->assertEquals(
-            $this->app['config']->get('trucker::transporter'),
+            Config::get('transporter'),
             last(explode('/', $request->getHeader('Accept'))),
             "The transport language is wrong"
         );

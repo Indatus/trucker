@@ -6,6 +6,7 @@ require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 use Trucker\Responses\Collection;
 use Trucker\Facades\ConditionFactory;
 use Trucker\Facades\ResultOrderFactory;
+use Trucker\Facades\Config;
 use Mockery as m;
 
 class CollectionFinderTest extends TruckerTests
@@ -16,8 +17,7 @@ class CollectionFinderTest extends TruckerTests
     {
         parent::setUp();
         $this->swapConfig([]);
-        ConditionFactory::setApp($this->app);
-        ResultOrderFactory::setApp($this->app);
+        Config::setApp($this->app);
     }
 
     public function testFindAll()
@@ -91,12 +91,12 @@ class CollectionFinderTest extends TruckerTests
         $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
 
         $this->assertEquals(
-            $this->app['config']->get('trucker::search.and_operator'),
+            Config::get('search.and_operator'),
             $conditions->getLogicalOperatorAnd()
         );
 
         $this->assertEquals(
-            $this->app['config']->get('trucker::search.or_operator'),
+            Config::get('search.or_operator'),
             $conditions->getLogicalOperatorOr()
         );
 
@@ -204,17 +204,6 @@ class CollectionFinderTest extends TruckerTests
         );
     }
 
-
-
-    public function testAppGetterSetter()
-    {
-        $app = m::mock('Illuminate\Container\Container');
-        Trucker\Facades\Collection::setApp($app);
-        $this->assertEquals(
-            $app,
-            Trucker\Facades\Collection::getApp()
-        );
-    }
 
 
     /**

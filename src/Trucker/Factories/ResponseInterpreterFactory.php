@@ -4,6 +4,7 @@ namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
+use Trucker\Facades\Config;
 
 class ResponseInterpreterFactory extends FactoryDriver
 {
@@ -65,6 +66,6 @@ class ResponseInterpreterFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::response_interpreter_driver');
+        return Config::get('response_interpreter_driver');
     }
 }

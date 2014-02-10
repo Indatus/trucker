@@ -3,6 +3,7 @@
 require_once __DIR__.'/../stubs/User.php';
 require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
+use Trucker\Facades\Config;
 use Mockery as m;
 
 class InstanceFinderTest extends TruckerTests
@@ -58,16 +59,6 @@ class InstanceFinderTest extends TruckerTests
     }
 
 
-
-    public function testAppGetterSetter()
-    {
-        $app = m::mock('Illuminate\Container\Container');
-        Trucker\Facades\Instance::setApp($app);
-        $this->assertEquals(
-            $app,
-            Trucker\Facades\Instance::getApp()
-        );
-    }
 
 
     /**

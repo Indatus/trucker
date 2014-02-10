@@ -3,6 +3,7 @@
 require_once __DIR__.'/../stubs/User.php';
 
 use Trucker\Facades\Response;
+use Trucker\Facades\Config;
 use Mockery as m;
 
 class ResponseTest extends TruckerTests
@@ -32,7 +33,7 @@ class ResponseTest extends TruckerTests
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
         $response = new \Trucker\Responses\Response($app);
-        $transporter = $response->getOption('transporter');
+        $transporter = Config::get('transporter');
 
         $this->assertEquals('json', $transporter);
     }

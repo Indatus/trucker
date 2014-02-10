@@ -45,6 +45,7 @@ use Trucker\Facades\Response;
 use Trucker\Facades\Instance;
 use Trucker\Facades\Collection;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\Config;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\ResponseInterpreterFactory;
 use Trucker\Facades\ErrorHandlerFactory;
@@ -430,7 +431,7 @@ class Model
      */
     public function getIdentityProperty()
     {
-        return $this->identityProperty ?: RequestFactory::getOption('identity_property');
+        return $this->identityProperty ?: Config::get('identity_property');
     }
 
 
@@ -441,7 +442,7 @@ class Model
      */
     public function getScratchDiskLocation()
     {
-        return $this->scratchDiskLocation ?: RequestFactory::getOption('scratch_disk_location');
+        return $this->scratchDiskLocation ?: Config::get('scratch_disk_location');
     }
 
 
@@ -452,7 +453,7 @@ class Model
      */
     public function getBase64Indicator()
     {
-        return $this->base64Indicator ?: RequestFactory::getOption('base_64_property_indication');
+        return $this->base64Indicator ?: Config::get('base_64_property_indication');
     }
 
 
@@ -569,25 +570,25 @@ class Model
 
             //make a CREATE request
             $request->createRequest(
-                RequestFactory::getOption('base_uri'),
+                Config::get('base_uri'),
                 UrlGenerator::getCreateUri($this),
                 'POST',
                 [], //no extra headers
-                RequestFactory::getOption('http_method_param')
+                Config::get('http_method_param')
             );
 
         } else {
 
             //make an UPDATE request
             $request->createRequest(
-                RequestFactory::getOption('base_uri'),
+                Config::get('base_uri'),
                 UrlGenerator::getDeleteUri(
                     $this,
                     [':'.$this->getIdentityProperty() => $this->getId()]
                 ),
                 'PUT',
                 [], //no extra headers
-                RequestFactory::getOption('http_method_param')
+                Config::get('http_method_param')
             );
         }
 
@@ -637,14 +638,14 @@ class Model
 
         //init the request
         $request->createRequest(
-            RequestFactory::getOption('base_uri'),
+            Config::get('base_uri'),
             UrlGenerator::getDeleteUri(
                 $this,
                 [':'.$this->getIdentityProperty() => $this->getId()]
             ),
             'DELETE',
             [], //no extra headers
-            RequestFactory::getOption('http_method_param')
+            Config::get('http_method_param')
         );
 
 

@@ -5,7 +5,7 @@ use Illuminate\Container\Container;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Facade;
 use Trucker\TruckerServiceProvider;
-use Trucker\Facades\Request;
+use Trucker\Facades\Config;
 
 abstract class TruckerTests extends PHPUnit_Framework_TestCase
 {
@@ -130,6 +130,7 @@ abstract class TruckerTests extends PHPUnit_Framework_TestCase
     protected function swapConfig($config)
     {
         $this->app['config'] = $this->getConfig($config);
+        Config::setApp($this->app);
     }
 
     /**

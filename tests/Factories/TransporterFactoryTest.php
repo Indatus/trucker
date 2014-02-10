@@ -1,6 +1,7 @@
 <?php
 
 use Trucker\Facades\TransporterFactory;
+use Trucker\Facades\Config;
 
 class TransporterFactoryTest extends TruckerTests
 {
@@ -9,7 +10,7 @@ class TransporterFactoryTest extends TruckerTests
     {
         parent::tearDown();
         $this->swapConfig([]);
-        TransporterFactory::setApp($this->app);
+        Config::setApp($this->app);
     }
 
     public function testCreateValidTransporter()
@@ -17,7 +18,7 @@ class TransporterFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::transporter' => 'json'
         ]);
-        TransporterFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $json = TransporterFactory::build();
         $this->assertTrue(
@@ -36,7 +37,7 @@ class TransporterFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::transporter' => 'invalid'
         ]);
-        TransporterFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');

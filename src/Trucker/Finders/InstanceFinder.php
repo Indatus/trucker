@@ -44,6 +44,7 @@ namespace Trucker\Finders;
 use Illuminate\Container\Container;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\Config;
 use Trucker\Facades\ResponseInterpreterFactory;
 
 /**
@@ -75,29 +76,6 @@ class InstanceFinder
 
 
     /**
-     * Getter to access the IoC Container
-     * 
-     * @return Container
-     */
-    public function getApp()
-    {
-        return $this->app;
-    }
-
-
-    /**
-     * Setter for the IoC Container
-     * 
-     * @param Container
-     * @return  void
-     */
-    public function setApp($app)
-    {
-        $this->app = $app;
-    }
-
-
-    /**
      * Function to find an instance of an Entity record
      *
      * @param  Trucker\Resource\Model $model       Model to use for URL generation etc.
@@ -114,7 +92,7 @@ class InstanceFinder
 
         //init the request
         $request->createRequest(
-            RequestFactory::getOption('base_uri'),
+            Config::get('base_uri'),
             UrlGenerator::getInstanceUri($model, [':id' => $id]),
             'GET'
         );

@@ -3,6 +3,7 @@
 namespace Trucker\Finders\Conditions;
 
 use Illuminate\Container\Container;
+use Trucker\Facades\Config;
 
 /**
  * Class to manage how sorting requirements for results returned by
@@ -106,7 +107,7 @@ class GetParamsResultOrder implements QueryResultOrderInterface
      */
     public function getOrderDirectionAscending()
     {
-        return $this->app['config']->get('trucker::search.order_dir_ascending');
+        return Config::get('search.order_dir_ascending');
     }
 
 
@@ -118,7 +119,7 @@ class GetParamsResultOrder implements QueryResultOrderInterface
      */
     public function getOrderDirectionDescending()
     {
-        return $this->app['config']->get('trucker::search.order_dir_descending');
+        return Config::get('search.order_dir_descending');
     }
 
 
@@ -135,14 +136,14 @@ class GetParamsResultOrder implements QueryResultOrderInterface
 
         if (isset($this->orderByField)) {
             $query->add(
-                $this->app['config']->get('trucker::search.order_by'),
+                Config::get('search.order_by'),
                 $this->orderByField
             );
         }
 
         if (isset($this->orderDirection)) {
             $query->add(
-                $this->app['config']->get('trucker::search.order_dir'),
+                Config::get('search.order_dir'),
                 $this->orderDirection
             );
         }
@@ -157,8 +158,8 @@ class GetParamsResultOrder implements QueryResultOrderInterface
      */
     public function toArray()
     {
-        $order_by  = $this->app['config']->get('trucker::search.order_by');
-        $order_dir = $this->app['config']->get('trucker::search.order_dir');
+        $order_by  = Config::get('search.order_by');
+        $order_dir = Config::get('search.order_dir');
 
         $params             = [];
         $params[$order_by]  = $this->orderByField;

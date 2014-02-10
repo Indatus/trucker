@@ -5,6 +5,7 @@ require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
 
 use Trucker\Facades\Trucker;
 use Trucker\Facades\RequestFactory;
+use Trucker\Facades\Config;
 use Mockery as m;
 
 class ModelTest extends TruckerTests
@@ -178,7 +179,7 @@ class ModelTest extends TruckerTests
         $this->assertEquals('id', $u->getIdentityProperty());
 
         $this->swapConfig(['trucker::identity_property' => 'user_id']);
-        RequestFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $u = Trucker::newInstance();
         $this->assertEquals('user_id', $u->getIdentityProperty());
@@ -335,7 +336,7 @@ class ModelTest extends TruckerTests
 
     public function testCreateShouldFailWithErrorsKey()
     {
-        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+        $invalid_status = Config::get('http_status.invalid');
 
         $config = [
             'trucker::base_uri'          => 'http://example.com',
@@ -346,7 +347,7 @@ class ModelTest extends TruckerTests
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
-                $this->app['config']->get('trucker::errors_key')
+                Config::get('errors_key')
             ),
             $config,
             $invalid_status
@@ -372,7 +373,7 @@ class ModelTest extends TruckerTests
 
     public function testCreateShouldFailWithoutErrorsKey()
     {
-        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+        $invalid_status = Config::get('http_status.invalid');
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
@@ -466,7 +467,7 @@ class ModelTest extends TruckerTests
 
     public function testUpdateShouldFailWithErrorsKey()
     {
-        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+        $invalid_status = Config::get('http_status.invalid');
 
         $config = [
             'trucker::base_uri'          => 'http://example.com',
@@ -477,7 +478,7 @@ class ModelTest extends TruckerTests
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
-                $this->app['config']->get('trucker::errors_key')
+                Config::get('errors_key')
             ),
             $config,
             $invalid_status
@@ -505,7 +506,7 @@ class ModelTest extends TruckerTests
 
     public function testUpdateShouldFailWithoutErrorsKey()
     {
-        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+        $invalid_status = Config::get('http_status.invalid');
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
@@ -586,7 +587,7 @@ class ModelTest extends TruckerTests
 
     public function testDestroyShouldFailWithErrorsKey()
     {
-        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+        $invalid_status = Config::get('http_status.invalid');
 
         $config = [
             'trucker::base_uri'          => 'http://example.com',
@@ -597,7 +598,7 @@ class ModelTest extends TruckerTests
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
-                $this->app['config']->get('trucker::errors_key')
+                Config::get('errors_key')
             ),
             $config,
             $invalid_status
@@ -625,7 +626,7 @@ class ModelTest extends TruckerTests
 
     public function testDestroyShouldFailWithoutErrorsKey()
     {
-        $invalid_status = $this->app['config']->get('trucker::http_status.invalid');
+        $invalid_status = Config::get('http_status.invalid');
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(

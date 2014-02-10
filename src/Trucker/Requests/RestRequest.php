@@ -7,6 +7,7 @@ use Guzzle\Http\Client;
 use Trucker\Facades\TransporterFactory;
 use Trucker\Facades\ResponseInterpreterFactory;
 use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Facades\Config;
 use Trucker\Responses\RawResponse;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
@@ -39,7 +40,7 @@ class RestRequest implements RequestableInterface
 
 
     /**
-     * Build a new RequestManager
+     * Build a new RestRequest
      *
      * @param Container $app
      * @param Client    $client
@@ -52,29 +53,6 @@ class RestRequest implements RequestableInterface
 
 
     /**
-     * Getter to access the IoC Container
-     * 
-     * @return Container
-     */
-    public function getApp()
-    {
-        return $this->app;
-    }
-
-
-    /**
-     * Setter for the IoC Container
-     * 
-     * @param Container
-     * @return  void
-     */
-    public function setApp($app)
-    {
-        $this->app = $app;
-    }
-
-
-    /**
      * Getter function to access the HTTP Client
      * 
      * @return Guzzle\Http\Client
@@ -82,19 +60,6 @@ class RestRequest implements RequestableInterface
     public function &getClient()
     {
         return $this->client;
-    }
-
-
-    /**
-     * Get an option from the config file
-     *
-     * @param  string $option
-     *
-     * @return mixed
-     */
-    public function getOption($option)
-    {
-        return $this->app['config']->get('trucker::'.$option);
     }
 
 
@@ -398,7 +363,7 @@ class RestRequest implements RequestableInterface
     public function rawRequest($uri, $method, $params = array(), $getParams = array(), $files = array())
     {
         $this->request = self::createRequest(
-            self::getOption('base_uri'),
+            Config::get('base_uri'),
             $uri,
             $method
         );

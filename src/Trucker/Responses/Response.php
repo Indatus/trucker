@@ -70,19 +70,6 @@ class Response
 
 
     /**
-     * Get an option from the config file
-     *
-     * @param  string $option
-     *
-     * @return mixed
-     */
-    public function getOption($option)
-    {
-        return $this->app['config']->get('trucker::'.$option);
-    }
-
-
-    /**
      * Create a new instance of the given model.
      *
      * @param  Container $app

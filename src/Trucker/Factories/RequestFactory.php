@@ -5,6 +5,7 @@ namespace Trucker\Factories;
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
 use Guzzle\Http\Client;
+use Trucker\Facades\Config;
 
 class RequestFactory extends FactoryDriver
 {
@@ -97,6 +98,6 @@ class RequestFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::request_driver');
+        return Config::get('request_driver');
     }
 }

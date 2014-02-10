@@ -3,6 +3,7 @@
 namespace Trucker\Responses\ErrorHandlers;
 
 use Illuminate\Container\Container;
+use Trucker\Facades\Config;
 
 class ParameterKeyErrorHandler implements ErrorHandlerInterface
 {
@@ -34,7 +35,7 @@ class ParameterKeyErrorHandler implements ErrorHandlerInterface
     public function parseErrors(\Trucker\Responses\Response $response)
     {
         $result    = $response->parseResponseStringToObject();
-        $error_key = $this->app['config']->get('trucker::errors_key');
+        $error_key = Config::get('errors_key');
 
         if (property_exists($result, $error_key)) {
             return $result->errors;

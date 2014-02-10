@@ -4,6 +4,7 @@ namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
+use Trucker\Facades\Config;
 
 class ErrorHandlerFactory extends FactoryDriver
 {
@@ -65,6 +66,6 @@ class ErrorHandlerFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::error_handler_driver');
+        return Config::get('error_handler_driver');
     }
 }

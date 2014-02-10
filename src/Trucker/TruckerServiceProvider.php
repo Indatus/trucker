@@ -144,6 +144,10 @@ class TruckerServiceProvider extends ServiceProvider
             return new Url\UrlGenerator($app);
         });
 
+        $app->singleton('trucker.config-manager', function ($app) {
+            return new Support\ConfigManager($app);
+        });
+
         $app->bind('trucker.instance-finder', function ($app) {
             return new Finders\InstanceFinder($app);
         });

@@ -1,6 +1,7 @@
 <?php
 
 use Trucker\Facades\ResultOrderFactory;
+use Trucker\Facades\Config;
 
 class QueryResultOrderFactoryTest extends TruckerTests
 {
@@ -9,7 +10,7 @@ class QueryResultOrderFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::search.collection_result_order_driver' => 'get_params'
         ]);
-        ResultOrderFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $cond = ResultOrderFactory::build();
         $this->assertTrue(
@@ -28,7 +29,7 @@ class QueryResultOrderFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::search.collection_result_order_driver' => 'invalid'
         ]);
-        ResultOrderFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');

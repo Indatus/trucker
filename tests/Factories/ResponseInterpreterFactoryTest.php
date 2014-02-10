@@ -1,6 +1,7 @@
 <?php
 
 use Trucker\Facades\ResponseInterpreterFactory;
+use Trucker\Facades\Config;
 
 class ResponseInterpreterFactoryTest extends TruckerTests
 {
@@ -9,7 +10,7 @@ class ResponseInterpreterFactoryTest extends TruckerTests
     {
         parent::tearDown();
         $this->swapConfig([]);
-        ResponseInterpreterFactory::setApp($this->app);
+        Config::setApp($this->app);
     }
 
     public function testCreateValidInterpreter()
@@ -17,7 +18,7 @@ class ResponseInterpreterFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::response_interpreter_driver' => 'http_status_code'
         ]);
-        ResponseInterpreterFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $json = ResponseInterpreterFactory::build();
         $this->assertTrue(
@@ -36,7 +37,7 @@ class ResponseInterpreterFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::response_interpreter_driver' => 'invalid'
         ]);
-        ResponseInterpreterFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');

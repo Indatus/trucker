@@ -44,6 +44,7 @@ namespace Trucker\Finders;
 use Illuminate\Container\Container;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
+use Trucker\Facades\Config;
 use Trucker\Responses\Collection;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
@@ -77,29 +78,6 @@ class CollectionFinder
 
 
     /**
-     * Getter to access the IoC Container
-     * 
-     * @return Container
-     */
-    public function getApp()
-    {
-        return $this->app;
-    }
-
-
-    /**
-     * Setter for the IoC Container
-     * 
-     * @param Container
-     * @return  void
-     */
-    public function setApp($app)
-    {
-        $this->app = $app;
-    }
-
-
-    /**
      * Function to fetch a collection of Trucker\Resource\Model object
      * from the remote API.
      * 
@@ -121,7 +99,7 @@ class CollectionFinder
         
         //init the request
         $request->createRequest(
-            RequestFactory::getOption('base_uri'),
+            Config::get('base_uri'),
             UrlGenerator::getCollectionUri($model),
             'GET'
         );
@@ -149,7 +127,7 @@ class CollectionFinder
         $records = array();
 
         //figure out wether a collection key is used
-        $collection_key = RequestFactory::getOption('collection_key');
+        $collection_key = Config::get('collection_key');
 
         //set records array appropriatley
         if (isset($collection_key)) {

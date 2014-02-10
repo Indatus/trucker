@@ -1,7 +1,7 @@
 <?php
 
 use Trucker\Facades\ConditionFactory;
-use Illuminate\Support\Facades\Facade;
+use Trucker\Facades\Config;
 
 class QueryConditionFactoryTest extends TruckerTests
 {
@@ -10,7 +10,7 @@ class QueryConditionFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::search.collection_query_condition_driver' => 'get_array_params'
         ]);
-        ConditionFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $cond = ConditionFactory::build();
         $this->assertTrue(
@@ -30,21 +30,10 @@ class QueryConditionFactoryTest extends TruckerTests
         $this->swapConfig([
             'trucker::search.collection_query_condition_driver' => 'invalid'
         ]);
-        ConditionFactory::setApp($this->app);
+        Config::setApp($this->app);
 
         $this->setExpectedException('ReflectionException');
         $this->setExpectedException('InvalidArgumentException');
         $foo = ConditionFactory::build();
-    }
-
-
-    public function testAppGetterSetter()
-    {
-        $app = Mockery::mock('Illuminate\Container\Container');
-        ConditionFactory::setApp($app);
-        $this->assertEquals(
-            $app,
-            ConditionFactory::getApp()
-        );
     }
 }

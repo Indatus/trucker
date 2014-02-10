@@ -4,6 +4,7 @@ namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
+use Trucker\Facades\Config;
 
 class QueryResultOrderFactory extends FactoryDriver
 {
@@ -66,6 +67,6 @@ class QueryResultOrderFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::search.collection_result_order_driver');
+        return Config::get('search.collection_result_order_driver');
     }
 }

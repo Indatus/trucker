@@ -4,6 +4,7 @@ namespace Trucker\Factories;
 
 use Illuminate\Container\Container;
 use Trucker\Framework\FactoryDriver;
+use Trucker\Facades\Config;
 
 class ApiTransporterFactory extends FactoryDriver
 {
@@ -65,6 +66,6 @@ class ApiTransporterFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return $this->app['config']->get('trucker::transporter');
+        return Config::get('transporter');
     }
 }

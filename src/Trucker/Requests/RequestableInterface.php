@@ -15,13 +15,7 @@ interface RequestableInterface
 
     public function __construct(Container $app, $client = null);
 
-    public function getApp();
-
-    public function setApp($app);
-
     public function &getClient();
-
-    public function getOption($option);
 
     public function createRequest($baseUri, $path, $httpMethod = 'GET', $requestHeaders = array(), $httpMethodParam = null);
 
