@@ -587,28 +587,6 @@ class Model
             );
         }
 
-        // //handle error saving & any errors given
-        // Request::addErrorHandler(
-        //     Request::getOption('http_status.invalid'),
-        //     function ($event, $request) {
-        //         $response = Response::newInstance(Request::getApp(), $event['response']);
-        //         $result = $response->parseResponseStringToObject();
-        //         if (is_object($result)) {
-        //             if (property_exists($result, Request::getOption('errors_key'))) {
-        //                 $this->errors = $result->errors;
-        //             }
-        //         } else {
-        //             $this->errors = $result;
-        //         }
-
-        //         //return false, create failed
-        //         $this->doPostRequestCleanUp();
-        //         return false;
-        //     },
-        //     true
-        // );
-
-
         //set the property attributes on the request
         Request::setModelProperties($this);
 
