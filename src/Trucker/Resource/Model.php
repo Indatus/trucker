@@ -49,6 +49,7 @@ use Trucker\Facades\Config;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\ResponseInterpreterFactory;
 use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Facades\AuthFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
@@ -592,6 +593,11 @@ class Model
             );
         }
 
+        //add auth if it is needed
+        if ($auth = AuthFactory::build()) {
+            $request->authenticate($auth);
+        }
+
         //set the property attributes on the request
         $request->setModelProperties($this);
 
@@ -648,6 +654,10 @@ class Model
             Config::get('http_method_param')
         );
 
+        //add auth if it is needed
+        if ($auth = AuthFactory::build()) {
+            $request->authenticate($auth);
+        }
 
         //actually send the request
         $response = $request->sendRequest();

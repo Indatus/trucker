@@ -45,6 +45,7 @@ use Illuminate\Container\Container;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\Config;
+use Trucker\Facades\AuthFactory;
 use Trucker\Responses\Collection;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
@@ -103,6 +104,11 @@ class CollectionFinder
             UrlGenerator::getCollectionUri($model),
             'GET'
         );
+
+        //add auth if it is needed
+        if ($auth = AuthFactory::build()) {
+            $request->authenticate($auth);
+        }
 
         //add query conditions if needed
         if ($condition) {

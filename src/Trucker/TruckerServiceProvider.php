@@ -190,6 +190,10 @@ class TruckerServiceProvider extends ServiceProvider
             return new Factories\RequestFactory($app);
         });
 
+        $app->bind('trucker.auth', function ($app) {
+            return new Factories\AuthFactory($app);
+        });
+
         return $app;
     }
 

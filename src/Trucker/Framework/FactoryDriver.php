@@ -35,11 +35,18 @@ abstract class FactoryDriver
      */
     public function build()
     {
+        //get the driver to build
+        $driver = $this->getDriverConfigValue();
+
+        //return null if there's nothing to build.
+        if (is_null($driver)) {
+            return null;
+        }
+
         //get the prefix, suffix and namespace for the driver class
         $prefix = $this->getDriverNamePrefix();
         $suffix = $this->getDriverNameSuffix();
         $ns     = $this->getDriverNamespace();
-        $driver = $this->getDriverConfigValue();
 
         //use naming convention to convert the driver name
         //into a fully quantified class name

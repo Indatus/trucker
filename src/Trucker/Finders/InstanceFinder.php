@@ -45,6 +45,7 @@ use Illuminate\Container\Container;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
 use Trucker\Facades\Config;
+use Trucker\Facades\AuthFactory;
 use Trucker\Facades\ResponseInterpreterFactory;
 
 /**
@@ -97,6 +98,10 @@ class InstanceFinder
             'GET'
         );
 
+        //add auth if it is needed
+        if ($auth = AuthFactory::build()) {
+            $request->authenticate($auth);
+        }
 
         //set any get parameters on the request
         $request->setGetParameters($getParams);

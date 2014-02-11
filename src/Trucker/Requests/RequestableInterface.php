@@ -5,6 +5,7 @@ namespace Trucker\Requests;
 use Illuminate\Container\Container;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
+use Trucker\Requests\Auth\AuthenticationInterface;
 use Trucker\Resource\Model;
 
 /**
@@ -18,8 +19,6 @@ interface RequestableInterface
     public function &getClient();
 
     public function createRequest($baseUri, $path, $httpMethod = 'GET', $requestHeaders = array(), $httpMethodParam = null);
-
-    public function setBasicAuth($username, $password);
 
     public function setHeaders($requestHeaders = array());
 
@@ -38,6 +37,8 @@ interface RequestableInterface
     public function addQueryCondition(QueryConditionInterface $condition);
 
     public function addQueryResultOrder(QueryResultOrderInterface $resultOrder);
+
+    public function authenticate(AuthenticationInterface $auth);
 
     public function sendRequest();
 }

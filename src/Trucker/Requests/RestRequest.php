@@ -11,6 +11,7 @@ use Trucker\Facades\Config;
 use Trucker\Responses\RawResponse;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
+use Trucker\Requests\Auth\AuthenticationInterface;
 use Trucker\Resource\Model;
 
 class RestRequest implements RequestableInterface
@@ -99,20 +100,6 @@ class RestRequest implements RequestableInterface
         $this->setTransportLanguage();
 
         return $this->request;
-    }
-
-
-    /**
-     * Function to set HTTP Basic Authentication parameters
-     * on the request
-     *     
-     * @param string $username username for basic auth
-     * @param string $password password for basic auth
-     * @return  void
-     */
-    public function setBasicAuth($username, $password)
-    {
-        $this->request->setAuth($username, $password);
     }
 
 
@@ -252,12 +239,25 @@ class RestRequest implements RequestableInterface
     /**
      * Function to add Query result ordering conditions to the request
      * 
-     * @param  QueryResultOrderInterface $resultOrder [description]
+     * @param  QueryResultOrderInterface $resultOrder
      * @return void
      */
     public function addQueryResultOrder(QueryResultOrderInterface $resultOrder)
     {
         $resultOrder->addToRequest($this->request);
+    }
+
+
+
+    /**
+     * Function to add authentication to the request
+     * 
+     * @param  AuthenticationInterface $auth
+     * @return void
+     */
+    public function authenticate(AuthenticationInterface $auth)
+    {
+        $auth->authenticateRequest($this->request);
     }
 
 

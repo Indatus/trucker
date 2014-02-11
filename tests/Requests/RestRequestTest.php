@@ -122,19 +122,6 @@ class RestRequestTest extends TruckerTests
 
 
 
-    public function testBasicAuth()
-    {
-        $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
-            ['method' => 'setAuth', 'args' => ['fooUsername', 'barPassword']],
-        ]);
-
-        $request->createRequest('http://example.com', '/users', 'GET');
-        $request->setBasicAuth('fooUsername', 'barPassword');
-    }
-
-
-
     public function testSettingHeaders()
     {
         $request = $this->simpleMockRequest([
@@ -194,6 +181,21 @@ class RestRequestTest extends TruckerTests
         $o->shouldReceive('addToRequest')->with($r)->once();
 
         $request->addQueryResultOrder($o);
+    }
+
+
+
+    public function testAddAuthentication()
+    {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+        ]);
+        $r = $request->createRequest('http://example.com', '/users', 'GET');
+
+        $auth = m::mock('Trucker\Requests\Auth\AuthenticationInterface');
+        $auth->shouldReceive('authenticateRequest')->with($r)->once();
+
+        $request->authenticate($auth);
     }
 
 
