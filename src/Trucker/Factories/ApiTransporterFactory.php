@@ -20,6 +20,18 @@ class ApiTransporterFactory extends FactoryDriver
     }
 
 
+     /**
+     * Function to return the interface that the driver's produced
+     * by the factory must implement
+     * 
+     * @return string
+     */
+    public function getDriverInterface()
+    {
+        return "\Trucker\Transporters\TransporterInterface";
+    }
+
+
     /**
      * Function to return a string that should be suffixed
      * to the studly-cased driver name of all the drivers

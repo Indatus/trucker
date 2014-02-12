@@ -58,8 +58,15 @@ abstract class FactoryDriver
         } catch (\ReflectionException $e) {
             throw new \InvalidArgumentException("Unsupported driver [{$driver}] to load [{$fqcn}]");
         }
+
+        //make sure the driver implements the interface properly
+        $interface = $this->getDriverInterface();
+        if (! $refl->implementsInterface($interface)) {
+            throw new \InvalidArgumentException("Unsupported interface [{$driver}] must implement [{$interface}]");
+        }
         
         $instance = $refl->newInstanceArgs($this->getDriverArgumentsArray());
+
 
         return $instance;
     }
@@ -72,6 +79,15 @@ abstract class FactoryDriver
      * @return string - namespace string
      */
     abstract public function getDriverNamespace();
+
+
+    /**
+     * Function to return the interface that the driver's produced
+     * by the factory must implement
+     * 
+     * @return Interface
+     */
+    abstract public function getDriverInterface();
 
 
     /**
