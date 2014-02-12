@@ -25,7 +25,7 @@ class ResponseTest extends TruckerTests
     {
         $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
-        $config->shouldReceive('get')->with('trucker::transporter')
+        $config->shouldReceive('get')->with('trucker::transporter.driver')
             ->andReturn('json');
 
         $app = m::mock('Illuminate\Container\Container');
@@ -33,7 +33,7 @@ class ResponseTest extends TruckerTests
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
         $response = new \Trucker\Responses\Response($app);
-        $transporter = Config::get('transporter');
+        $transporter = Config::get('transporter.driver');
 
         $this->assertEquals('json', $transporter);
     }
@@ -65,7 +65,7 @@ class ResponseTest extends TruckerTests
     {
         $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
-        $config->shouldReceive('get')->with('trucker::transporter')
+        $config->shouldReceive('get')->with('trucker::transporter.driver')
             ->andReturn('json');
 
         $app = m::mock('Illuminate\Container\Container');
@@ -90,7 +90,7 @@ class ResponseTest extends TruckerTests
     {
         $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
-        $config->shouldReceive('get')->with('trucker::transporter')
+        $config->shouldReceive('get')->with('trucker::transporter.driver')
             ->andReturn('json');
 
         $app = m::mock('Illuminate\Container\Container');

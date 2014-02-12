@@ -79,6 +79,6 @@ class QueryResultOrderFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('search.collection_result_order_driver');
+        return Config::get('result_order.driver');
     }
 }

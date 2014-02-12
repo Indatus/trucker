@@ -16,7 +16,7 @@ class ErrorHandlerFactoryTest extends TruckerTests
     public function testCreateValidErrorHandler()
     {
         $this->swapConfig([
-            'trucker::error_handler_driver' => 'array_response'
+            'trucker::error_handler.driver' => 'array_response'
         ]);
         Config::setApp($this->app);
 
@@ -35,7 +35,7 @@ class ErrorHandlerFactoryTest extends TruckerTests
     public function testCreateInvalidTransporter()
     {
         $this->swapConfig([
-            'trucker::error_handler_driver' => 'invalid'
+            'trucker::error_handler.driver' => 'invalid'
         ]);
         Config::setApp($this->app);
 

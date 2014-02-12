@@ -17,8 +17,8 @@ class ParameterKeyErrorHandlerTest extends TruckerTests
 
 
         $this->swapConfig([
-            'trucker::error_handler_driver'   => 'parameter_key',
-            'trucker::errors_key' => 'errors'
+            'trucker::error_handler.driver'   => 'parameter_key',
+            'trucker::error_handler.errors_key' => 'errors'
         ]);
         $handler = new ParameterKeyErrorHandler($this->app);
 

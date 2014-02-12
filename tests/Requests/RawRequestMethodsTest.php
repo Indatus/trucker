@@ -24,8 +24,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri,
-                'trucker::request_driver' => 'rest'
+                'trucker::request.base_uri' => $base_uri,
+                'trucker::request.driver' => 'rest'
             ]),
             //
             //expcted status
@@ -85,8 +85,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri,
-                'trucker::request_driver' => 'rest'
+                'trucker::request.base_uri' => $base_uri,
+                'trucker::request.driver' => 'rest'
             ]),
             //
             //expcted status
@@ -147,8 +147,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri,
-                'trucker::request_driver' => 'rest'
+                'trucker::request.base_uri' => $base_uri,
+                'trucker::request.driver' => 'rest'
             ]),
             //
             //expcted status
@@ -209,8 +209,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri,
-                'trucker::request_driver' => 'rest'
+                'trucker::request.base_uri' => $base_uri,
+                'trucker::request.driver' => 'rest'
             ]),
             //
             //expcted status
@@ -271,8 +271,8 @@ class RawRequestMethodsTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri,
-                'trucker::request_driver' => 'rest'
+                'trucker::request.base_uri' => $base_uri,
+                'trucker::request.driver' => 'rest'
             ]),
             //
             //expcted status

@@ -35,7 +35,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function success(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('http_status.success');
+        return $response->getStatusCode() == Config::get('response.http_status.success');
     }
 
 
@@ -48,7 +48,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function notFound(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('http_status.not_found');
+        return $response->getStatusCode() == Config::get('response.http_status.not_found');
     }
 
 
@@ -61,7 +61,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function invalid(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('http_status.invalid');
+        return $response->getStatusCode() == Config::get('response.http_status.invalid');
     }
 
 
@@ -74,6 +74,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function error(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('http_status.error');
+        return $response->getStatusCode() == Config::get('response.http_status.error');
     }
 }

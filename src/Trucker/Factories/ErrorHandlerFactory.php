@@ -78,6 +78,6 @@ class ErrorHandlerFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('error_handler_driver');
+        return Config::get('error_handler.driver');
     }
 }

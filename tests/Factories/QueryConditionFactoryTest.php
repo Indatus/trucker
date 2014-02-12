@@ -8,7 +8,7 @@ class QueryConditionFactoryTest extends TruckerTests
     public function testCreateValidQueryConditionDriver()
     {
         $this->swapConfig([
-            'trucker::search.collection_query_condition_driver' => 'get_array_params'
+            'trucker::query_condition.driver' => 'get_array_params'
         ]);
         Config::setApp($this->app);
 
@@ -28,7 +28,7 @@ class QueryConditionFactoryTest extends TruckerTests
     public function testCreateInvalidQueryConditionDriver()
     {
         $this->swapConfig([
-            'trucker::search.collection_query_condition_driver' => 'invalid'
+            'trucker::query_condition.driver' => 'invalid'
         ]);
         Config::setApp($this->app);
 

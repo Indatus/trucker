@@ -38,10 +38,10 @@ class HttpStatusCodeInterpreterTest extends TruckerTests
     private function getInterpreter()
     {
         $this->swapConfig([
-            'trucker::http_status.success'   => '200',
-            'trucker::http_status.not_found' => '404',
-            'trucker::http_status.invalid'   => '422',
-            'trucker::http_status.error'     => '500',
+            'trucker::response.http_status.success'   => '200',
+            'trucker::response.http_status.not_found' => '404',
+            'trucker::response.http_status.invalid'   => '422',
+            'trucker::response.http_status.error'     => '500',
         ]);
         return new HttpStatusCodeInterpreter($this->app);
     }

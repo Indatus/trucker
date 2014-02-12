@@ -100,7 +100,7 @@ class CollectionFinder
         
         //init the request
         $request->createRequest(
-            Config::get('base_uri'),
+            Config::get('request.base_uri'),
             UrlGenerator::getCollectionUri($model),
             'GET'
         );
@@ -133,7 +133,7 @@ class CollectionFinder
         $records = array();
 
         //figure out wether a collection key is used
-        $collection_key = Config::get('collection_key');
+        $collection_key = Config::get('resource.collection_key');
 
         //set records array appropriatley
         if (isset($collection_key)) {

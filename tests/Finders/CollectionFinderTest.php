@@ -91,12 +91,12 @@ class CollectionFinderTest extends TruckerTests
         $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
 
         $this->assertEquals(
-            Config::get('search.and_operator'),
+            Config::get('query_condition.and_operator'),
             $conditions->getLogicalOperatorAnd()
         );
 
         $this->assertEquals(
-            Config::get('search.or_operator'),
+            Config::get('query_condition.or_operator'),
             $conditions->getLogicalOperatorOr()
         );
 
@@ -170,8 +170,8 @@ class CollectionFinderTest extends TruckerTests
     public function testFindAllWithCollectionKeyOption()
     {
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::collection_key'    => 'collection'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::resource.collection_key'    => 'collection'
         ];
 
         $this->setupIndividualTest(
@@ -285,7 +285,7 @@ class CollectionFinderTest extends TruckerTests
 
         extract($options);
 
-        $config_overrides = empty($config_overrides) ? ['trucker::base_uri' => $base_uri] : $config_overrides;
+        $config_overrides = empty($config_overrides) ? ['trucker::request.base_uri' => $base_uri] : $config_overrides;
 
         //mock the response we expect
         $this->mockHttpResponse(

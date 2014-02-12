@@ -363,7 +363,7 @@ class RestRequest implements RequestableInterface
     public function rawRequest($uri, $method, $params = array(), $getParams = array(), $files = array())
     {
         $this->request = self::createRequest(
-            Config::get('base_uri'),
+            Config::get('request.base_uri'),
             $uri,
             $method
         );

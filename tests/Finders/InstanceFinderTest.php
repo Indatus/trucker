@@ -102,7 +102,7 @@ class InstanceFinderTest extends TruckerTests
             //config overrides & return client
             //
             $this->initGuzzleRequestTest([
-                'trucker::base_uri' => $base_uri
+                'trucker::request.base_uri' => $base_uri
             ]),
             //
             //expcted status

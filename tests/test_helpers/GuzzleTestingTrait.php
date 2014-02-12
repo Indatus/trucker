@@ -120,7 +120,7 @@ trait GuzzleTestingTrait
             $request->getPath(),
             "The request path is wrong"
         );
-
+        
         $this->assertTrue(
             $this->arraysAreSimilar(
                 $queryParams,
@@ -178,7 +178,7 @@ trait GuzzleTestingTrait
             "The HTTP method is wrong"
         );
         $this->assertEquals(
-            Config::get('transporter'),
+            Config::get('transporter.driver'),
             last(explode('/', $request->getHeader('Accept'))),
             "The transport language is wrong"
         );

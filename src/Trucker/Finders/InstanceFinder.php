@@ -93,7 +93,7 @@ class InstanceFinder
 
         //init the request
         $request->createRequest(
-            Config::get('base_uri'),
+            Config::get('request.base_uri'),
             UrlGenerator::getInstanceUri($model, [':id' => $id]),
             'GET'
         );

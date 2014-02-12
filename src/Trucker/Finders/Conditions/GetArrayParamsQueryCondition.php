@@ -143,7 +143,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
      */
     public function getLogicalOperatorAnd()
     {
-        return Config::get('search.and_operator');
+        return Config::get('query_condition.get_array_params.and_operator');
     }
 
 
@@ -155,7 +155,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
      */
     public function getLogicalOperatorOr()
     {
-        return Config::get('search.or_operator');
+        return Config::get('query_condition.get_array_params.or_operator');
     }
 
 
@@ -170,10 +170,10 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
     {
         $query     = $request->getQuery();
         
-        $conatiner = Config::get('search.container_parameter');
-        $property  = Config::get('search.property');
-        $operator  = Config::get('search.operator');
-        $value     = Config::get('search.value');
+        $conatiner = Config::get('query_condition.get_array_params.container_parameter');
+        $property  = Config::get('query_condition.get_array_params.property');
+        $operator  = Config::get('query_condition.get_array_params.operator');
+        $value     = Config::get('query_condition.get_array_params.value');
 
         $x = 0;
         foreach ($this->conditions as $condition) {
@@ -197,7 +197,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
 
         if (isset($this->logicalOperator)) {
             $query->add(
-                Config::get('search.logical_operator'),
+                Config::get('query_condition.get_array_params.logical_operator'),
                 $this->logicalOperator
             );
         }
@@ -214,10 +214,10 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
     public function toArray()
     {
 
-        $conatiner = Config::get('search.container_parameter');
-        $property  = Config::get('search.property');
-        $operator  = Config::get('search.operator');
-        $value     = Config::get('search.value');
+        $conatiner = Config::get('query_condition.get_array_params.container_parameter');
+        $property  = Config::get('query_condition.get_array_params.property');
+        $operator  = Config::get('query_condition.get_array_params.operator');
+        $value     = Config::get('query_condition.get_array_params.value');
 
         $params = [];
 
@@ -233,7 +233,7 @@ class GetArrayParamsQueryCondition implements QueryConditionInterface
         }//end foreach $findConditions
 
         if (isset($this->logicalOperator)) {
-            $params[Config::get('search.logical_operator')] = $this->logicalOperator;
+            $params[Config::get('query_condition.get_array_params.logical_operator')] = $this->logicalOperator;
         }
 
         return $params;

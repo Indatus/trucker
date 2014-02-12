@@ -79,6 +79,6 @@ class QueryConditionFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('search.collection_query_condition_driver');
+        return Config::get('query_condition.driver');
     }
 }

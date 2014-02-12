@@ -67,6 +67,9 @@ abstract class FactoryDriver
         
         $instance = $refl->newInstanceArgs($this->getDriverArgumentsArray());
 
+        if (is_null($instance)) {
+            throw new \InvalidArgumentException("Driver [{$driver}] failed to create an instance");
+        }
 
         return $instance;
     }

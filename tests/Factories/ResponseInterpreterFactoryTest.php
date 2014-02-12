@@ -16,7 +16,7 @@ class ResponseInterpreterFactoryTest extends TruckerTests
     public function testCreateValidInterpreter()
     {
         $this->swapConfig([
-            'trucker::response_interpreter_driver' => 'http_status_code'
+            'trucker::response.driver' => 'http_status_code'
         ]);
         Config::setApp($this->app);
 
@@ -35,7 +35,7 @@ class ResponseInterpreterFactoryTest extends TruckerTests
     public function testCreateInvalidInterpreter()
     {
         $this->swapConfig([
-            'trucker::response_interpreter_driver' => 'invalid'
+            'trucker::response.driver' => 'invalid'
         ]);
         Config::setApp($this->app);
 

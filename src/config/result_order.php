@@ -30,6 +30,14 @@
 
     'get_params' => [
 
+        // Name of the parameter key used to identify the property to order
+        // search results by
+        'order_by' => 'order_by',
+
+        // Name of the parameter key used to identify the order direction
+        // of search results when providing the 'order_by' parameter
+        'order_dir' => 'order_dir',
+
         // Name of the parameter value for specifying ascending result ordering
         'order_dir_ascending' => 'ASC',
 

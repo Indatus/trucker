@@ -8,7 +8,7 @@ class QueryResultOrderFactoryTest extends TruckerTests
     public function testCreateValidResultOrderDriver()
     {
         $this->swapConfig([
-            'trucker::search.collection_result_order_driver' => 'get_params'
+            'trucker::result_order.driver' => 'get_params'
         ]);
         Config::setApp($this->app);
 
@@ -27,7 +27,7 @@ class QueryResultOrderFactoryTest extends TruckerTests
     public function testCreateInvalidResultOrderDriver()
     {
         $this->swapConfig([
-            'trucker::search.collection_result_order_driver' => 'invalid'
+            'trucker::result_order.driver' => 'invalid'
         ]);
         Config::setApp($this->app);
 

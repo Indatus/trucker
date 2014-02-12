@@ -178,7 +178,7 @@ class ModelTest extends TruckerTests
         $u = Trucker::newInstance();
         $this->assertEquals('id', $u->getIdentityProperty());
 
-        $this->swapConfig(['trucker::identity_property' => 'user_id']);
+        $this->swapConfig(['trucker::resource.identity_property' => 'user_id']);
         Config::setApp($this->app);
 
         $u = Trucker::newInstance();
@@ -304,8 +304,8 @@ class ModelTest extends TruckerTests
     {
         //setup our creation mocks, expected results etc
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::http_method_param' => '_method'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::request.http_method_param' => '_method'
         ];
         $this->setupIndividualTest($this->getCreateTestOptions(), $config);
 
@@ -336,18 +336,18 @@ class ModelTest extends TruckerTests
 
     public function testCreateShouldFailWithErrorsKey()
     {
-        $invalid_status = Config::get('http_status.invalid');
+        $invalid_status = Config::get('response.http_status.invalid');
 
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::error_handler_driver' => 'parameter_key',
-            'trucker::errors_key' => 'errors'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::error_handler.driver' => 'parameter_key',
+            'trucker::error_handler.errors_key' => 'errors'
         ];
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
-                Config::get('errors_key')
+                Config::get('error_handler.errors_key')
             ),
             $config,
             $invalid_status
@@ -373,7 +373,7 @@ class ModelTest extends TruckerTests
 
     public function testCreateShouldFailWithoutErrorsKey()
     {
-        $invalid_status = Config::get('http_status.invalid');
+        $invalid_status = Config::get('response.http_status.invalid');
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
@@ -433,8 +433,8 @@ class ModelTest extends TruckerTests
     {
         //setup our creation mocks, expected results etc
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::http_method_param' => '_method'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::request.http_method_param' => '_method'
         ];
         $this->setupIndividualTest($this->getUpdateTestOptions(), $config);
 
@@ -467,18 +467,18 @@ class ModelTest extends TruckerTests
 
     public function testUpdateShouldFailWithErrorsKey()
     {
-        $invalid_status = Config::get('http_status.invalid');
+        $invalid_status = Config::get('response.http_status.invalid');
 
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::error_handler_driver' => 'parameter_key',
-            'trucker::errors_key' => 'errors'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::error_handler.driver' => 'parameter_key',
+            'trucker::error_handler.errors_key' => 'errors'
         ];
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
-                Config::get('errors_key')
+                Config::get('error_handler.errors_key')
             ),
             $config,
             $invalid_status
@@ -506,7 +506,7 @@ class ModelTest extends TruckerTests
 
     public function testUpdateShouldFailWithoutErrorsKey()
     {
-        $invalid_status = Config::get('http_status.invalid');
+        $invalid_status = Config::get('response.http_status.invalid');
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
@@ -562,8 +562,8 @@ class ModelTest extends TruckerTests
     {
         //setup our creation mocks, expected results etc
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::http_method_param' => '_method'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::request.http_method_param' => '_method'
         ];
         $this->setupIndividualTest($this->getCreateTestOptions(), $config);
 
@@ -587,18 +587,18 @@ class ModelTest extends TruckerTests
 
     public function testDestroyShouldFailWithErrorsKey()
     {
-        $invalid_status = Config::get('http_status.invalid');
+        $invalid_status = Config::get('response.http_status.invalid');
 
         $config = [
-            'trucker::base_uri'          => 'http://example.com',
-            'trucker::error_handler_driver' => 'parameter_key',
-            'trucker::errors_key' => 'errors'
+            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::error_handler.driver' => 'parameter_key',
+            'trucker::error_handler.errors_key' => 'errors'
         ];
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
             $this->getSaveErrorTestOptions(
-                Config::get('errors_key')
+                Config::get('error_handler.errors_key')
             ),
             $config,
             $invalid_status
@@ -626,7 +626,7 @@ class ModelTest extends TruckerTests
 
     public function testDestroyShouldFailWithoutErrorsKey()
     {
-        $invalid_status = Config::get('http_status.invalid');
+        $invalid_status = Config::get('response.http_status.invalid');
 
         //setup our creation mocks, expected results etc
         $this->setupIndividualTest(
@@ -752,7 +752,7 @@ class ModelTest extends TruckerTests
 
         extract($options);
 
-        $config_overrides = empty($config_overrides) ? ['trucker::base_uri' => $base_uri] : $config_overrides;
+        $config_overrides = empty($config_overrides) ? ['trucker::request.base_uri' => $base_uri] : $config_overrides;
 
         //mock the response we expect
         $this->mockHttpResponse(

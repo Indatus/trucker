@@ -16,14 +16,15 @@ class TransporterFactoryTest extends TruckerTests
     public function testCreateValidTransporter()
     {
         $this->swapConfig([
-            'trucker::transporter' => 'json'
+            'trucker::transporter.driver' => 'json'
         ]);
         Config::setApp($this->app);
 
         $json = TransporterFactory::build();
         $this->assertTrue(
             ($json instanceof \Trucker\Transporters\JsonTransporter),
-            "Expected transporter to be Trucker\Transporters\JsonTransporter"
+            "Expected transporter to be Trucker\Transporters\JsonTransporter\n".
+            "But it was ". get_class($json)
         );
 
         $this->assertTrue(
@@ -35,7 +36,7 @@ class TransporterFactoryTest extends TruckerTests
     public function testCreateInvalidTransporter()
     {
         $this->swapConfig([
-            'trucker::transporter' => 'invalid'
+            'trucker::transporter.driver' => 'invalid'
         ]);
         Config::setApp($this->app);
 

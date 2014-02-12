@@ -16,7 +16,7 @@ class ArrayResponseErrorHandlerTest extends TruckerTests
 
 
         $this->swapConfig([
-            'trucker::error_handler_driver'   => 'array_response'
+            'trucker::error_handler.driver'   => 'array_response'
         ]);
         $handler = new ArrayResponseErrorHandler($this->app);
 
