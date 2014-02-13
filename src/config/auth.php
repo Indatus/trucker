@@ -21,8 +21,8 @@
 
     //credentials for HTTP Basic Authentication
     'basic' => [
-        'username' => null,
-        'password' => null,
+        'username' => '{basic_username}',
+        'password' => '{basic_password}',
     ],
 
 );

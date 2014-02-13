@@ -98,9 +98,32 @@ class TruckerServiceProvider extends ServiceProvider
 
         $serviceProvider = new static($app);
 
+        //bind paths
+        $app = $serviceProvider->bindPaths($app);
+
         // Bind classes
         $app = $serviceProvider->bindCoreClasses($app);
         $app = $serviceProvider->bindClasses($app);
+
+        return $app;
+    }
+
+
+    /**
+     * Bind the Trucker paths
+     *
+     * @param Container $app
+     *
+     * @return Container
+     */
+    public function bindPaths(Container $app)
+    {
+        $app->bind('trucker.bootstrapper', function ($app) {
+            return new Bootstrapper($app);
+        });
+
+        // Bind paths
+        $app['trucker.bootstrapper']->bindPaths();
 
         return $app;
     }
@@ -210,17 +233,21 @@ class TruckerServiceProvider extends ServiceProvider
      */
     protected function registerConfig(Container $app)
     {
-        // Register config file
+        // Register config file(filename)
         $app['config']->package('indatus/trucker', __DIR__.'/../config');
         $app['config']->getLoader();
 
 
         // Register custom config
-        $config_key = 'path.trucker.config';
-        $custom = array_key_exists($config_key, $app) ? $app[$config_key] : null;
+        $custom = $app['path.trucker.config'];
         if (file_exists($custom)) {
             $app['config']->afterLoading('trucker', function ($me, $group, $items) use ($custom) {
-                $customItems = include $custom.'/'.$group.'.php';
+                $customItems = $custom.'/'.$group.'.php';
+                if (!file_exists($customItems)) {
+                    return $items;
+                }
+
+                $customItems = include $customItems;
 
                 return array_replace_recursive($items, $customItems);
             });
