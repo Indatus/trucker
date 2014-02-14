@@ -75,8 +75,9 @@ class Model
     protected $app;
 
     /**
-     * Property to overwrite the getResourceName()
-     * function with a static value
+     * The name of the resource which is used to determine
+     * the resource URI through the use of reflection.  By default
+     * if this is not set the class name will be used.
      *
      * @var string
      */
@@ -105,13 +106,18 @@ class Model
      * You could do this before a call like:
      *
      * <code>
-     * Employee::nestedUnder('Company:100');
-     * $e = Employee::find(1);
+     * $e = new Employee;
+     * $e->nestedUnder = 'Company:100';
+     * $found = Employee::find(1, [], $e);
+     * //this would generate /companies/100/employees/1
      * </code>
      *
-     * <code>
-     * //this would hit /companies/100/employees/1
-     * </code>
+     *
+     * This value can be nested as a comma separated string as well.
+     * So you could set something like 
+     * "Company:company_id,Employee:employee_id,Preference:pref_id"
+     * which would generate
+     * /companies/:company_id/employees/:employee_id/preferences/:pref_id
      *
      * @var string
      */
@@ -531,11 +537,13 @@ class Model
      *
      * @param  int           $id          The primary identifier value for the record
      * @param  array         $getParams   Array of GET parameters to pass
+     * @param  Trucker\Resource\Model $instance An instance to use for interpreting url values
      * @return Trucker\Resource\Model              An instance of the entity requested
      */
-    public static function find($id, $getParams = [])
+    public static function find($id, $getParams = [], Model $instance = null)
     {
-        return Instance::fetch(new static, $id, $getParams);
+        $m = $instance ?: new static;
+        return Instance::fetch($m, $id, $getParams);
     }
 
 
