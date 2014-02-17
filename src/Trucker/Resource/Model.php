@@ -30,13 +30,6 @@ use Trucker\Finders\Conditions\QueryResultOrderInterface;
 class Model
 {
     /**
-     * The Trucker version
-     *
-     * @var string
-     */
-    const VERSION = '1.0';
-
-    /**
      * The IoC Container
      *
      * @var Container
