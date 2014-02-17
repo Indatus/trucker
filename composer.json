@@ -29,7 +29,7 @@
         "illuminate/config": "~4",
         "illuminate/container": "~4",
         "guzzle/guzzle": "~3.7",
-        "doctrine/inflector": "1.0.*@dev",
+        "doctrine/inflector": "1.0",
         "patchwork/utf8": "1.1.*"
     },
     "require-dev": {
