@@ -4,7 +4,7 @@
 
 Trucker is a PHP package for mapping remote API resources (usually RESTful) as models in an ActiveResource style. The benefit is easier use of remote APIs in a fast and clean programming interface.
 
-<img align="left" height="300" src="https://raw.github.com/Indatus/trucker/gh-pages/images/TruckerReadMe.png">
+<img align="left" height="300" src="https://s3-us-west-2.amazonaws.com/truckerphp/TruckerReadMe.png">
 
 
 ```php
