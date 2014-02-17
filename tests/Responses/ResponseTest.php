@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__.'/../stubs/User.php';
-
 use Trucker\Facades\Response;
 use Trucker\Facades\Config;
 use Mockery as m;

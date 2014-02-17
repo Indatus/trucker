@@ -1,8 +1,5 @@
 <?php
 
-require_once __DIR__.'/../stubs/User.php';
-require_once __DIR__.'/../test_helpers/GuzzleTestingTrait.php';
-
 use Trucker\Responses\Collection;
 use Trucker\Facades\ConditionFactory;
 use Trucker\Facades\ResultOrderFactory;
