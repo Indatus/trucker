@@ -360,7 +360,7 @@ class Model
     protected function handleBase64File($property, $value)
     {
         $image = base64_decode($value);
-        $imgData = getimagesizefromstring($image);
+        $imgData = \getimagesizefromstring($image);
         $mimeExp = explode("/", $imgData['mime']);
         $ext = end($mimeExp);
         $output_file = implode(
