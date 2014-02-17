@@ -1,5 +1,7 @@
 <?php namespace Trucker\Support;
 
+use Illuminate\Support\Pluralizer;
+
 /**
  * Credit where credit is due... This class was coppied from Illuminate\Support\Str
  * In the Laravel framework

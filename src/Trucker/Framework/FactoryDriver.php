@@ -3,6 +3,7 @@
 namespace Trucker\Framework;
 
 use Illuminate\Container\Container;
+use Trucker\Support\Str;
 
 abstract class FactoryDriver
 {
@@ -50,7 +51,7 @@ abstract class FactoryDriver
 
         //use naming convention to convert the driver name
         //into a fully quantified class name
-        $klass = studly_case($driver);
+        $klass = Str::studly($driver);
         $fqcn  = "{$ns}\\{$prefix}{$klass}{$suffix}";
 
         try {
