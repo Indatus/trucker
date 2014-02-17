@@ -1,12 +1,12 @@
 <?php namespace Trucker\Support;
 
-use Illuminate\Support\Pluralizer;
-
 /**
- * Credit where credit is due... This class was coppied from Illuminate\Support\Str
- * In the Laravel framework
+ * Attribution: This file is part of the Laravel Framework, see Illuminate\Support\Str
+ *
  * @see https://github.com/laravel/framework/blob/master/src/Illuminate/Support/Str.php
  */
+use Illuminate\Support\Pluralizer;
+
 class Str
 {
 
@@ -368,5 +368,4 @@ class Str
 
         throw new \BadMethodCallException("Method {$method} does not exist.");
     }
-
 }

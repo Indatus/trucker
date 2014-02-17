@@ -4,7 +4,7 @@
     "keywords":["trucker", "activeresource", "active resource"],
     "type": "library",
     "homepage": "http://indatus.com/",
-    "license": "BSD-3-Clause",
+    "license": "MIT",
     "authors": [
         {
             "name": "Brian Webb",

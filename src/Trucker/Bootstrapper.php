@@ -1,5 +1,6 @@
 <?php
-/*
+
+/**
  * This file is derived largley from the Igniter class
  * in the Rocketeer package which is licensed under MIT
  * and (c) Maxime Fabre <ehtnam6@gmail.com>
