@@ -20,6 +20,33 @@ class Bootstrapper extends TruckerTests
         unset($this->app['path.base']);
     }
 
+    /**
+     * Tears down the tests
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        parent::tearDown();
+        
+        $dir = __DIR__.'/../.trucker';
+        if (file_exists($dir)) {
+            $this->rrmdir($dir);
+        }
+    }
+
+    private function rrmdir($dir)
+    {
+        foreach (glob($dir . '/*') as $file) {
+            if (is_dir($file)) {
+                $this->rrmdir($file);
+            } else {
+                unlink($file);
+            }
+        }
+        rmdir($dir);
+    }
+
     ////////////////////////////////////////////////////////////////////
     //////////////////////////////// TESTS /////////////////////////////
     ////////////////////////////////////////////////////////////////////
