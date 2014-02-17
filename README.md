@@ -1,32 +1,28 @@
 # Trucker
 
-<img align="right" height="300" src="https://raw.github.com/Indatus/trucker/gh-pages/images/TruckerReadMe.png">
+
 
 Trucker is a PHP package for mapping remote API resources (usually RESTful) as models in an ActiveResource style. The benefit is easier use of remote APIs in a fast and clean programming interface.
+
+<img align="left" height="300" src="https://raw.github.com/Indatus/trucker/gh-pages/images/TruckerReadMe.png">
+
 
 ```php
 <?php
 
-//create a class to use
-class Product extends Trucker\Resource\Model {}
+class Product extends Trucker\Resource\Model {} //create a class to use
 
-//create a new entity
 $p = new Product(['name' => 'My Test Product']);
-$success = $p->save();
-echo $p->getId();
+$success = $p->save(); //create a new entity
 
-//find an existing entity
-$found = Product::find(1);
+$found = Product::find(1); //find an existing entity
 
-//update an entity
 $found->name = 'New Product Name';
-$success = $found->save();
+$success = $found->save(); //update an entity
 
-//destroy an entity
-$success = $found->destroy();
+$success = $found->destroy(); //destroy an entity
 
-//find a collection
-$results = Product::all();
+$results = Product::all(); //find a collection
 ```
 
 ## README Contents
