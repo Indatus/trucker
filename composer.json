@@ -34,7 +34,7 @@
     "require-dev": {
         "mockery/mockery": "dev-master",
         "hot/phpunit-runner": "dev-master",
-        "phpunit/phpunit": "3.9.*@dev"
+        "phpunit/phpunit": "dev-master"
     },
     "autoload": {
         "files": [

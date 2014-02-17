@@ -1,6 +1,6 @@
 # Trucker Contribution Guide
 
-This page contains guidelines for contributing to the Trucker package. Please review these guidelines before submitting any pull requests.
+Thank you for considering contributing to Trucker. Please read the documentation below to determine where and how you should make contributions.
 
 ## Contribution Guide Contents
 
@@ -20,7 +20,7 @@ This page contains guidelines for contributing to the Trucker package. Please re
 <a name="which-branch" />
 ## Which Branch?
 
-**ALL** bug fixes should be made to the versioned branch to which they belong. Bug fixes should never be sent to the `master` branch unless they fix features that exist only in the upcoming release.
+**ALL** bug fixes should be made to the versioned branch to which they belong. Bug fixes should never be sent to the `master` branch unless they fix features that exist only in the upcoming release.  The `master` branch will contain features for the next release.  Each versioned release will have a tag with the associated version number.
 
 <a name="pull-requests" />
 ## Pull Requests
@@ -47,6 +47,8 @@ Trucker follows the [PSR-0](https://github.com/php-fig/fig-standards/blob/master
 
 Trucker was built to be extended.  Several core areas of the package use Factories and Interfaces to allow for the addition of new functionality simply by adding a new driver to the appropriate namespace and updating the config settings to load it.
 
+For example `AuthFactory::build()` will return an instance that implements `AuthenticationInterface`.  The instance returned will correspond to the driver set in the `driver` setting of the **auth.php** config file.
+
 In order to adhere to the [Open/Closed Principle](http://en.wikipedia.org/wiki/Open/closed_principle) the use of specific namespaces and naming conventions is required and outlined below.
 
 When loaded, the driver name from the config file will be StudlyCased then appended and prepended with the prefix and suffix for the driver.  Lastly the namespace will be added to achieve a fully namespaced class name.  The derived class will be instantiated and returned by the factory.
@@ -63,7 +65,8 @@ The request driver governs how Trucker makes requests that interact with the rem
 * Class name prefix: `none`
 * Class name suffix: `Request`
 * Required interface: `Trucker\Requests\RequestableInterface`
-* Config Setting: `request_driver`
+* Config file: request.php
+* Config key: `driver`
 * Example: `Trucker\Requests\RestRequest`
 
 <a name="auth-driver" />
@@ -76,7 +79,8 @@ The auth driver governs how Trucker authenticates requests to the remote API.  S
 * Class name prefix: `none`
 * Class name suffix: `Authenticator`
 * Required interface: `Trucker\Requests\Auth\AuthenticationInterface`
-* Config Setting: `auth.driver`
+* Config file: auth.php
+* Config key: `driver`
 * Example: `Trucker\Requests\Auth\BasicAuthenticator`
 
 <a name="response-interpreter-driver" />
@@ -89,7 +93,8 @@ The response interpreter driver governs how Trucker interprets responses from th
 * Class name prefix: `none`
 * Class name suffix: `Interpreter`
 * Required interface: `Trucker\Responses\Interpreters\ResponseInterpreterInterface`
-* Config Setting: `response_interpreter_driver`
+* Config file: response.php
+* Config key: `driver`
 * Example: `Trucker\Responses\Interpreters\HttpStatusCodeInterpreter`
 
 <a name="error-handler-driver" />
@@ -102,7 +107,8 @@ The error handler driver governs how Trucker deciphers error messages provided b
 * Class name prefix: `none`
 * Class name suffix: `ErrorHandler`
 * Required interface: `Trucker\Responses\ErrorHandlers\ErrorHandlerInterface`
-* Config Setting: `error_handler_driver`
+* Config file: error_handler.php
+* Config key: `driver`
 * Example: `Trucker\Responses\ErrorHandlers\ArrayResponseErrorHandler`
 
 <a name="transporter" />
@@ -115,7 +121,8 @@ The transporter governs the transport language Trucker can expect to receive res
 * Class name prefix: `none`
 * Class name suffix: `Transporter`
 * Required interface: `Trucker\Transporters\TransporterInterface`
-* Config Setting: `transporter`
+* Config file: transporter.php
+* Config key: `driver`
 * Example: `Trucker\Transporters\JsonTransporter`
 
 <a name="collection-query-condition-driver" />
@@ -128,7 +135,8 @@ The collection query condition driver governs how Trucker will set condition con
 * Class name prefix: `none`
 * Class name suffix: `QueryCondition`
 * Required interface: `Trucker\Finders\Conditions\QueryConditionInterface`
-* Config Setting: `search.collection_query_condition_driver`
+* Config file: query_condition.php
+* Config key: `driver`
 * Example: `Trucker\Finders\Conditions\GetArrayParamsQueryCondition`
 
 <a name="collection-result-order-driver" />
@@ -141,5 +149,6 @@ The collection result order driver governs how Trucker will set the collection o
 * Class name prefix: `none`
 * Class name suffix: `ResultOrder`
 * Required interface: `Trucker\Finders\Conditions\QueryResultOrderInterface`
-* Config Setting: `search.collection_result_order_driver`
+* Config file: result_order.php
+* Config key: `driver`
 * Example: `Trucker\Finders\Conditions\GetParamsResultOrder`
