@@ -445,6 +445,7 @@ There may be times where you need to change values that are set in your Trucker 
 > **Note:** If your using Trucker in [Laravel](http://laravel.com) you'll want to alias the Trucker config manager `Config` to something different like `TruckerConfig` so it doesn't conflict with Laravel's own `Config` class.
 
 **Example:**
+
 ```php
 <?php
 use Trucker\Facades\Config as TruckerConfig;
