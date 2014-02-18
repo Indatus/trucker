@@ -34,6 +34,7 @@
     },
     "require-dev": {
         "mockery/mockery": "dev-master",
+        "satooshi/php-coveralls": "dev-master",
         "hot/phpunit-runner": "dev-master",
         "phpunit/phpunit": "dev-master"
     },
