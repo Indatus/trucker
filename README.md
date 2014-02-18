@@ -1,6 +1,6 @@
 # Trucker
 
-[![Latest Stable Version](https://poser.pugx.org/indatus/trucker/v/stable.png)](https://packagist.org/packages/indatus/trucker) [![Total Downloads](https://poser.pugx.org/indatus/trucker/downloads.png)](https://packagist.org/packages/indatus/trucker) [![Build Status](https://travis-ci.org/Indatus/trucker.png?branch=master)](https://travis-ci.org/Indatus/trucker) [![Dependency Status](https://www.versioneye.com/user/projects/530271f4ec1375bab10004bb/badge.png)](https://www.versioneye.com/user/projects/530271f4ec1375bab10004bb)
+[![Latest Stable Version](https://poser.pugx.org/indatus/trucker/v/stable.png)](https://packagist.org/packages/indatus/trucker) [![Total Downloads](https://poser.pugx.org/indatus/trucker/downloads.png)](https://packagist.org/packages/indatus/trucker) [![Build Status](https://travis-ci.org/Indatus/trucker.png?branch=master)](https://travis-ci.org/Indatus/trucker) [![Coverage Status](https://coveralls.io/repos/Indatus/trucker/badge.png?branch=master)](https://coveralls.io/r/Indatus/trucker?branch=master) [![Dependency Status](https://www.versioneye.com/user/projects/530271f4ec1375bab10004bb/badge.png)](https://www.versioneye.com/user/projects/530271f4ec1375bab10004bb)
 
 Trucker is a PHP package for mapping remote API resources (usually RESTful) as models in an ActiveResource style. The benefit is easier use of remote APIs in a fast and clean programming interface.
 
