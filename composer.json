@@ -28,15 +28,14 @@
         "illuminate/support": "~4",
         "illuminate/config": "~4",
         "illuminate/container": "~4",
-        "guzzle/guzzle": "~3.7",
+        "guzzle/guzzle": "3.8.1",
         "doctrine/inflector": "1.0",
         "patchwork/utf8": "1.1.*"
     },
     "require-dev": {
-        "mockery/mockery": "dev-master",
+        "mockery/mockery": "0.9.0",
         "satooshi/php-coveralls": "dev-master",
-        "hot/phpunit-runner": "dev-master",
-        "phpunit/phpunit": "dev-master"
+        "hot/phpunit-runner": "dev-master"
     },
     "autoload": {
         "psr-0": {

@@ -326,7 +326,7 @@ class ModelTest extends TruckerTests
         );
         $this->assertEquals('/users', $request->getPath(), "Expected request to go to /users");
         $this->assertEquals(1, $u->getId(), "Expected respose to set ID");
-        $this->assertArrayHasKey('_method', $request->getPostFields(), 'Expected http method param');
+        $this->assertArrayHasKey('_method', $request->getPostFields()->toArray(), 'Expected http method param');
     }
 
 
@@ -457,7 +457,7 @@ class ModelTest extends TruckerTests
             "Expected post params to be equal to attributes"
         );
         $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
-        $this->assertArrayHasKey('_method', $request->getPostFields(), 'Expected http method param');
+        $this->assertArrayHasKey('_method', $request->getPostFields()->toArray(), 'Expected http method param');
     }
 
 
@@ -577,7 +577,7 @@ class ModelTest extends TruckerTests
         $this->assertTrue($result, "destroy() should have been true");
         $this->assertEquals('POST', $request->getMethod(), "POST method expected");
         $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
-        $this->assertArrayHasKey('_method', $request->getPostFields(), 'Expected http method param');
+        $this->assertArrayHasKey('_method', $request->getPostFields()->toArray(), 'Expected http method param');
     }
 
 
