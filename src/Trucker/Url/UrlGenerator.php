@@ -102,7 +102,7 @@ class UrlGenerator
      */
     public function getCollectionUri($model, $options = array())
     {
-        $uri = $this->getUri($model);
+        $uri = $this->getURI($model);
         foreach ($options as $key => $value) {
             $uri = str_replace($key, $value, $uri);
         }
@@ -122,7 +122,7 @@ class UrlGenerator
      */
     public function getInstanceUri($model, $options = array())
     {
-        $uri = implode("/", array($this->getUri($model), ':id'));
+        $uri = implode("/", array($this->getURI($model), ':id'));
         foreach ($options as $key => $value) {
             $uri = str_replace($key, $value, $uri);
         }
