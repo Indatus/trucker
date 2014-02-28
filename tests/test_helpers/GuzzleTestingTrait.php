@@ -75,7 +75,6 @@ trait GuzzleTestingTrait
     {
         $this->swapConfig($config);
         Config::setApp($this->app);
-        Config::setApp($this->app);
         $client = RequestFactory::getClient();
         $this->trackHistory($client);
 
