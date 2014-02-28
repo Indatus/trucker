@@ -30,8 +30,8 @@ $results = Product::all(); //find a collection
 * [Installation](#install)
     * [Requirements](#requirements)
     * [Install With Composer](#install-composer)
-      * [Publish configs in Laravel](#config-laravel)
-      * [Publish configs outside Laravel](#config-non-laravel)
+      * [Configure in Laravel](#config-laravel)
+      * [Configure outside Laravel](#config-non-laravel)
 * [Configuration Options](#config)
   * [Auth](#config-auth)
   * [Error Handler](#config-error-handler)
@@ -74,12 +74,12 @@ You can install the library via [Composer](http://getcomposer.org) by adding the
 "indatus/trucker": "dev-master"
 ````
 
-Next run `composer install`, now you just need to publish the config files.
+Next run `composer install`, now you need to publish the config files.
 
 Trucker's config files are where you'd define constant things about the API your interacting with, like the end-point, what drivers you want to use etc.
 
 <a name="config-laravel"/>
-### Publish configs in Laravel
+### Configure in Laravel
 
 Trucker works well with the [Laravel](http://laravel.com) framework.  If your using Trucker within Laravel, you just need to run the following command to publish the Trucker config files to the **app/config/packages/indatus/trucker** folder.
 
@@ -87,8 +87,14 @@ Trucker works well with the [Laravel](http://laravel.com) framework.  If your us
 php artisan config:publish indatus/trucker
 ````
 
+The final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
+
+    'Trucker\ServiceProvider'
+
+Now you should be ready to go.    
+
 <a name="config-non-laravel"/>
-### Publish configs outside Laravel
+### Configure outside Laravel
 
 If your using Trucker outside Laravel you just need to create the `.trucker` folder in your project root and copy the package's config files there.  Here's the *nix command for that.
 
