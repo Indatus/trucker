@@ -89,7 +89,7 @@ php artisan config:publish indatus/trucker
 
 The final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.
 
-    'Trucker\ServiceProvider'
+    'Trucker\TruckerServiceProvider'
 
 Now you should be ready to go.    
 
