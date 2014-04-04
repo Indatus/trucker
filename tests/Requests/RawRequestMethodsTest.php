@@ -29,7 +29,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -91,7 +91,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -154,7 +154,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -217,7 +217,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -280,7 +280,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
