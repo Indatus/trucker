@@ -28,14 +28,14 @@ class RestRequest implements RequestableInterface
     /**
      * The IoC Container
      *
-     * @var Illuminate\Container\Container
+     * @var \Illuminate\Container\Container
      */
     protected $app;
 
     /**
      * Request client 
      * 
-     * @var Guzzle\Http\Client
+     * @var \Guzzle\Http\Client
      */
     protected $client;
 
@@ -43,7 +43,7 @@ class RestRequest implements RequestableInterface
      * Request object managed by this
      * class
      * 
-     * @var Guzzle\Http\Message\Request
+     * @var \Guzzle\Http\Message\Request
      */
     protected $request;
 
@@ -64,7 +64,7 @@ class RestRequest implements RequestableInterface
     /**
      * Getter function to access the HTTP Client
      * 
-     * @return Guzzle\Http\Client
+     * @return \Guzzle\Http\Client
      */
     public function &getClient()
     {
@@ -291,11 +291,12 @@ class RestRequest implements RequestableInterface
      *
      * @param  string $uri       uri to hit (i.e. /users)
      * @param  array  $params    Querystring parameters to send
-     * @return Trucker\Responses\RawResponse
+     * @param  array  $headers   Optional headers to use
+     * @return \Trucker\Responses\RawResponse
      */
-    public function rawGet($uri, $params = array())
+    public function rawGet($uri, $params = array(), $headers = array())
     {
-        return $this->rawRequest($uri, 'GET', array(), $params);
+        return $this->rawRequest($uri, 'GET', array(), $params, array(), $headers);
     }
 
 
@@ -306,11 +307,12 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    POST parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @param  array  $headers   Optional headers to use
+     * @return \Trucker\Responses\RawResponse
      */
-    public function rawPost($uri, $params = array(), $getParams = array(), $files = array())
+    public function rawPost($uri, $params = array(), $getParams = array(), $files = array(), $headers = array())
     {
-        return $this->rawRequest($uri, 'POST', $params, $getParams, $files);
+        return $this->rawRequest($uri, 'POST', $params, $getParams, $files, $headers);
     }
 
 
@@ -321,11 +323,12 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    PUT parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @param  array  $headers   Optional headers to use
+     * @return \Trucker\Responses\RawResponse
      */
-    public function rawPut($uri, $params = array(), $getParams = array(), $files = array())
+    public function rawPut($uri, $params = array(), $getParams = array(), $files = array(), $headers = array())
     {
-        return $this->rawRequest($uri, 'PUT', $params, $getParams, $files);
+        return $this->rawRequest($uri, 'PUT', $params, $getParams, $files, $headers);
     }
 
 
@@ -336,11 +339,12 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    PATCH parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @param  array  $headers   Optional headers to use
+     * @return \Trucker\Responses\RawResponse
      */
-    public function rawPatch($uri, $params = array(), $getParams = array(), $files = array())
+    public function rawPatch($uri, $params = array(), $getParams = array(), $files = array(), $headers = array())
     {
-        return $this->rawRequest($uri, 'PATCH', $params, $getParams, $files);
+        return $this->rawRequest($uri, 'PATCH', $params, $getParams, $files, $headers);
     }
 
 
@@ -349,11 +353,12 @@ class RestRequest implements RequestableInterface
      *
      * @param  string $uri       uri to hit (i.e. /users)
      * @param  array  $params    Querystring parameters to send
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @param  array  $headers   Optional headers to use
+     * @return \Trucker\Responses\RawResponse
      */
-    public function rawDelete($uri, $params = array())
+    public function rawDelete($uri, $params = array(), $headers = array())
     {
-        return $this->rawRequest($uri, 'DELETE', array(), $params);
+        return $this->rawRequest($uri, 'DELETE', array(), $params, array(), $headers);
     }
 
 
@@ -366,9 +371,10 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    PUT or POST parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     PUT or POST files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @param  array  $headers   Optional headers to use
+     * @return \Trucker\Responses\RawResponse
      */
-    public function rawRequest($uri, $method, $params = array(), $getParams = array(), $files = array())
+    public function rawRequest($uri, $method, $params = array(), $getParams = array(), $files = array(), $headers = array())
     {
         $this->request = self::createRequest(
             Config::get('request.base_uri'),
@@ -379,6 +385,7 @@ class RestRequest implements RequestableInterface
         $this->setPostParameters($params);
         $this->setGetParameters($getParams);
         $this->setFileParameters($files);
+        $this->setHeaders($headers);
 
         // Trucker\Response
         $response = $this->sendRequest();
