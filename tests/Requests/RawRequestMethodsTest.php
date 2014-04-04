@@ -17,6 +17,7 @@ class RawRequestMethodsTest extends TruckerTests
         $base_uri      = 'http://some-api.com';
         $queryParams   = ['foo' => 'bar', 'biz' => 'bang'];
         $response_body = json_encode(['id' => 123, 'name' => 'foo']);
+        $headers = ['Content-Type'  => 'application/json'];
 
         //mock the response we expect
         $this->mockHttpResponse(
@@ -28,7 +29,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -46,7 +47,7 @@ class RawRequestMethodsTest extends TruckerTests
         
         //execute what we're testing
         $request = RequestFactory::build();
-        $rawResponse = $request->rawGet($uri, $queryParams);
+        $rawResponse = $request->rawGet($uri, $queryParams, $headers);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -78,6 +79,7 @@ class RawRequestMethodsTest extends TruckerTests
         $base_uri      = 'http://some-api.com';
         $postParams   = ['foo' => 'bar', 'biz' => 'bang'];
         $response_body = json_encode(['id' => 123, 'name' => 'foo']);
+        $headers = ['Content-Type'  => 'application/json'];
 
         //mock the response we expect
         $this->mockHttpResponse(
@@ -89,7 +91,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -107,7 +109,7 @@ class RawRequestMethodsTest extends TruckerTests
         
         //execute what we're testing
         $request = RequestFactory::build();
-        $rawResponse = $request->rawPost($uri, $postParams);
+        $rawResponse = $request->rawPost($uri, $postParams, $headers);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -140,6 +142,7 @@ class RawRequestMethodsTest extends TruckerTests
         $base_uri      = 'http://some-api.com';
         $postParams   = ['foo' => 'bar', 'biz' => 'bang'];
         $response_body = json_encode(['id' => 123, 'name' => 'foo']);
+        $headers = ['Content-Type'  => 'application/json'];
 
         //mock the response we expect
         $this->mockHttpResponse(
@@ -151,7 +154,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -169,7 +172,7 @@ class RawRequestMethodsTest extends TruckerTests
         
         //execute what we're testing
         $request = RequestFactory::build();
-        $rawResponse = $request->rawPut($uri, $postParams);
+        $rawResponse = $request->rawPut($uri, $postParams, $headers);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -202,6 +205,7 @@ class RawRequestMethodsTest extends TruckerTests
         $base_uri      = 'http://some-api.com';
         $postParams   = ['foo' => 'bar', 'biz' => 'bang'];
         $response_body = json_encode(['id' => 123, 'name' => 'foo']);
+        $headers = ['Content-Type'  => 'application/json'];
 
         //mock the response we expect
         $this->mockHttpResponse(
@@ -213,7 +217,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -231,7 +235,7 @@ class RawRequestMethodsTest extends TruckerTests
         
         //execute what we're testing
         $request = RequestFactory::build();
-        $rawResponse = $request->rawPatch($uri, $postParams);
+        $rawResponse = $request->rawPatch($uri, $postParams, $headers);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -264,6 +268,7 @@ class RawRequestMethodsTest extends TruckerTests
         $base_uri      = 'http://some-api.com';
         $queryParams   = ['foo' => 'bar', 'biz' => 'bang'];
         $response_body = json_encode(['id' => 123, 'name' => 'foo']);
+        $headers = ['Content-Type'  => 'application/json'];
 
         //mock the response we expect
         $this->mockHttpResponse(
@@ -275,7 +280,7 @@ class RawRequestMethodsTest extends TruckerTests
                 'trucker::request.driver' => 'rest'
             ]),
             //
-            //expcted status
+            //expected status
             //
             200,
             //
@@ -293,7 +298,7 @@ class RawRequestMethodsTest extends TruckerTests
         
         //execute what we're testing
         $request = RequestFactory::build();
-        $rawResponse = $request->rawDelete($uri, $queryParams);
+        $rawResponse = $request->rawDelete($uri, $queryParams, $headers);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();

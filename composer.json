@@ -35,6 +35,7 @@
     "require-dev": {
         "mockery/mockery": "0.9.0",
         "satooshi/php-coveralls": "dev-master",
+        "phpunit/phpunit": "3.7.*@dev",
         "hot/phpunit-runner": "dev-master"
     },
     "autoload": {
