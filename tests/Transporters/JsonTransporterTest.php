@@ -9,8 +9,11 @@ class JsonTransporterTest extends TruckerTests
     public function testSetsHeaderOnRequest()
     {
         $request = m::mock('Guzzle\Http\Message\Request');
-        $request->shouldReceive('setHeader')
-            ->with('Accept', 'application/json')
+        $request->shouldReceive('setHeaders')
+            ->with([
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ])
             ->once();
 
         $transporter = new JsonTransporter;

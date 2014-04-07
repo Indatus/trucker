@@ -29,7 +29,13 @@ class RestRequestTest extends TruckerTests
     public function testSetTransportLanguage()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
         ]);
 
         $r = $request->createRequest('http://example.com', '/users', 'GET');
@@ -40,7 +46,13 @@ class RestRequestTest extends TruckerTests
     public function testCreateNewRequest()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
         ]);
         $result = $request->createRequest('http://example.com', '/users', 'GET');
         $this->assertTrue($result instanceof \Guzzle\Http\Message\Request);
@@ -51,7 +63,13 @@ class RestRequestTest extends TruckerTests
     public function testSetPostParameters()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'setPostField', 'args' => ['biz', 'banng']],
         ]);
 
@@ -67,7 +85,13 @@ class RestRequestTest extends TruckerTests
         $mQuery->shouldReceive('add')->with('foo', 'bar');
 
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'getQuery', 'return' => $mQuery],
         ]);
 
@@ -80,7 +104,13 @@ class RestRequestTest extends TruckerTests
     public function testSetFileParameters()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'addPostFile', 'args' => ['fileOne', '/path/to/fileOne']],
         ]);
 
@@ -93,7 +123,13 @@ class RestRequestTest extends TruckerTests
     public function testSettingModelProperties()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'setPostField', 'args' => ['foo', 'bar']],
             ['method' => 'setPostField', 'args' => ['biz', 'bang']],
             ['method' => 'addPostFile', 'args' => ['fOne', '/path/to/file/one']],
@@ -123,7 +159,13 @@ class RestRequestTest extends TruckerTests
     public function testSettingHeaders()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'setHeader', 'args' => ['Cache-Control', 'no-cache, must-revalidate']],
         ]);
 
@@ -139,7 +181,13 @@ class RestRequestTest extends TruckerTests
         $dispatcher->shouldReceive('addListener');
 
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'getEventDispatcher', 'return' => $dispatcher],
         ]);
 
@@ -156,7 +204,13 @@ class RestRequestTest extends TruckerTests
     public function testAddQueryCondition()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
         ]);
         $r = $request->createRequest('http://example.com', '/users', 'GET');
 
@@ -171,7 +225,13 @@ class RestRequestTest extends TruckerTests
     public function testAddQueryResultOrder()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
         ]);
         $r = $request->createRequest('http://example.com', '/users', 'GET');
 
@@ -186,7 +246,13 @@ class RestRequestTest extends TruckerTests
     public function testAddAuthentication()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
         ]);
         $r = $request->createRequest('http://example.com', '/users', 'GET');
 
@@ -201,7 +267,13 @@ class RestRequestTest extends TruckerTests
     public function testSendRequest()
     {
         $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            [
+                'method' => 'setHeaders',
+                'args' => [[
+                    'Accept' => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]]
+            ],
             ['method' => 'send', 'return' => m::mock('Guzzle\Http\Message\Response')],
         ]);
 
@@ -215,7 +287,13 @@ class RestRequestTest extends TruckerTests
     {
         $request = $this->simpleMockRequest(
             [
-                ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+                [
+                    'method' => 'setHeaders',
+                    'args' => [[
+                        'Accept' => 'application/json',
+                        'Content-Type' => 'application/json'
+                    ]]
+                ],
                 ['method' => 'setPostField', 'args' => ['_method', 'PUT']],
             ],
             'http://example.com',

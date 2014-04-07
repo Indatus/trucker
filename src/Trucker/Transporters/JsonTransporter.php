@@ -16,12 +16,15 @@ class JsonTransporter implements TransporterInterface
     /**
      * Function to set the appropriate headers on a request object
      * to facilitate a JSON transport
-     * 
+     *
      * @param GuzzleHttpMessageRequest $request
      */
     public function setHeaderOnRequest(\Guzzle\Http\Message\Request &$request)
     {
-        $request->setHeader('Accept', 'application/json');
+        $request->setHeaders([
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json'
+        ]);
     }
 
     /**
