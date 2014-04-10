@@ -30,6 +30,8 @@ interface RequestableInterface
 
     public function setHeaders($requestHeaders = array());
 
+    public function setBody($body, $contentType = null);
+
     public function setPostParameters($params = array());
 
     public function setGetParameters($params = array());

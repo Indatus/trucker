@@ -33,8 +33,13 @@ class RestRequest implements RequestableInterface
     protected $app;
 
     /**
+<<<<<<< HEAD
      * Request client 
      * 
+=======
+     * Request client
+     *
+>>>>>>> pr/4
      * @var \Guzzle\Http\Client
      */
     protected $client;
@@ -42,7 +47,11 @@ class RestRequest implements RequestableInterface
     /**
      * Request object managed by this
      * class
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> pr/4
      * @var \Guzzle\Http\Message\Request
      */
     protected $request;
@@ -63,7 +72,11 @@ class RestRequest implements RequestableInterface
 
     /**
      * Getter function to access the HTTP Client
+<<<<<<< HEAD
      * 
+=======
+     *
+>>>>>>> pr/4
      * @return \Guzzle\Http\Client
      */
     public function &getClient()
@@ -126,8 +139,22 @@ class RestRequest implements RequestableInterface
 
 
     /**
+     * Function to set given file parameters
+     * on the request
+     *
+     * @param array $params File parameters to set
+     */
+    public function setBody($body, $contentType = null)
+    {
+        if(method_exists($this->request, 'setBody')){
+            $this->request->setBody($body, $contentType);
+        }
+    }
+
+
+    /**
      * Function to set POST parameters onto the request
-     * 
+     *
      * @param array $params Key value array of post params
      */
     public function setPostParameters($params = array())
@@ -139,9 +166,9 @@ class RestRequest implements RequestableInterface
 
 
     /**
-     * Functio to set GET parameters onto the 
+     * Functio to set GET parameters onto the
      * request
-     * 
+     *
      * @param array $params Key value array of get params
      */
     public function setGetParameters($params = array())
@@ -156,7 +183,7 @@ class RestRequest implements RequestableInterface
     /**
      * Function to set given file parameters
      * on the request
-     * 
+     *
      * @param array $params File parameters to set
      */
     public function setFileParameters($params = array())
@@ -206,7 +233,7 @@ class RestRequest implements RequestableInterface
 
     /**
      * Function to add an error handler to the request.  This could be used
-     * 
+     *
      * @param int     $httpStatus      HTTP status to error handle (-1 matches all)
      * @param Closure $func            Function to call on error
      * @param boolean $stopPropagation Boolean as to wether to stop event propagation
@@ -234,7 +261,7 @@ class RestRequest implements RequestableInterface
 
     /**
      * Function to add Query conditions to the request
-     * 
+     *
      * @param QueryConditionInterface $condition condition to add to the request
      * @return  void
      */
@@ -246,7 +273,7 @@ class RestRequest implements RequestableInterface
 
     /**
      * Function to add Query result ordering conditions to the request
-     * 
+     *
      * @param  QueryResultOrderInterface $resultOrder
      * @return void
      */
@@ -259,7 +286,7 @@ class RestRequest implements RequestableInterface
 
     /**
      * Function to add authentication to the request
-     * 
+     *
      * @param  AuthenticationInterface $auth
      * @return void
      */
@@ -281,7 +308,7 @@ class RestRequest implements RequestableInterface
         } catch (\Guzzle\Http\Exception\BadResponseException $e) {
             $response = $e->getResponse();
         }
-        
+
         return $this->app->make('trucker.response')->newInstance($this->app, $response);
     }
 
@@ -385,6 +412,10 @@ class RestRequest implements RequestableInterface
         $this->setPostParameters($params);
         $this->setGetParameters($getParams);
         $this->setFileParameters($files);
+<<<<<<< HEAD
+=======
+        $this->setBody(json_encode($params));
+>>>>>>> pr/4
         $this->setHeaders($headers);
 
         // Trucker\Response
