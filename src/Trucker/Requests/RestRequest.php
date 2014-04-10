@@ -33,13 +33,8 @@ class RestRequest implements RequestableInterface
     protected $app;
 
     /**
-<<<<<<< HEAD
      * Request client 
      * 
-=======
-     * Request client
-     *
->>>>>>> pr/4
      * @var \Guzzle\Http\Client
      */
     protected $client;
@@ -47,11 +42,7 @@ class RestRequest implements RequestableInterface
     /**
      * Request object managed by this
      * class
-<<<<<<< HEAD
-     * 
-=======
      *
->>>>>>> pr/4
      * @var \Guzzle\Http\Message\Request
      */
     protected $request;
@@ -72,11 +63,7 @@ class RestRequest implements RequestableInterface
 
     /**
      * Getter function to access the HTTP Client
-<<<<<<< HEAD
      * 
-=======
-     *
->>>>>>> pr/4
      * @return \Guzzle\Http\Client
      */
     public function &getClient()
@@ -412,10 +399,7 @@ class RestRequest implements RequestableInterface
         $this->setPostParameters($params);
         $this->setGetParameters($getParams);
         $this->setFileParameters($files);
-<<<<<<< HEAD
-=======
         $this->setBody(json_encode($params));
->>>>>>> pr/4
         $this->setHeaders($headers);
 
         // Trucker\Response
