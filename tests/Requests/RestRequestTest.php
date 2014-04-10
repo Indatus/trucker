@@ -133,6 +133,19 @@ class RestRequestTest extends TruckerTests
 
 
 
+    public function testSettingBody()
+    {
+        $request = $this->simpleMockRequest([
+            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
+            ['method' => 'setHeader', 'args' => ['Cache-Control', 'no-cache, must-revalidate']],
+        ]);
+
+        $headers = ['Cache-Control' => 'no-cache, must-revalidate'];
+        $request->createRequest('http://example.com', '/users', 'GET', $headers);
+    }
+
+
+
     public function testAddingErrorHandler()
     {
         $dispatcher = m::mock('Symfony\Component\EventDispatcher\EventDispatcher');
