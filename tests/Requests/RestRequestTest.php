@@ -1,6 +1,7 @@
 <?php
 
 use Trucker\Facades\Request;
+use Guzzle\Http\EntityBody;
 use Trucker\Facades\Config;
 use Mockery as m;
 
@@ -135,13 +136,10 @@ class RestRequestTest extends TruckerTests
 
     public function testSettingBody()
     {
-        $request = $this->simpleMockRequest([
-            ['method' => 'setHeader', 'args' => ['Accept', 'application/json']],
-            ['method' => 'setHeader', 'args' => ['Cache-Control', 'no-cache, must-revalidate']],
-        ]);
-
-        $headers = ['Cache-Control' => 'no-cache, must-revalidate'];
-        $request->createRequest('http://example.com', '/users', 'GET', $headers);
+        $request = \Guzzle\Http\Message\RequestFactory::getInstance()->create('PUT', 'http://www.test.com/');
+        $request->setBody(EntityBody::factory('test'));
+        $this->assertEquals(4, (string) $request->getHeader('Content-Length'));
+        $this->assertFalse($request->hasHeader('Transfer-Encoding'));
     }
 
 
