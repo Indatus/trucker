@@ -13,9 +13,15 @@ class HttpStatusCodeInterpreterTest extends TruckerTests
         $interpreter = $this->getInterpreter();
         $this->assertTrue($interpreter->success($response), 'Response should have been successful');
 
-        $response = $this->mockResponse(200);
+        //test array of http codes
         $interpreter = $this->getInterpreter([
                 'trucker::response.http_status.success'   => [200, 201]
+            ]);
+        $this->assertTrue($interpreter->success($response), 'Response should have been successful');
+
+        //test wildcard http codes
+        $interpreter = $this->getInterpreter([
+                'trucker::response.http_status.success'   => '2*'
             ]);
         $this->assertTrue($interpreter->success($response), 'Response should have been successful');
     }
@@ -26,12 +32,17 @@ class HttpStatusCodeInterpreterTest extends TruckerTests
         $interpreter = $this->getInterpreter();
         $this->assertTrue($interpreter->notFound($response), 'Response should have been not found');
 
-        //405 isn't really not found, but we need to test with something
-        $response = $this->mockResponse(404);
+        //test array of http codes
         $interpreter = $this->getInterpreter([
-                'trucker::response.http_status.success'   => [404, 405]
+                'trucker::response.http_status.not_found'   => [404, 405]
             ]);
-        $this->assertTrue($interpreter->success($response), 'Response should have been not found');
+        $this->assertTrue($interpreter->notFound($response), 'Response should have been not found');
+
+        //test wildcard http codes
+        $interpreter = $this->getInterpreter([
+                'trucker::response.http_status.not_found'   => '4*'
+            ]);
+        $this->assertTrue($interpreter->notFound($response), 'Response should have been not found');
     }
 
     public function testInvalidResponse()
@@ -41,11 +52,17 @@ class HttpStatusCodeInterpreterTest extends TruckerTests
         $this->assertTrue($interpreter->invalid($response), 'Response should have been invalid');
 
         //416 isn't really invalid, but we need to test with something
-        $response = $this->mockResponse(422);
+        //test array of http codes
         $interpreter = $this->getInterpreter([
-                'trucker::response.http_status.success'   => [422, 416]
+                'trucker::response.http_status.invalid'   => [422, 416]
             ]);
-        $this->assertTrue($interpreter->success($response), 'Response should have been invalid');
+        $this->assertTrue($interpreter->invalid($response), 'Response should have been invalid');
+
+        //test wildcard http codes
+        $interpreter = $this->getInterpreter([
+                'trucker::response.http_status.invalid'   => '42*'
+            ]);
+        $this->assertTrue($interpreter->invalid($response), 'Response should have been invalid');
     }
 
     public function testErrorResponse()
@@ -54,11 +71,17 @@ class HttpStatusCodeInterpreterTest extends TruckerTests
         $interpreter = $this->getInterpreter();
         $this->assertTrue($interpreter->error($response), 'Response should have been error');
 
-        $response = $this->mockResponse(500);
+        //test array of http codes
         $interpreter = $this->getInterpreter([
-                'trucker::response.http_status.success'   => [500, 503]
+                'trucker::response.http_status.error'   => [500, 503]
             ]);
-        $this->assertTrue($interpreter->success($response), 'Response should have been error');
+        $this->assertTrue($interpreter->error($response), 'Response should have been error');
+
+        //test wildcard http codes
+        $interpreter = $this->getInterpreter([
+                'trucker::response.http_status.error'   => '5*'
+            ]);
+        $this->assertTrue($interpreter->error($response), 'Response should have been error');
     }
 
     private function getInterpreter($overwriteConfig = [])
@@ -77,7 +100,7 @@ class HttpStatusCodeInterpreterTest extends TruckerTests
     {
         $response = m::mock('Trucker\Responses\Response');
         $response->shouldReceive('getStatusCode')
-            ->once()
+            ->times(3)
             ->andReturn($statusCode);
         return $response;
     }

@@ -98,6 +98,11 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     protected function matchesStatus($option, $status)
     {
-        return $status == Config::get($option) || Config::contains($option, $status);
+        $configValue = Config::get($option);
+        if ($status == $configValue || Config::contains($option, $status)) {
+            return true;
+        }
+
+        return \Trucker\Support\Str::is($configValue, $status);
     }
 }
