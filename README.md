@@ -214,7 +214,7 @@ Setting | Default | Description
 `http_status.invalid` | `422` | `http_status_code` driver option: invalid request. i.e. an entity couldn't be saved
 `http_status.error` | `500` | `http_status_code` driver option: an error was encountered when processing the request
 
-__Wildcards may be used to match what an http code **starts with** (e.g - `20*`).__
+_Wildcards may be used to match what an http code **starts with** (e.g - `20*`)._
 
 > **Supported Option Details:**
 
