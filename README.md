@@ -210,7 +210,7 @@ Setting | Default | Description
 --- | --- | ---
 `driver` | `http_status_code` | This parameter specifies the driver to use for interpreting API responses as successful, invalid, error etc.<br /><br />_Supported Options:_ `http_status_code`
 `http_status.success` | `200` | `http_status_code` driver option: successful request
-`http_status.not_found` | `401` | `http_status_code` driver option: not found
+`http_status.not_found` | `404` | `http_status_code` driver option: not found
 `http_status.invalid` | `422` | `http_status_code` driver option: invalid request. i.e. an entity couldn't be saved
 `http_status.error` | `500` | `http_status_code` driver option: an error was encountered when processing the request
 
