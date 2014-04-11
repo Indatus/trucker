@@ -20,7 +20,7 @@ class ConfigManagerTest extends TruckerTests
         $cm->setApp($mApp);
         $this->assertEquals($mApp, $cm->getApp());
     }
-    
+
     public function testGet()
     {
         $cm = new ConfigManager($this->app);
@@ -47,5 +47,14 @@ class ConfigManagerTest extends TruckerTests
         $cm = new ConfigManager($app);
         $cm->set('request.driver', 'foo');
         $this->assertEquals('foo', $cm->get('request.driver'));
+    }
+
+    public function testContains()
+    {
+        $this->swapConfig([
+                'trucker::response.http_status.success' => [200, 201]
+            ]);
+        $cm = new ConfigManager($this->app);
+        $this->assertTrue($cm->contains('response.http_status.success', 200));
     }
 }
