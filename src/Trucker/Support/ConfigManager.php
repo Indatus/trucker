@@ -75,10 +75,25 @@ class ConfigManager
      * @param  string $option
      * @param  mixed $value
      *
-     * @return void
+     * @return mixed
      */
     public function set($option, $value)
     {
         return $this->app['config']->set('trucker::'.$option, $value);
+    }
+
+
+    /**
+     * Determine if a config option contains a specific
+     *
+     * @param  string $option Config value must be an array
+     * @param  mixed $value
+     *
+     * @return bool
+     */
+    public function contains($option, $value)
+    {
+        $option = $this->get($option);
+        return is_array($option) && in_array($value, $option);
     }
 }

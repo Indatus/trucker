@@ -35,7 +35,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
 
 
     /**
-     * Function to return a boolean value indicating wether
+     * Function to return a boolean value indicating whether
      * the request was successful or not 
      *
      * @param  $response - Guzzle response to interpret
@@ -43,12 +43,12 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function success(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('response.http_status.success');
+        return $this->matchesStatus('response.http_status.success', $response->getStatusCode());
     }
 
 
     /**
-     * Function to return a boolean value indicating wether
+     * Function to return a boolean value indicating whether
      * the request indicated something was not found
      *
      * @param  $response - Guzzle response to interpret
@@ -56,12 +56,12 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function notFound(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('response.http_status.not_found');
+        return $this->matchesStatus('response.http_status.not_found', $response->getStatusCode());
     }
 
 
     /**
-     * Function to return a boolean value indicating wether
+     * Function to return a boolean value indicating whether
      * the request was considered invalid
      *
      * @param  $response - Guzzle response to interpret
@@ -69,12 +69,12 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function invalid(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('response.http_status.invalid');
+        return $this->matchesStatus('response.http_status.invalid', $response->getStatusCode());
     }
 
 
     /**
-     * Function to return a boolean value indicating wether
+     * Function to return a boolean value indicating whether
      * the request was ended in an error state
      *
      * @param  $response - Guzzle response to interpret
@@ -82,6 +82,27 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function error(\Trucker\Responses\Response $response)
     {
-        return $response->getStatusCode() == Config::get('response.http_status.error');
+        return $this->matchesStatus('response.http_status.error', $response->getStatusCode());
+    }
+
+    /**
+     * Function to return a boolean value indicating whether
+     * the provided status is matched by the configured setting.
+     *
+     * Currently supports:
+     *
+     * @param $option
+     * @param $status
+     *
+     * @return bool
+     */
+    protected function matchesStatus($option, $status)
+    {
+        $configValue = Config::get($option);
+        if ($status == $configValue || Config::contains($option, $status)) {
+            return true;
+        }
+
+        return \Trucker\Support\Str::is($configValue, $status);
     }
 }

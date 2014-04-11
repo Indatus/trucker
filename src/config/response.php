@@ -30,7 +30,7 @@
     'http_status' => array(
 
         //successful request
-        'success' => 200,
+        'success' => [200, 201],
 
         //not found
         'not_found' => 404,
