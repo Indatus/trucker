@@ -387,8 +387,7 @@ class RestRequest implements RequestableInterface
         if (ResponseInterpreterFactory::build()->invalid($response)) {
 
             //get the errors and set them to our local collection
-            $errors = [];
-            $errors = ErrorHandlerFactory::build()->parseErrors($response);
+            $errors = (array) ErrorHandlerFactory::build()->parseErrors($response);
 
             return new RawResponse(false, $response, $errors);
      
