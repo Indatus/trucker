@@ -512,17 +512,21 @@ class Model
     /**
      * Function to find a collection of Entity records from the remote api
      * 
+     * @param  Model                      $model       optional instance of entity 
      * @param  QueryConditionInterface    $condition   query conditions
      * @param  QueryResultOrderInterface  $resultOrder result ordering info
      * @param  array                      $getParams   additional GET params
      * @return Trucker\Responses\Collection
      */
     public static function all(
+        Model $model = null,
         QueryConditionInterface $condition = null,
         QueryResultOrderInterface $resultOrder = null,
         array $getParams = []
     ) {
-        return Collection::fetch(new static, $condition, $resultOrder, $getParams);
+        $model = (!is_null($model))? $model : new static;
+        
+        return Collection::fetch($model, $condition, $resultOrder, $getParams);
     }
 
 
