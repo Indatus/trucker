@@ -277,6 +277,10 @@ class RestRequestTest extends TruckerTests
 
     public function testSendRequest()
     {
+        $response = m::mock('Guzzle\Http\Message\Response');
+        
+        $this->app->instance('Guzzle\Http\Message\Response', $response);
+
         $request = $this->simpleMockRequest([
             [
                 'method' => 'setHeaders',
@@ -285,7 +289,7 @@ class RestRequestTest extends TruckerTests
                     'Content-Type' => 'application/json'
                 ]]
             ],
-            ['method' => 'send', 'return' => m::mock('Guzzle\Http\Message\Response')],
+            ['method' => 'send', 'return' => $response],
         ]);
 
         $request->createRequest('http://example.com', '/users', 'GET');
