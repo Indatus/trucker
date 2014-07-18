@@ -47,7 +47,7 @@ class CollectionFinderTest extends TruckerTests
         $this->setupIndividualTest($this->getTestOptions());
         extract($this->getTestOptions());
 
-        $found = User::all(null, null, $queryParams);
+        $found = User::all(null, null, null, $queryParams);
 
         //get objects to assert on
         $history     = $this->getHttpClientHistory();
@@ -143,7 +143,7 @@ class CollectionFinderTest extends TruckerTests
             "Expected query string to look different"
         );
 
-        $found = User::all($conditions, $order);
+        $found = User::all(null, $conditions, $order);
 
         $getParams = array_merge($conditions->toArray(), $order->toArray());
 
