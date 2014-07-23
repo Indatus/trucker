@@ -18,6 +18,10 @@ namespace Trucker\Responses;
  * are not outlined in this interface to avoid conflicts/implementation.
  *
  * @method int getStatusCode
+ *
+ * @codeCoverageIgnore
+ *
+ * Coverage is ignored here since this class has no functionality by itself.
  */
 class BaseResponse
 {
