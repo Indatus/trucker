@@ -11,6 +11,7 @@
 namespace Trucker\Responses\Interpreters;
 
 use Illuminate\Container\Container;
+use Trucker\Responses\BaseResponse;
 
 /**
  * Interface to be implemented by classes that are 
@@ -34,7 +35,7 @@ interface ResponseInterpreterInterface
      * @param  $response - Trucker response to interpret
      * @return boolean
      */
-    public function success(\Trucker\Responses\Response $response);
+    public function success(BaseResponse $response);
 
 
     /**
@@ -44,7 +45,7 @@ interface ResponseInterpreterInterface
      * @param  $response - Trucker response to interpret
      * @return boolean
      */
-    public function notFound(\Trucker\Responses\Response $response);
+    public function notFound(BaseResponse $response);
 
 
     /**
@@ -54,7 +55,7 @@ interface ResponseInterpreterInterface
      * @param  $response - Trucker response to interpret
      * @return boolean
      */
-    public function invalid(\Trucker\Responses\Response $response);
+    public function invalid(BaseResponse $response);
 
 
     /**
@@ -64,5 +65,5 @@ interface ResponseInterpreterInterface
      * @param  $response - Trucker response to interpret
      * @return boolean
      */
-    public function error(\Trucker\Responses\Response $response);
+    public function error(BaseResponse $response);
 }

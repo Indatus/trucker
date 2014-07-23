@@ -30,7 +30,6 @@ class ResponseTest extends TruckerTests
         $app->shouldIgnoreMissing();
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
-        $response = new \Trucker\Responses\Response($app);
         $transporter = Config::get('transporter.driver');
 
         $this->assertEquals('json', $transporter);

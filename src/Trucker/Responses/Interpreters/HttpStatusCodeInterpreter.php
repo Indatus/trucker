@@ -12,21 +12,23 @@ namespace Trucker\Responses\Interpreters;
 
 use Illuminate\Container\Container;
 use Trucker\Facades\Config;
+use Trucker\Responses\BaseResponse;
+use Trucker\Support\Str;
 
 class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
 {
     /**
      * The IoC Container
      *
-     * @var Illuminate\Container\Container
+     * @var \Illuminate\Container\Container
      */
     protected $app;
 
 
     /**
      * Constructor to setup the interpreter
-     * 
-     * @param Container $app      
+     *
+     * @param Container $app
      */
     public function __construct(Container $app)
     {
@@ -36,12 +38,12 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
 
     /**
      * Function to return a boolean value indicating whether
-     * the request was successful or not 
+     * the request was successful or not
      *
      * @param  $response - Guzzle response to interpret
      * @return boolean
      */
-    public function success(\Trucker\Responses\Response $response)
+    public function success(BaseResponse $response)
     {
         return $this->matchesStatus('response.http_status.success', $response->getStatusCode());
     }
@@ -54,7 +56,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      * @param  $response - Guzzle response to interpret
      * @return boolean
      */
-    public function notFound(\Trucker\Responses\Response $response)
+    public function notFound(BaseResponse $response)
     {
         return $this->matchesStatus('response.http_status.not_found', $response->getStatusCode());
     }
@@ -67,7 +69,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      * @param  $response - Guzzle response to interpret
      * @return boolean
      */
-    public function invalid(\Trucker\Responses\Response $response)
+    public function invalid(BaseResponse $response)
     {
         return $this->matchesStatus('response.http_status.invalid', $response->getStatusCode());
     }
@@ -80,7 +82,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      * @param  $response - Guzzle response to interpret
      * @return boolean
      */
-    public function error(\Trucker\Responses\Response $response)
+    public function error(BaseResponse $response)
     {
         return $this->matchesStatus('response.http_status.error', $response->getStatusCode());
     }
@@ -103,6 +105,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
             return true;
         }
 
-        return \Trucker\Support\Str::is($configValue, $status);
+        return Str::is($configValue, $status);
     }
 }

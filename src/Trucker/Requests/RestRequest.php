@@ -28,14 +28,14 @@ class RestRequest implements RequestableInterface
     /**
      * The IoC Container
      *
-     * @var Illuminate\Container\Container
+     * @var \Illuminate\Container\Container
      */
     protected $app;
 
     /**
      * Request client 
      * 
-     * @var Guzzle\Http\Client
+     * @var \Guzzle\Http\Client
      */
     protected $client;
 
@@ -43,7 +43,7 @@ class RestRequest implements RequestableInterface
      * Request object managed by this
      * class
      * 
-     * @var Guzzle\Http\Message\Request
+     * @var \Guzzle\Http\Message\Request
      */
     protected $request;
 
@@ -64,7 +64,7 @@ class RestRequest implements RequestableInterface
     /**
      * Getter function to access the HTTP Client
      * 
-     * @return Guzzle\Http\Client
+     * @return \Guzzle\Http\Client
      */
     public function &getClient()
     {
@@ -291,7 +291,7 @@ class RestRequest implements RequestableInterface
      *
      * @param  string $uri       uri to hit (i.e. /users)
      * @param  array  $params    Querystring parameters to send
-     * @return Trucker\Responses\RawResponse
+     * @return RawResponse
      */
     public function rawGet($uri, $params = array())
     {
@@ -306,7 +306,7 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    POST parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @return RawResponse
      */
     public function rawPost($uri, $params = array(), $getParams = array(), $files = array())
     {
@@ -321,7 +321,7 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    PUT parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @return RawResponse
      */
     public function rawPut($uri, $params = array(), $getParams = array(), $files = array())
     {
@@ -336,7 +336,7 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    PATCH parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @return RawResponse
      */
     public function rawPatch($uri, $params = array(), $getParams = array(), $files = array())
     {
@@ -349,7 +349,7 @@ class RestRequest implements RequestableInterface
      *
      * @param  string $uri       uri to hit (i.e. /users)
      * @param  array  $params    Querystring parameters to send
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @return RawResponse
      */
     public function rawDelete($uri, $params = array())
     {
@@ -366,7 +366,7 @@ class RestRequest implements RequestableInterface
      * @param  array  $params    PUT or POST parameters to send
      * @param  array  $getParams Querystring parameters to send
      * @param  array  $files     PUT or POST files to send (key = name, value = path)
-     * @return Indatus\ActiveResource\Responses\RawResponse
+     * @return RawResponse
      */
     public function rawRequest($uri, $method, $params = array(), $getParams = array(), $files = array())
     {

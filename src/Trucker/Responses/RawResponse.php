@@ -16,14 +16,14 @@ namespace Trucker\Responses;
  *
  * @author Brian Webb <bwebb@indatus.com>
  */
-class RawResponse
+class RawResponse extends BaseResponse
 {
     /**
      * Response object
      *
-     * @var Trucker\Response
+     * @var Response
      */
-    private $response = null;
+    protected $response = null;
 
     /**
      * Var to hold any errors returned
@@ -42,15 +42,17 @@ class RawResponse
     /**
      * Constructor
      * 
-     * @param boolean                     $successful 
-     * @param Trucker\Responses\Response  $response  
-     * @param array                       $errors     
+     * @param boolean   $successful
+     * @param Response  $response
+     * @param array     $errors
      */
-    public function __construct($successful = false, \Trucker\Responses\Response $response = null, array $errors = array())
+    public function __construct($successful = false, Response $response = null, array $errors = array())
     {
         $this->success = $successful;
         $this->response = $response;
         $this->errors = $errors;
+
+        parent::__construct($response);
     }
 
     /**
@@ -75,6 +77,8 @@ class RawResponse
 
     /**
      * Getter for errors
+     *
+     * @return array
      */
     public function errors()
     {
@@ -83,12 +87,17 @@ class RawResponse
 
     /**
      * Getter for response
+     *
+     * @return object
      */
     public function response()
     {
         return $this->response->parseResponseStringToObject();
     }
 
+    /**
+     * @return Response
+     */
     public function getResponse()
     {
         return $this->response;
