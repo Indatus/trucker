@@ -49,7 +49,6 @@ class RawResponse extends BaseResponse
     public function __construct($successful = false, Response $response = null, array $errors = array())
     {
         $this->success = $successful;
-        $this->response = $response;
         $this->errors = $errors;
 
         parent::__construct($response);
