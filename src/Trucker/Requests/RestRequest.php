@@ -286,7 +286,7 @@ class RestRequest implements RequestableInterface
     /**
      * Function to send the request to the remote API
      *
-     * @return  \Trucker\Response
+     * @return  \Trucker\Responses\Response
      */
     public function sendRequest()
     {
@@ -399,8 +399,12 @@ class RestRequest implements RequestableInterface
         $this->setPostParameters($params);
         $this->setGetParameters($getParams);
         $this->setFileParameters($files);
-        $this->setBody(json_encode($params));
         $this->setHeaders($headers);
+
+        //encode the request body
+        /** @var \Trucker\Transporters\TransporterInterface $transporter */
+        $transporter = TransporterFactory::build();
+        $transporter->setRequestBody($this, $params);
 
         // Trucker\Response
         $response = $this->sendRequest();

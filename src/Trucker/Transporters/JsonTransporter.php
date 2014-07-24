@@ -10,6 +10,8 @@
  */
 namespace Trucker\Transporters;
 
+use Trucker\Requests\RestRequest;
+
 class JsonTransporter implements TransporterInterface
 {
 
@@ -49,5 +51,16 @@ class JsonTransporter implements TransporterInterface
     public function parseResponseStringToObject(\Guzzle\Http\Message\Response $response)
     {
         return json_decode($response->getBody(true));
+    }
+
+    /**
+     * Set the request body for the given request.
+     *
+     * @param RestRequest $request
+     * @param             $body
+     */
+    public function setRequestBody(RestRequest &$request, $body)
+    {
+        $request->setBody(json_encode($body), 'application/json');
     }
 }
