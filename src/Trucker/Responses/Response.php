@@ -13,13 +13,13 @@ namespace Trucker\Responses;
 use Illuminate\Container\Container;
 use Trucker\Facades\TransporterFactory;
 
-class Response
+class Response extends BaseResponse
 {
 
     /**
      * The IoC Container
      *
-     * @var Illuminate\Container\Container
+     * @var \Illuminate\Container\Container
      */
     protected $app;
 
@@ -27,7 +27,7 @@ class Response
      * Response object managed by this
      * class
      * 
-     * @var Guzzle\Http\Message\Response
+     * @var \Guzzle\Http\Message\Response
      */
     protected $response;
 
@@ -40,7 +40,8 @@ class Response
     public function __construct(Container $app, \Guzzle\Http\Message\Response $response = null)
     {
         $this->app = $app;
-        $this->response = $response;
+
+        parent::__construct($response);
     }
 
 
@@ -82,7 +83,7 @@ class Response
      *
      * @param  Container $app
      * @param  \Guzzle\Http\Message\Response $response
-     * @return \Trucker\Response
+     * @return \Trucker\Responses\Response
      */
     public function newInstance(Container $app, \Guzzle\Http\Message\Response $response)
     {

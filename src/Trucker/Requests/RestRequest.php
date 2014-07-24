@@ -286,7 +286,7 @@ class RestRequest implements RequestableInterface
     /**
      * Function to send the request to the remote API
      *
-     * @return  \Trucker\Response
+     * @return  \Trucker\Responses\Response
      */
     public function sendRequest()
     {

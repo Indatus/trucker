@@ -33,9 +33,9 @@
         "patchwork/utf8": "1.1.*"
     },
     "require-dev": {
-        "mockery/mockery": "0.9.0",
+        "phpunit/phpunit": "4.1.*",
+        "mockery/mockery": "0.9.1",
         "satooshi/php-coveralls": "dev-master",
-        "phpunit/phpunit": "3.7.*@dev",
         "hot/phpunit-runner": "dev-master"
     },
     "autoload": {
