@@ -47,4 +47,17 @@ class JsonTransporterTest extends TruckerTests
         $this->assertEquals("bang", $result->biz);
         $this->assertTrue(is_object($result), "Expected result to be an object");
     }
+
+
+    public function testSetRequestBody()
+    {
+        $body = ['testme!'];
+        $request = m::mock('Trucker\Requests\RestRequest');
+        $request->shouldReceive('setBody')
+            ->with(json_encode($body), 'application/json')
+            ->once();
+
+        $transporter = new JsonTransporter;
+        $transporter->setRequestBody($request, $body);
+    }
 }

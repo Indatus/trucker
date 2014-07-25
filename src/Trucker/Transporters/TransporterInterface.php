@@ -10,6 +10,8 @@
  */
 namespace Trucker\Transporters;
 
+use Trucker\Requests\RestRequest;
+
 interface TransporterInterface
 {
 
@@ -38,4 +40,12 @@ interface TransporterInterface
      * @return stdClass
      */
     public function parseResponseStringToObject(\Guzzle\Http\Message\Response $response);
+
+    /**
+     * Set the request body for the given request.
+     *
+     * @param RestRequest $request
+     * @param             $body
+     */
+    public function setRequestBody(RestRequest &$request, $body);
 }
