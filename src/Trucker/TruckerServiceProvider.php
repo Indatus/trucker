@@ -31,7 +31,6 @@ class TruckerServiceProvider extends ServiceProvider
     public function boot()
     {
         // Register classes
-        $this->app = static::make($this->app);
     }
 
     /**
@@ -42,6 +41,7 @@ class TruckerServiceProvider extends ServiceProvider
     public function register()
     {
         // done with boot()
+        $this->app = static::make($this->app);
     }
 
     /**
