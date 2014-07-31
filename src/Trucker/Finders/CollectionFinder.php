@@ -113,8 +113,7 @@ class CollectionFinder
 
         //create an array of popuplated results
         foreach ($recordCollection as $values) {
-            $klass     = $model->getResourceName();
-            $instance = new $klass($values);
+            $instance = new $model($values);
 
             //inflate the ID property that should be guarded
             $id = $instance->getIdentityProperty();

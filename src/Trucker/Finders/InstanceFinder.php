@@ -86,8 +86,7 @@ class InstanceFinder
 
         //kraft the response into an object to return
         $data     = $response->parseResponseToData();
-        $klass    = $model->getResourceName();
-        $instance = new $klass($data);
+        $instance = new $model($data);
 
         //inflate the ID property that should be guarded
         $id = $instance->getIdentityProperty();
