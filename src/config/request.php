@@ -2,7 +2,7 @@
 
     /*
     |--------------------------------------------------------------------------
-    | API endpoint URI
+    | API endpoint base URI
     |--------------------------------------------------------------------------
     |
     | This is the base URI that your API requests will be made to.
@@ -11,6 +11,18 @@
     */
 
     'base_uri' => 'http://example.com',
+    
+    /*
+    |--------------------------------------------------------------------------
+    | API endpoint path
+    |--------------------------------------------------------------------------
+    |
+    | This is the optional path where the API endpoint is located under, 
+    | for instance /admin/ would result in http://example.com/admin/
+    |
+    |
+    */
+    'path_prefix' => '/',
 
     /*
     |--------------------------------------------------------------------------
