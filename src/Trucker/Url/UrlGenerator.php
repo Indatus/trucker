@@ -146,11 +146,7 @@ class UrlGenerator
             return $uri;
         }
 
-        $uri = Inflector::pluralize(
-            Inflector::tableize(
-                $model->getResourceName()
-            )
-        );
+        $uri = $model->pluralize();
 
         $uriResult = [];
         if (!empty($model->nestedUnder)) {

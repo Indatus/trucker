@@ -21,6 +21,7 @@ use Trucker\Facades\ErrorHandlerFactory;
 use Trucker\Facades\AuthFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
+use Doctrine\Common\Inflector\Inflector;
 
 /**
  * Base class for interacting with a remote API.
@@ -53,6 +54,13 @@ class Model
      * @var string
      */
     protected $uri;
+
+    /**
+     * The pluralized version of the resource name, ie a Page Model would become 'pages'
+     * 
+     * @var string
+     */
+    protected $pluralized;
 
     /**
      * Property to hold the data about entities for which this
@@ -491,6 +499,17 @@ class Model
     public function getURI()
     {
         return $this->uri ?: null;
+    }
+
+    public function pluralize() {
+        if (!isset($this->pluralized)) {
+            $this->pluralized = Inflector::pluralize(
+                Inflector::tableize(
+                    $this->getResourceName()
+                )
+            );
+        }
+        return $this->pluralized;
     }
 
 

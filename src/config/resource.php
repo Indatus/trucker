@@ -19,7 +19,10 @@
     |
     | When returning a collection of items ( /products for example ) if your API
     | provides the collection within a sub element of the response it can be defined
-    | here.
+    | here. It can be a simple string, or a Closure to determine the key. For example
+    | function(Trucker\Resource\Model $model) {
+    |     return $model->pluralize();
+    | }
     |
     */
 
