@@ -43,7 +43,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function success(BaseResponse $response)
     {
-        return $this->matchesStatus('trucker.response.http_status.success', $response->getStatusCode());
+        return $this->matchesStatus('response.http_status.success', $response->getStatusCode());
     }
 
     /**
@@ -55,7 +55,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function notFound(BaseResponse $response)
     {
-        return $this->matchesStatus('trucker.response.http_status.not_found', $response->getStatusCode());
+        return $this->matchesStatus('response.http_status.not_found', $response->getStatusCode());
     }
 
     /**
@@ -67,7 +67,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function invalid(BaseResponse $response)
     {
-        return $this->matchesStatus('trucker.response.http_status.invalid', $response->getStatusCode());
+        return $this->matchesStatus('response.http_status.invalid', $response->getStatusCode());
     }
 
     /**
@@ -79,7 +79,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     public function error(BaseResponse $response)
     {
-        return $this->matchesStatus('trucker.response.http_status.error', $response->getStatusCode());
+        return $this->matchesStatus('response.http_status.error', $response->getStatusCode());
     }
 
     /**
