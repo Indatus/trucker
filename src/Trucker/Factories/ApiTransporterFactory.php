@@ -82,6 +82,6 @@ class ApiTransporterFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('trucker.transporter.driver');
+        return config('trucker.transporter.driver');
     }
 }

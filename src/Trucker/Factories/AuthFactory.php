@@ -82,6 +82,6 @@ class AuthFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('trucker.auth.driver');
+        return config('trucker.auth.driver');
     }
 }

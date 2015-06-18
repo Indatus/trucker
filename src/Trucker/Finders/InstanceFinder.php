@@ -60,7 +60,7 @@ class InstanceFinder
 
         //init the request
         $request->createRequest(
-            Config::get('trucker.request.base_uri'),
+            config('trucker.request.base_uri'),
             UrlGenerator::getInstanceUri($model, [':id' => $id]),
             'GET'
         );

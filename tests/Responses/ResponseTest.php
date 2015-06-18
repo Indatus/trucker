@@ -28,7 +28,7 @@ class ResponseTest extends TruckerTests
         $app->shouldIgnoreMissing();
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
-        $transporter = Config::get('trucker.transporter.driver');
+        $transporter = config('trucker.transporter.driver');
 
         $this->assertEquals('json', $transporter);
     }

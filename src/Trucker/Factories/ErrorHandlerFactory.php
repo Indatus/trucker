@@ -82,6 +82,6 @@ class ErrorHandlerFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('trucker.error_handler.driver');
+        return config('trucker.error_handler.driver');
     }
 }

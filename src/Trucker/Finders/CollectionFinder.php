@@ -67,7 +67,7 @@ class CollectionFinder
 
         //init the request
         $request->createRequest(
-            Config::get('trucker.request.base_uri'),
+            config('trucker.request.base_uri'),
             UrlGenerator::getCollectionUri($model),
             'GET'
         );
@@ -100,7 +100,7 @@ class CollectionFinder
         $records = array();
 
         //figure out wether a collection key is used
-        $collection_key = Config::get('trucker.resource.collection_key');
+        $collection_key = config('trucker.resource.collection_key');
 
         //set records array appropriatley
         if (isset($collection_key)) {
