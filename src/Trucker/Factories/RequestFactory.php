@@ -113,6 +113,6 @@ class RequestFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('trucker.request.driver');
+        return Config::get('request.driver');
     }
 }

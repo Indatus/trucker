@@ -85,12 +85,12 @@ class CollectionFinderTest extends TruckerTests
         $conditions->setLogicalOperator($conditions->getLogicalOperatorAnd());
 
         $this->assertEquals(
-            Config::get('trucker.query_condition.and_operator'),
+            Config::get('query_condition.and_operator'),
             $conditions->getLogicalOperatorAnd()
         );
 
         $this->assertEquals(
-            Config::get('trucker.query_condition.or_operator'),
+            Config::get('query_condition.or_operator'),
             $conditions->getLogicalOperatorOr()
         );
 

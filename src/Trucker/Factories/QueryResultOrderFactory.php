@@ -83,6 +83,6 @@ class QueryResultOrderFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return Config::get('trucker.result_order.driver');
+        return Config::get('result_order.driver');
     }
 }
