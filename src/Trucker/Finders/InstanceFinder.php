@@ -11,11 +11,11 @@
 namespace Trucker\Finders;
 
 use Illuminate\Container\Container;
-use Trucker\Facades\RequestFactory;
-use Trucker\Facades\UrlGenerator;
-use Trucker\Facades\Config;
 use Trucker\Facades\AuthFactory;
+use Trucker\Facades\Config;
+use Trucker\Facades\RequestFactory;
 use Trucker\Facades\ResponseInterpreterFactory;
+use Trucker\Facades\UrlGenerator;
 
 /**
  * Class for finding model instances over the remote API
@@ -32,7 +32,6 @@ class InstanceFinder
      */
     protected $app;
 
-
     /**
      * Build a new InstanceFinder
      *
@@ -43,7 +42,6 @@ class InstanceFinder
     {
         $this->app = $app;
     }
-
 
     /**
      * Function to find an instance of an Entity record
@@ -62,7 +60,7 @@ class InstanceFinder
 
         //init the request
         $request->createRequest(
-            Config::get('request.base_uri'),
+            Config::get('trucker.request.base_uri'),
             UrlGenerator::getInstanceUri($model, [':id' => $id]),
             'GET'
         );
@@ -78,14 +76,12 @@ class InstanceFinder
         //actually send the request
         $response = $request->sendRequest();
 
-
-        
-        if (! ResponseInterpreterFactory::build()->success($response)) {
+        if (!ResponseInterpreterFactory::build()->success($response)) {
             return null;
         }
 
         //kraft the response into an object to return
-        $data     = $response->parseResponseToData();
+        $data = $response->parseResponseToData();
         $instance = new $model($data);
 
         //inflate the ID property that should be guarded
