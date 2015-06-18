@@ -202,25 +202,32 @@ class TruckerServiceProvider extends ServiceProvider
      */
     protected function registerConfig(Container $app)
     {
+        $this->publishes([
+             __DIR__.'/../config/trucker.php'=>config_path('trucker.php');
+        ]);
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/trucker.php'=>'trucker');
+        );
         // Register config file(filename)
-        $app['config']->package('indatus/trucker', __DIR__.'/../config');
-        $app['config']->getLoader();
+        // $app['config']->package('indatus/trucker', __DIR__.'/../config');
+        // $app['config']->getLoader();
 
 
-        // Register custom config
-        $custom = $app['path.trucker.config'];
-        if (file_exists($custom)) {
-            $app['config']->afterLoading('trucker', function ($me, $group, $items) use ($custom) {
-                $customItems = $custom.'/'.$group.'.php';
-                if (!file_exists($customItems)) {
-                    return $items;
-                }
+        // // Register custom config
+        // $custom = $app['path.trucker.config'];
+        // if (file_exists($custom)) {
+        //     $app['config']->afterLoading('trucker', function ($me, $group, $items) use ($custom) {
+        //         $customItems = $custom.'/'.$group.'.php';
+        //         if (!file_exists($customItems)) {
+        //             return $items;
+        //         }
 
-                $customItems = include $customItems;
+        //         $customItems = include $customItems;
 
-                return array_replace_recursive($items, $customItems);
-            });
-        }
+        //         return array_replace_recursive($items, $customItems);
+        //     });
+        // }
 
         return $app;
     }
