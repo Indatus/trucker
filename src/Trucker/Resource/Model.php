@@ -384,7 +384,7 @@ class Model
      */
     public function getIdentityProperty()
     {
-        return $this->identityProperty ?: config('trucker.resource.identity_property');
+        return $this->identityProperty ?: Config::get('trucker.resource.identity_property');
     }
 
     /**
@@ -394,7 +394,7 @@ class Model
      */
     public function getScratchDiskLocation()
     {
-        return $this->scratchDiskLocation ?: config('trucker.resource.scratch_disk_location');
+        return $this->scratchDiskLocation ?: Config::get('trucker.resource.scratch_disk_location');
     }
 
     /**
@@ -404,7 +404,7 @@ class Model
      */
     public function getBase64Indicator()
     {
-        return $this->base64Indicator ?: config('trucker.resource.base_64_property_indication');
+        return $this->base64Indicator ?: Config::get('trucker.resource.base_64_property_indication');
     }
 
     /**
@@ -516,25 +516,25 @@ class Model
 
             //make a CREATE request
             $request->createRequest(
-                config('trucker.request.base_uri'),
+                Config::get('trucker.request.base_uri'),
                 UrlGenerator::getCreateUri($this),
                 'POST',
                 [], //no extra headers
-                config('trucker.request.http_method_param')
+                Config::get('trucker.request.http_method_param')
             );
 
         } else {
 
             //make an UPDATE request
             $request->createRequest(
-                config('trucker.request.base_uri'),
+                Config::get('trucker.request.base_uri'),
                 UrlGenerator::getDeleteUri(
                     $this,
                     [':' . $this->getIdentityProperty() => $this->getId()]
                 ),
                 'PUT',
                 [], //no extra headers
-                config('trucker.request.http_method_param')
+                Config::get('trucker.request.http_method_param')
             );
         }
 
@@ -588,14 +588,14 @@ class Model
 
         //init the request
         $request->createRequest(
-            config('trucker.request.base_uri'),
+            Config::get('trucker.request.base_uri'),
             UrlGenerator::getDeleteUri(
                 $this,
                 [':' . $this->getIdentityProperty() => $this->getId()]
             ),
             'DELETE',
             [], //no extra headers
-            config('trucker.request.http_method_param')
+            Config::get('trucker.request.http_method_param')
         );
 
         //add auth if it is needed

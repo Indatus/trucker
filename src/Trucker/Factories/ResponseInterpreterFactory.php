@@ -82,6 +82,6 @@ class ResponseInterpreterFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return config('trucker.response.driver');
+        return Config::get('trucker.response.driver');
     }
 }

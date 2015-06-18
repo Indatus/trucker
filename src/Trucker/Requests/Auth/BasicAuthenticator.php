@@ -43,8 +43,8 @@ class BasicAuthenticator implements AuthenticationInterface
      */
     public function authenticateRequest(&$request)
     {
-        $username = config('trucker.auth.basic.username');
-        $password = config('trucker.auth.basic.password');
+        $username = Config::get('trucker.auth.basic.username');
+        $password = Config::get('trucker.auth.basic.password');
         $request->setAuth($username, $password);
     }
 }

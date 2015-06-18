@@ -173,7 +173,7 @@ trait GuzzleTestingTrait
             "The HTTP method is wrong"
         );
         $this->assertEquals(
-            config('trucker.transporter.driver'),
+            Config::get('trucker.transporter.driver'),
             last(explode('/', $request->getHeader('Accept'))),
             "The transport language is wrong"
         );

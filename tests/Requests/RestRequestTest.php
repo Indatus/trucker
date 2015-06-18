@@ -20,7 +20,7 @@ class RestRequestTest extends TruckerTests
         $app->shouldReceive('offsetGet')->with('config')->andReturn($config);
 
         $request = new \Trucker\Requests\RestRequest($app);
-        $transporter = config('trucker.transporter.driver');
+        $transporter = Config::get('trucker.transporter.driver');
 
         $this->assertEquals('json', $transporter);
     }

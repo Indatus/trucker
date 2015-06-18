@@ -95,7 +95,7 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     protected function matchesStatus($option, $status)
     {
-        $configValue = config($option);
+        $configValue = Config::get($option);
         if (is_array($configValue)) {
             return Config::contains($option, $status);
         }

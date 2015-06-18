@@ -110,7 +110,7 @@ class GetParamsResultOrder implements QueryResultOrderInterface
      */
     public function getOrderDirectionAscending()
     {
-        return config('trucker.result_order.get_params.order_dir_ascending');
+        return Config::get('trucker.result_order.get_params.order_dir_ascending');
     }
 
     /**
@@ -121,7 +121,7 @@ class GetParamsResultOrder implements QueryResultOrderInterface
      */
     public function getOrderDirectionDescending()
     {
-        return config('trucker.result_order.get_params.order_dir_descending');
+        return Config::get('trucker.result_order.get_params.order_dir_descending');
     }
 
     /**
@@ -137,14 +137,14 @@ class GetParamsResultOrder implements QueryResultOrderInterface
 
         if (isset($this->orderByField)) {
             $query->add(
-                config('trucker.result_order.get_params.order_by'),
+                Config::get('trucker.result_order.get_params.order_by'),
                 $this->orderByField
             );
         }
 
         if (isset($this->orderDirection)) {
             $query->add(
-                config('trucker.result_order.get_params.order_dir'),
+                Config::get('trucker.result_order.get_params.order_dir'),
                 $this->orderDirection
             );
         }
@@ -158,8 +158,8 @@ class GetParamsResultOrder implements QueryResultOrderInterface
      */
     public function toArray()
     {
-        $order_by = config('trucker.result_order.get_params.order_by');
-        $order_dir = config('trucker.result_order.get_params.order_dir');
+        $order_by = Config::get('trucker.result_order.get_params.order_by');
+        $order_dir = Config::get('trucker.result_order.get_params.order_dir');
 
         $params = [];
         $params[$order_by] = $this->orderByField;

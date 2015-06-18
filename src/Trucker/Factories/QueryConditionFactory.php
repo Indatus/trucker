@@ -83,6 +83,6 @@ class QueryConditionFactory extends FactoryDriver
      */
     public function getDriverConfigValue()
     {
-        return config('trucker.query_condition.driver');
+        return Config::get('trucker.query_condition.driver');
     }
 }
