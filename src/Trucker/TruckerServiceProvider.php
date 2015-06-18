@@ -15,11 +15,11 @@ use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Support\ServiceProvider;
 
- /**
-  * Service Provider for interacting with the Trucker class
-  *
-  * @author Brian Webb <bwebb@indatus.com>
-  */
+/**
+ * Service Provider for interacting with the Trucker class
+ *
+ * @author Brian Webb <bwebb@indatus.com>
+ */
 class TruckerServiceProvider extends ServiceProvider
 {
 
@@ -77,7 +77,6 @@ class TruckerServiceProvider extends ServiceProvider
         return $app;
     }
 
-
     /**
      * Bind the Trucker paths
      *
@@ -97,7 +96,6 @@ class TruckerServiceProvider extends ServiceProvider
         return $app;
     }
 
-
     /**
      * Bind the core classes
      *
@@ -111,7 +109,7 @@ class TruckerServiceProvider extends ServiceProvider
 
         $app->bindIf('config', function ($app) {
 
-            $fileloader = new FileLoader($app['files'], __DIR__.'/../config');
+            $fileloader = new FileLoader($app['files'], __DIR__ . '/../config');
 
             return new Repository($fileloader, 'config');
 
@@ -153,9 +151,8 @@ class TruckerServiceProvider extends ServiceProvider
         });
 
         $app->bind('trucker.model', function ($app) {
-                return new Resource\Model();
+            return new Resource\Model();
         });
-
 
         //Factories
         $app->bind('trucker.conditions', function ($app) {
@@ -203,16 +200,13 @@ class TruckerServiceProvider extends ServiceProvider
     protected function registerConfig(Container $app)
     {
         $this->publishes([
-             __DIR__.'/../config/trucker.php'=>config_path('trucker.php');
+            __DIR__ . '/../config/trucker.php' => config_path('trucker.php'),
         ]);
 
-        $this->mergeConfigFrom(
-            __DIR__.'/../config/trucker.php'=>'trucker');
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../config/trucker.php', 'trucker');
         // Register config file(filename)
         // $app['config']->package('indatus/trucker', __DIR__.'/../config');
         // $app['config']->getLoader();
-
 
         // // Register custom config
         // $custom = $app['path.trucker.config'];
