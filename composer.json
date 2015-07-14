@@ -28,8 +28,8 @@
         "illuminate/support": "~5",
         "illuminate/config": "~5",
         "illuminate/container": "~5",
-        "guzzle/guzzle": "3.8.1",
-        "doctrine/inflector": "1.0",
+        "guzzlehttp/guzzle": "~6.0",
+        "doctrine/inflector": "~1.0",
         "patchwork/utf8": "1.2.*"
     },
     "require-dev": {
