@@ -193,14 +193,21 @@ class RestRequest implements RequestableInterface
         $cantSet = $model->getReadOnlyFields();
 
         //set the property attributes
+        $body = array();
         foreach ($model->attributes() as $key => $value) {
             if (in_array($key, $model->getFileFields())) {
                 $this->request->addPostFile($key, $value);
             } else {
                 if (!in_array($key, $cantSet)) {
-                    $this->request->setPostField($key, $value);
+                    $body[$key] = $value;
                 }
             }
+        }
+
+        if($this->request->getMethod() == 'POST') {
+            $this->request->addPostFields($body);
+        } else {
+            $this->request->setBody($body);
         }
     }
 
