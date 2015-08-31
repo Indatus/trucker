@@ -185,6 +185,8 @@ logical_operator=AND
 Setting | Default | Description
 --- | --- | ---
 `base_uri` | `null` | This is the base URI that your API requests will be made to.  It should be in a format such as http://my-endpoint.com
+`path_prefix` | `null` | This lets you set a prefix for all API requests - eg. /api/
+  defaults to '/' if nothing is set
 `driver` | `rest` | This parameter specifies the driver to use for making HTTP requests to the remote API. The driver handles how the requests are made, formatted etc.<br /><br />_Supported Options:_ `rest`
 `http_method_param` | `null` | This is a parameter to send with the request that will contain a string disclosing the desired HTTP method ('put', 'post', 'patch', 'delete' etc.).  If specified PUT, POST, PATCH and DELETE requests will all be made as a POST and the given parameter will be added with the http method as it's value. An example might be "_method". <br /><br />Otherwise a true PUT, POST, PATCH or DELETE request will be made 
 
