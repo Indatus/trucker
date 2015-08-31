@@ -172,6 +172,7 @@ class UrlGenerator
             $uri = implode("/", $uriResult) . "/$uri";
         }
 
-        return "/$uri";
+        $prefix = Config::get('request.path_prefix', '/');
+        return "{$prefix}{$uri}";
     }
 }
