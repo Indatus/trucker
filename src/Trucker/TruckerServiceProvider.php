@@ -200,7 +200,7 @@ class TruckerServiceProvider extends ServiceProvider
     protected function registerConfig(Container $app)
     {
         $this->publishes([
-            __DIR__ . '/../config/trucker.php' => $this->app['path.config'] . DIRECTORY_SEPARATOR . 'trucker.php'
+            __DIR__ . '/../config/trucker.php' => $this->app['path.trucker.config'] . DIRECTORY_SEPARATOR . 'trucker.php'
         ]);
 
         $this->mergeConfigFrom(__DIR__ . '/../config/trucker.php', 'trucker');
