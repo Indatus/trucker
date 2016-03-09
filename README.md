@@ -74,7 +74,7 @@ You can install the library via [Composer](http://getcomposer.org) by adding the
 "indatus/trucker": "dev-master"
 ````
 
-> For Laravel 5 support, see the [`laravel-5.2` branch](https://github.com/Indatus/trucker/tree/laravel-5.2#config-laravel)
+> For Laravel 5 support, see the [`laravel-5` branch](https://github.com/Indatus/trucker/tree/laravel-5#config-laravel)
 
 Next run `composer install`, now you need to publish the config files.
 
