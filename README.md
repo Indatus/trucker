@@ -4,8 +4,6 @@
 
 Trucker is a PHP package for mapping remote API resources (usually RESTful) as models in an ActiveResource style. The benefit is easier use of remote APIs in a fast and clean programming interface.
 
-> For Laravel 5 support, see the [`laravel-5.2-dev` branch](https://github.com/Indatus/trucker/tree/laravel-5.2-dev)
-
 <img align="left" height="300" src="https://s3-us-west-2.amazonaws.com/oss-avatars/trucker_round_readme.png">
 
 
@@ -75,6 +73,8 @@ You can install the library via [Composer](http://getcomposer.org) by adding the
 ````
 "indatus/trucker": "dev-master"
 ````
+
+> For Laravel 5 support, see the [`laravel-5.2-dev` branch](https://github.com/Indatus/trucker/tree/laravel-5.2-dev)
 
 Next run `composer install`, now you need to publish the config files.
 
