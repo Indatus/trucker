@@ -24,7 +24,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
      */
     protected $app;
 
-
     /**
      * Constructor to setup the interpreter
      *
@@ -34,7 +33,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
     {
         $this->app = $app;
     }
-
 
     /**
      * Function to return a boolean value indicating whether
@@ -48,7 +46,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
         return $this->matchesStatus('response.http_status.success', $response->getStatusCode());
     }
 
-
     /**
      * Function to return a boolean value indicating whether
      * the request indicated something was not found
@@ -61,7 +58,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
         return $this->matchesStatus('response.http_status.not_found', $response->getStatusCode());
     }
 
-
     /**
      * Function to return a boolean value indicating whether
      * the request was considered invalid
@@ -73,7 +69,6 @@ class HttpStatusCodeInterpreter implements ResponseInterpreterInterface
     {
         return $this->matchesStatus('response.http_status.invalid', $response->getStatusCode());
     }
-
 
     /**
      * Function to return a boolean value indicating whether
