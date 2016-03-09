@@ -72,6 +72,8 @@ You can install the library via [Composer](http://getcomposer.org) by adding the
 "indatus/trucker": "dev-laravel-5"
 ````
 
+> Note: This project will not be supported for future versions of Laravel.  We do not recommend continuing to implement this package in Laravel projects, unless someone else would like to begin to maintain this project (create an issue if you are).
+
 Next run `composer install`, now you need to publish the config files.
 
 Trucker's config files are where you'd define constant things about the API your interacting with, like the end-point, what drivers you want to use etc.
