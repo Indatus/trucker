@@ -21,7 +21,6 @@ class ConfigManager
      */
     protected $app;
 
-
     /**
      * Build a new ConfigManager
      *
@@ -32,10 +31,9 @@ class ConfigManager
         $this->app = $app;
     }
 
-
     /**
      * Getter to access the IoC Container
-     * 
+     *
      * @return Container
      */
     public function getApp()
@@ -43,10 +41,9 @@ class ConfigManager
         return $this->app;
     }
 
-
     /**
      * Setter for the IoC Container
-     * 
+     *
      * @param Container
      * @return  void
      */
@@ -54,7 +51,6 @@ class ConfigManager
     {
         $this->app = $app;
     }
-
 
     /**
      * Get an option from the config file
@@ -65,9 +61,8 @@ class ConfigManager
      */
     public function get($option)
     {
-        return $this->app['config']->get('trucker::'.$option);
+        return $this->app['config']->get('trucker.' . $option);
     }
-
 
     /**
      * Set an option to the config file
@@ -79,9 +74,8 @@ class ConfigManager
      */
     public function set($option, $value)
     {
-        return $this->app['config']->set('trucker::'.$option, $value);
+        return $this->app['config']->set('trucker.' . $option, $value);
     }
-
 
     /**
      * Determine if a config option contains a specific

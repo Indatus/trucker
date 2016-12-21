@@ -1,15 +1,13 @@
 <?php
 
-use Trucker\Facades\Trucker;
-use Trucker\Facades\RequestFactory;
-use Trucker\Facades\Config;
 use Mockery as m;
+use Trucker\Facades\Config;
+use Trucker\Facades\Trucker;
 
 class ModelTest extends TruckerTests
 {
 
     use GuzzleTestingTrait;
-
 
     public function testAppMake()
     {
@@ -17,14 +15,10 @@ class ModelTest extends TruckerTests
         $this->assertEquals($t->attributes(), array());
     }
 
-
-
     public function testFacade()
     {
         $this->assertEquals(Trucker::attributes(), array());
     }
-
-
 
     public function testSimplePropertyGettersAndSetters()
     {
@@ -33,8 +27,6 @@ class ModelTest extends TruckerTests
         $this->assertEquals('bar', $t->foo);
         $this->assertTrue(array_key_exists('foo', $t->attributes()), 'set value missing from attributes array');
     }
-
-
 
     public function testFillWithGuarded()
     {
@@ -50,10 +42,9 @@ class ModelTest extends TruckerTests
         $this->assertEquals('bang', $t->biz);
         $this->assertTrue(array_key_exists('biz', $t->attributes()), 'set value missing from attributes array');
 
-
         //simulate that the guarded field was set in the class
         $this->simulateSetInaccessableProperty($t, 'guarded', 'one,two');
-        
+
         //TEST fill with guarded properties
         $t->fill(['one' => 1, 'two' => 2, 'three' => 3]);
         $this->assertEquals(null, $t->one);
@@ -61,15 +52,13 @@ class ModelTest extends TruckerTests
         $this->assertEquals(3, $t->three);
     }
 
-
-
     public function testBase64PropertySetterMutators()
     {
         $t = Trucker::newInstance();
 
         //TEST fill with base64 property
         $this->simulateSetInaccessableProperty($t, 'fileFields', 'meme,other_meme');
-        $testImagePath = __DIR__.'/../fixtures/test-all-things.jpg';
+        $testImagePath = __DIR__ . '/../fixtures/test-all-things.jpg';
         $md5 = md5_file($testImagePath);
         $imgData = file_get_contents($testImagePath);
         $base64Image = base64_encode($imgData);
@@ -93,16 +82,14 @@ class ModelTest extends TruckerTests
         unlink($tmp2); //remove the test generated file
     }
 
-
-
     public function testPostRequestCleanUp()
     {
         $t = Trucker::newInstance();
 
         //create our test files and assert that they exist
-        $path = __DIR__.'/../fixtures';
-        $tmp1 = $path.'/'.time().'-'.rand().'.txt';
-        $tmp2 = $path.'/'.time().'-'.rand().'.txt';
+        $path = __DIR__ . '/../fixtures';
+        $tmp1 = $path . '/' . time() . '-' . rand() . '.txt';
+        $tmp2 = $path . '/' . time() . '-' . rand() . '.txt';
         file_put_contents($tmp1, "Data for {$tmp1}");
         file_put_contents($tmp2, "Data for {$tmp1}");
 
@@ -118,8 +105,6 @@ class ModelTest extends TruckerTests
         $this->assertFalse(file_exists($tmp2), 'Expected {$tmp2} to have been unlinked');
     }
 
-
-
     public function testGetUri()
     {
         $u = Trucker::newInstance();
@@ -130,8 +115,6 @@ class ModelTest extends TruckerTests
         $this->assertEquals('employees', $u->getURI());
     }
 
-
-
     public function testGetResourceName()
     {
         $u = new User;
@@ -141,8 +124,6 @@ class ModelTest extends TruckerTests
 
         $this->assertEquals('Employee', $u->getResourceName());
     }
-
-
 
     public function testGetMutableFields()
     {
@@ -155,8 +136,6 @@ class ModelTest extends TruckerTests
         );
     }
 
-
-
     public function testGetReadOnlyFields()
     {
         $u = Trucker::newInstance();
@@ -167,8 +146,6 @@ class ModelTest extends TruckerTests
             "Read only fields were not as expected"
         );
     }
-
-
 
     public function testGetIdentityProperty()
     {
@@ -182,8 +159,6 @@ class ModelTest extends TruckerTests
         $this->assertEquals('user_id', $u->getIdentityProperty());
     }
 
-
-
     public function testGetFileFields()
     {
         $u = Trucker::newInstance();
@@ -194,8 +169,6 @@ class ModelTest extends TruckerTests
             'Returned file fields were not as expected'
         );
     }
-
-
 
     public function testGetGuardedAttributes()
     {
@@ -209,8 +182,6 @@ class ModelTest extends TruckerTests
         );
     }
 
-
-
     public function testErrorsGetter()
     {
         $u = Trucker::newInstance();
@@ -222,8 +193,6 @@ class ModelTest extends TruckerTests
         );
     }
 
-
-
     public function testAttributesGetter()
     {
         $attrs = ['foo' => 'bar', 'biz' => 'bang'];
@@ -234,8 +203,6 @@ class ModelTest extends TruckerTests
             'Attributes array was not as expected'
         );
     }
-
-
 
     public function testUnsetFunction()
     {
@@ -255,8 +222,6 @@ class ModelTest extends TruckerTests
         );
     }
 
-
-
     public function testGetId()
     {
         $t = Trucker::newInstance();
@@ -264,8 +229,6 @@ class ModelTest extends TruckerTests
         $t->id = 123456;
         $this->assertEquals(123456, $t->getId(), 'identity property could not properly resolve');
     }
-
-
 
     public function testCreateShouldSaveWithoutHttpMethodParam()
     {
@@ -276,9 +239,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertTrue($result, "Save() should have been true");
@@ -295,14 +258,12 @@ class ModelTest extends TruckerTests
         $this->assertEquals(1, $u->getId(), "Expected respose to set ID");
     }
 
-
-
     public function testCreateShouldSaveWithHttpMethodParam()
     {
         //setup our creation mocks, expected results etc
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
-            'trucker::request.http_method_param' => '_method'
+            'trucker::request.base_uri' => 'http://example.com',
+            'trucker::request.http_method_param' => '_method',
         ];
         $this->setupIndividualTest($this->getCreateTestOptions(), $config);
 
@@ -310,9 +271,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertTrue($result, "Save() should have been true");
@@ -329,16 +290,14 @@ class ModelTest extends TruckerTests
         $this->assertArrayHasKey('_method', $request->getPostFields()->toArray(), 'Expected http method param');
     }
 
-
-
     public function testCreateShouldFailWithErrorsKey()
     {
         $invalid_status = Config::get('response.http_status.invalid');
 
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::request.base_uri' => 'http://example.com',
             'trucker::error_handler.driver' => 'parameter_key',
-            'trucker::error_handler.errors_key' => 'errors'
+            'trucker::error_handler.errors_key' => 'errors',
         ];
 
         //setup our creation mocks, expected results etc
@@ -354,9 +313,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertEquals(
             $invalid_status,
@@ -365,8 +324,6 @@ class ModelTest extends TruckerTests
         );
         $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
-
-
 
     public function testCreateShouldFailWithoutErrorsKey()
     {
@@ -383,9 +340,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertEquals(
             $invalid_status,
@@ -394,8 +351,6 @@ class ModelTest extends TruckerTests
         );
         $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
-
-
 
     public function testUpdateShouldSaveWithoutHttpMethodParam()
     {
@@ -407,9 +362,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertTrue($result, "Save() should have been true");
@@ -425,13 +380,12 @@ class ModelTest extends TruckerTests
         $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
     }
 
-
     public function testUpdateShouldSaveWithHttpMethodParam()
     {
         //setup our creation mocks, expected results etc
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
-            'trucker::request.http_method_param' => '_method'
+            'trucker::request.base_uri' => 'http://example.com',
+            'trucker::request.http_method_param' => '_method',
         ];
         $this->setupIndividualTest($this->getUpdateTestOptions(), $config);
 
@@ -440,9 +394,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertTrue($result, "Save() should have been true");
@@ -460,16 +414,14 @@ class ModelTest extends TruckerTests
         $this->assertArrayHasKey('_method', $request->getPostFields()->toArray(), 'Expected http method param');
     }
 
-
-
     public function testUpdateShouldFailWithErrorsKey()
     {
         $invalid_status = Config::get('response.http_status.invalid');
 
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::request.base_uri' => 'http://example.com',
             'trucker::error_handler.driver' => 'parameter_key',
-            'trucker::error_handler.errors_key' => 'errors'
+            'trucker::error_handler.errors_key' => 'errors',
         ];
 
         //setup our creation mocks, expected results etc
@@ -486,9 +438,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertFalse($result, 'Expected save to return false');
         $this->assertEquals(
@@ -498,8 +450,6 @@ class ModelTest extends TruckerTests
         );
         $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
-
-
 
     public function testUpdateShouldFailWithoutErrorsKey()
     {
@@ -517,9 +467,9 @@ class ModelTest extends TruckerTests
         $result = $u->save();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertFalse($result, 'Expected save to return false');
         $this->assertEquals(
@@ -529,8 +479,6 @@ class ModelTest extends TruckerTests
         );
         $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
-
-    
 
     public function testDestroyWithoutHttpMethodParam()
     {
@@ -542,9 +490,9 @@ class ModelTest extends TruckerTests
         $result = $u->destroy();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertTrue($result, "destroy() should have been true");
@@ -553,14 +501,12 @@ class ModelTest extends TruckerTests
         $this->assertEquals('/users/1', $request->getPath(), "Expected request to go to /users/1");
     }
 
-
-
     public function testDestroyWithHttpMethodParam()
     {
         //setup our creation mocks, expected results etc
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
-            'trucker::request.http_method_param' => '_method'
+            'trucker::request.base_uri' => 'http://example.com',
+            'trucker::request.http_method_param' => '_method',
         ];
         $this->setupIndividualTest($this->getCreateTestOptions(), $config);
 
@@ -569,9 +515,9 @@ class ModelTest extends TruckerTests
         $result = $u->destroy();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertTrue($response->isSuccessful());
         $this->assertTrue($result, "destroy() should have been true");
@@ -580,16 +526,14 @@ class ModelTest extends TruckerTests
         $this->assertArrayHasKey('_method', $request->getPostFields()->toArray(), 'Expected http method param');
     }
 
-
-
     public function testDestroyShouldFailWithErrorsKey()
     {
         $invalid_status = Config::get('response.http_status.invalid');
 
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
+            'trucker::request.base_uri' => 'http://example.com',
             'trucker::error_handler.driver' => 'parameter_key',
-            'trucker::error_handler.errors_key' => 'errors'
+            'trucker::error_handler.errors_key' => 'errors',
         ];
 
         //setup our creation mocks, expected results etc
@@ -606,9 +550,9 @@ class ModelTest extends TruckerTests
         $result = $u->destroy();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertFalse($result, 'Expected destroy() to return false');
         $this->assertEquals(
@@ -618,8 +562,6 @@ class ModelTest extends TruckerTests
         );
         $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
-
-
 
     public function testDestroyShouldFailWithoutErrorsKey()
     {
@@ -637,9 +579,9 @@ class ModelTest extends TruckerTests
         $result = $u->destroy();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->assertFalse($result, 'Expected destroy() to return false');
         $this->assertEquals(
@@ -650,61 +592,56 @@ class ModelTest extends TruckerTests
         $this->assertCount(2, $u->errors(), 'Expected 2 errors');
     }
 
-
-
     /**
      * Helper function to get commonly used testing data
      * for creating an entity
-     * 
+     *
      * @return array
      */
     private function getCreateTestOptions()
     {
         //some vars for our test
-        $data                  = [];
-        $data['uri']           = '/users';
-        $data['base_uri']      = 'http://example.com';
+        $data = [];
+        $data['uri'] = '/users';
+        $data['base_uri'] = 'http://example.com';
         $data['response_body'] = json_encode(
             [
-                'id'    => 1,
-                'name'  => 'John Doe',
-                'email' => 'jdoe@noboddy.com'
+                'id' => 1,
+                'name' => 'John Doe',
+                'email' => 'jdoe@noboddy.com',
             ]
         );
 
         return $data;
     }
 
-
-
     /**
      * Helper function to get commonly used testing data
      * for updating an entity
-     * 
+     *
      * @return array
      */
     private function getUpdateTestOptions()
     {
         //some vars for our test
-        $data                  = [];
-        $data['uri']           = '/users/1';
-        $data['base_uri']      = 'http://example.com';
+        $data = [];
+        $data['uri'] = '/users/1';
+        $data['base_uri'] = 'http://example.com';
         $data['response_body'] = json_encode(
             [
-                'id'    => 1,
-                'name'  => 'John Doe',
-                'email' => 'jdoe@noboddy.com'
+                'id' => 1,
+                'name' => 'John Doe',
+                'email' => 'jdoe@noboddy.com',
             ]
         );
 
         return $data;
     }
 
-
     /**
      * Helper function to get commonly used testing data
      * for error testing entity saving
-     * 
+     *
      * @return array
      */
     private function getSaveErrorTestOptions($key = null)
@@ -712,7 +649,7 @@ class ModelTest extends TruckerTests
 
         $errors = [
             "Username can't be blank",
-            "Email format is invalid"
+            "Email format is invalid",
         ];
 
         if ($key) {
@@ -722,21 +659,20 @@ class ModelTest extends TruckerTests
         }
 
         //some vars for our test
-        $data                  = [];
-        $data['uri']           = '/users/1';
-        $data['base_uri']      = 'http://example.com';
+        $data = [];
+        $data['uri'] = '/users/1';
+        $data['base_uri'] = 'http://example.com';
         $data['response_body'] = json_encode($errorsArray);
         return $data;
     }
 
-
     /**
-     * Function to mock a request for us and 
+     * Function to mock a request for us and
      * expect test data
-     * 
-     * @param  array $options 
+     *
+     * @param  array $options
      * @param  array $config_overrides
-     * @param  int   $status 
+     * @param  int   $status
      * @param  string $content_type
      * @return void
      */
@@ -765,8 +701,8 @@ class ModelTest extends TruckerTests
             //HTTP response headers
             //
             [
-                'Location'     => $base_uri.'/'.$uri,
-                'Content-Type' => $content_type
+                'Location' => $base_uri . '/' . $uri,
+                'Content-Type' => $content_type,
             ],
             //
             //response to return

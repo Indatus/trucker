@@ -10,15 +10,15 @@
  */
 namespace Trucker\Resource;
 
-use Trucker\Facades\Response;
-use Trucker\Facades\Instance;
-use Trucker\Facades\Collection;
-use Trucker\Facades\UrlGenerator;
-use Trucker\Facades\Config;
-use Trucker\Facades\RequestFactory;
-use Trucker\Facades\ResponseInterpreterFactory;
-use Trucker\Facades\ErrorHandlerFactory;
 use Trucker\Facades\AuthFactory;
+use Trucker\Facades\Collection;
+use Trucker\Facades\Config;
+use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Facades\Instance;
+use Trucker\Facades\RequestFactory;
+use Trucker\Facades\Response;
+use Trucker\Facades\ResponseInterpreterFactory;
+use Trucker\Facades\UrlGenerator;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 
@@ -76,7 +76,7 @@ class Model
      *
      *
      * This value can be nested as a comma separated string as well.
-     * So you could set something like 
+     * So you could set something like
      * "Company:company_id,Employee:employee_id,Preference:pref_id"
      * which would generate
      * /companies/:company_id/employees/:employee_id/preferences/:pref_id
@@ -149,15 +149,12 @@ class Model
 
     /**
      * Portion of a property name that would indicate
-     * that the value would be Base64 encoded when the 
+     * that the value would be Base64 encoded when the
      * property is set.
-     * 
+     *
      * @var string
      */
     protected $base64Indicator;
-
-
-
 
     /**
      * Constructor used to popuplate the instance with
@@ -169,7 +166,6 @@ class Model
     {
         $this->fill($attributes);
     }
-
 
     /**
      * Create a new instance of the given model.
@@ -185,11 +181,9 @@ class Model
         $model = new static;
 
         $model->fill((array) $attributes);
-    
+
         return $model;
     }
-    
-
 
     /**
      * Magic getter function for accessing instance properties
@@ -205,7 +199,6 @@ class Model
 
         return null;
     }
-
 
     /**
      * Magic setter function for setting instance properties
@@ -223,19 +216,18 @@ class Model
             $fileProperty = str_replace($this->getBase64Indicator(), '', $property);
             if (in_array($fileProperty, $this->getFileFields())) {
                 $this->handleBase64File($fileProperty, $value);
-            }//end if file field
+            } //end if file field
 
         } else {
 
             $this->properties[$property] = $value;
         }
 
-    }//end __set
-
+    } //end __set
 
     /**
      * Magic unsetter function for unsetting an instance property
-     * 
+     *
      * @param string $property Property name
      * @return void
      */
@@ -244,21 +236,19 @@ class Model
         if (array_key_exists($property, $this->properties)) {
             unset($this->properties[$property]);
         }
-    }//end __unset
-
+    } //end __unset
 
     /**
      * Getter function to access the
      * underlying attributes array for the
      * entity
-     * 
+     *
      * @return arrayhttpStatusError
      */
     public function attributes()
     {
         return $this->properties;
     }
-
 
     /**
      * Function to return any errors that
@@ -270,7 +260,6 @@ class Model
     {
         return $this->errors;
     }
-
 
     /**
      * Function to fill an instance's properties from an
@@ -300,7 +289,7 @@ class Model
 
                         $this->handleBase64File($fileProperty, $value);
 
-                    }//end if file field
+                    } //end if file field
 
                 } else {
 
@@ -310,11 +299,10 @@ class Model
                         $this->properties[$property] = $value;
 
                     }
-                }//end if-else base64
-            }//end if not guarded
-        }//end foreach
+                } //end if-else base64
+            } //end if not guarded
+        } //end foreach
     }
-
 
     /**
      * Function to return an array of properties that should not
@@ -334,7 +322,6 @@ class Model
         return $attrs;
     }
 
-
     /**
      * Function to return an array of properties that will
      * accept a file path
@@ -346,7 +333,6 @@ class Model
         $attrs = array_map('trim', explode(',', $this->fileFields));
         return array_filter($attrs);
     }
-
 
     /**
      * Function to take base64 encoded image and write it to a
@@ -365,7 +351,7 @@ class Model
         $ext = end($mimeExp);
         $output_file = implode(
             DIRECTORY_SEPARATOR,
-            array($this->getScratchDiskLocation(), uniqid("tmp_{$property}_").".$ext")
+            array($this->getScratchDiskLocation(), uniqid("tmp_{$property}_") . ".$ext")
         );
         $f = fopen($output_file, "wb");
         fwrite($f, $image);
@@ -374,8 +360,7 @@ class Model
         $this->postRequestCleanUp[] = $output_file;
         $this->{$property} = $output_file;
 
-    }//end handleBase64File
-
+    } //end handleBase64File
 
     /**
      * Function to get the instance ID, returns false if there
@@ -392,10 +377,9 @@ class Model
         return false;
     }
 
-
     /**
      * Getter function to return the identity property
-     * 
+     *
      * @return string
      */
     public function getIdentityProperty()
@@ -403,10 +387,9 @@ class Model
         return $this->identityProperty ?: Config::get('resource.identity_property');
     }
 
-
     /**
      * Getter function to return the scratch disk location
-     * 
+     *
      * @return string
      */
     public function getScratchDiskLocation()
@@ -414,10 +397,9 @@ class Model
         return $this->scratchDiskLocation ?: Config::get('resource.scratch_disk_location');
     }
 
-
     /**
      * Getter function to return base64 param indicator
-     * 
+     *
      * @return string
      */
     public function getBase64Indicator()
@@ -425,11 +407,10 @@ class Model
         return $this->base64Indicator ?: Config::get('resource.base_64_property_indication');
     }
 
-
     /**
      * Function to return an array of property names
      * that are read only
-     * 
+     *
      * @return array
      */
     public function getReadOnlyFields()
@@ -438,11 +419,10 @@ class Model
         return $cantSet;
     }
 
-
     /**
      * Function to get an associative array of fields
      * with their values that are NOT read only
-     * 
+     *
      * @return array
      */
     public function getMutableFields()
@@ -460,7 +440,6 @@ class Model
 
         return $mutableFields;
     }
-
 
     /**
      * Function to interpret the URI resource name based on the class called.
@@ -481,18 +460,16 @@ class Model
         return $klass;
     }
 
-
     /**
      * Getter function to return a URI
      * that has been manually set
-     * 
+     *
      * @return string
      */
     public function getURI()
     {
         return $this->uri ?: null;
     }
-
 
     /**
      * Function to find an instance of an Entity record
@@ -508,10 +485,9 @@ class Model
         return Instance::fetch($m, $id, $getParams);
     }
 
-
     /**
      * Function to find a collection of Entity records from the remote api
-     * 
+     *
      * @param  QueryConditionInterface    $condition   query conditions
      * @param  QueryResultOrderInterface  $resultOrder result ordering info
      * @param  array                      $getParams   additional GET params
@@ -522,9 +498,8 @@ class Model
         QueryResultOrderInterface $resultOrder = null,
         array $getParams = []
     ) {
-        return Collection::fetch(new static, $condition, $resultOrder, $getParams);
+        return Collection::fetch(new static , $condition, $resultOrder, $getParams);
     }
-
 
     /**
      * Function to handle persistance of the entity across the
@@ -555,7 +530,7 @@ class Model
                 Config::get('request.base_uri'),
                 UrlGenerator::getDeleteUri(
                     $this,
-                    [':'.$this->getIdentityProperty() => $this->getId()]
+                    [':' . $this->getIdentityProperty() => $this->getId()]
                 ),
                 'PUT',
                 [], //no extra headers
@@ -584,7 +559,7 @@ class Model
             $this->doPostRequestCleanUp();
 
             return false;
-        }//end if
+        } //end if
 
         //get the response and inflate from that
         $data = $response->parseResponseToData();
@@ -601,7 +576,6 @@ class Model
         return true;
     }
 
-
     /**
      * Function to delete an existing entity
      *
@@ -617,7 +591,7 @@ class Model
             Config::get('request.base_uri'),
             UrlGenerator::getDeleteUri(
                 $this,
-                [':'.$this->getIdentityProperty() => $this->getId()]
+                [':' . $this->getIdentityProperty() => $this->getId()]
             ),
             'DELETE',
             [], //no extra headers
@@ -647,11 +621,10 @@ class Model
             //get the errors and set them to our local collection
             $this->errors = ErrorHandlerFactory::build()->parseErrors($response);
 
-        }//end if-else
+        } //end if-else
 
         return false;
     }
-
 
     /**
      * Function to clean up any temp files written for a request
