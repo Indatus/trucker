@@ -86,7 +86,7 @@ Trucker's config files are where you'd define constant things about the API your
 Trucker works well with the [Laravel](http://laravel.com) framework.  If your using Trucker within Laravel, you just need to run the following command to publish the Trucker config files to the **app/config/packages/indatus/trucker** folder.
 
 ````
-php artisan config:publish indatus/trucker
+php artisan vendor:publish indatus/trucker
 ````
 
 The final step is to add the service provider. Open `app/config/app.php`, and add a new item to the providers array.

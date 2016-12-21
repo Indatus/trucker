@@ -22,11 +22,10 @@ class ParameterKeyErrorHandler implements ErrorHandlerInterface
      */
     protected $app;
 
-
     /**
      * Constructor to setup the interpreter
-     * 
-     * @param Container $app      
+     *
+     * @param Container $app
      */
     public function __construct(Container $app)
     {
@@ -34,15 +33,15 @@ class ParameterKeyErrorHandler implements ErrorHandlerInterface
     }
 
     /**
-     * Function to take the response object and return 
+     * Function to take the response object and return
      * an array of errors
-     * 
+     *
      * @param  Trucker\Responses\Response $response - response object
      * @return array - array of string error messages
      */
     public function parseErrors(\Trucker\Responses\Response $response)
     {
-        $result    = $response->parseResponseStringToObject();
+        $result = $response->parseResponseStringToObject();
         $error_key = Config::get('error_handler.errors_key');
 
         if (property_exists($result, $error_key)) {

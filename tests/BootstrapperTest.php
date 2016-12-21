@@ -90,6 +90,6 @@ class Bootstrapper extends TruckerTests
         $this->bootstrapper->updateConfiguration($path, array('basic_username' => 'foo'));
 
         $this->assertFileExists(__DIR__.'/../.trucker');
-        $this->assertContains('foo', file_get_contents(__DIR__.'/../.trucker/auth.php'));
+        $this->assertContains('foo', file_get_contents(__DIR__.'/../.trucker/trucker.php'));
     }
 }

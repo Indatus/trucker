@@ -1,10 +1,10 @@
 <?php
 
-use Trucker\Responses\Collection;
-use Trucker\Facades\ConditionFactory;
-use Trucker\Facades\ResultOrderFactory;
-use Trucker\Facades\Config;
 use Mockery as m;
+use Trucker\Facades\ConditionFactory;
+use Trucker\Facades\Config;
+use Trucker\Facades\ResultOrderFactory;
+use Trucker\Responses\Collection;
 
 class CollectionFinderTest extends TruckerTests
 {
@@ -25,9 +25,9 @@ class CollectionFinderTest extends TruckerTests
         $found = User::all();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->makeGuzzleAssertions('GET', $base_uri, $uri);
 
@@ -40,8 +40,6 @@ class CollectionFinderTest extends TruckerTests
         $this->assertEquals('John Doe', $found->first()->name);
     }
 
-
-
     public function testFindAllWithGetParams()
     {
         $this->setupIndividualTest($this->getTestOptions());
@@ -50,9 +48,9 @@ class CollectionFinderTest extends TruckerTests
         $found = User::all(null, null, $queryParams);
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->makeGuzzleAssertions('GET', $base_uri, $uri, $queryParams);
 
@@ -64,7 +62,6 @@ class CollectionFinderTest extends TruckerTests
         $this->assertEquals(1234, $found->first()->id);
         $this->assertEquals('John Doe', $found->first()->name);
     }
-
 
     public function testFindAllWithGetParamsQueryConditions()
     {
@@ -100,9 +97,9 @@ class CollectionFinderTest extends TruckerTests
         $found = User::all($conditions);
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->makeGuzzleAssertions('GET', $base_uri, $uri, $conditions->toArray());
 
@@ -114,7 +111,6 @@ class CollectionFinderTest extends TruckerTests
         $this->assertEquals(1234, $found->first()->id);
         $this->assertEquals('John Doe', $found->first()->name);
     }
-
 
     public function testFindAllWithGetParamsQueryConditionsAndGetOrderResults()
     {
@@ -148,9 +144,9 @@ class CollectionFinderTest extends TruckerTests
         $getParams = array_merge($conditions->toArray(), $order->toArray());
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->makeGuzzleAssertions('GET', $base_uri, $uri, $getParams);
 
@@ -163,12 +159,11 @@ class CollectionFinderTest extends TruckerTests
         $this->assertEquals('John Doe', $found->first()->name);
     }
 
-
     public function testFindAllWithCollectionKeyOption()
     {
         $config = [
-            'trucker::request.base_uri'          => 'http://example.com',
-            'trucker::resource.collection_key'    => 'collection'
+            'trucker::request.base_uri' => 'http://example.com',
+            'trucker::resource.collection_key' => 'collection',
         ];
 
         $this->setupIndividualTest(
@@ -181,9 +176,9 @@ class CollectionFinderTest extends TruckerTests
         $found = User::all();
 
         //get objects to assert on
-        $history     = $this->getHttpClientHistory();
-        $request     = $history->getLastRequest();
-        $response    = $history->getLastResponse();
+        $history = $this->getHttpClientHistory();
+        $request = $history->getLastRequest();
+        $response = $history->getLastResponse();
 
         $this->makeGuzzleAssertions('GET', $base_uri, $uri);
 
@@ -201,20 +196,18 @@ class CollectionFinderTest extends TruckerTests
         );
     }
 
-
-
     /**
      * Helper function to get commonly used testing data
-     * 
+     *
      * @return array
      */
     private function getTestOptions($collectionKey = null)
     {
         //some vars for our test
-        $data                  = [];
-        $data['uri']           = '/users';
-        $data['base_uri']      = 'http://example.com';
-        $data['queryParams']   = ['foo' => 'bar', 'biz' => 'bang'];
+        $data = [];
+        $data['uri'] = '/users';
+        $data['base_uri'] = 'http://example.com';
+        $data['queryParams'] = ['foo' => 'bar', 'biz' => 'bang'];
         $data['response_body'] = json_encode(
             $this->getRecords($collectionKey)
         );
@@ -222,34 +215,33 @@ class CollectionFinderTest extends TruckerTests
         return $data;
     }
 
-
     private function getRecords($collectionKey = null)
     {
         $records = [
             [
-                'id'    => 1234,
-                'name'  => 'John Doe',
-                'email' => 'jdoe@noboddy.com'
+                'id' => 1234,
+                'name' => 'John Doe',
+                'email' => 'jdoe@noboddy.com',
             ],
             [
-                'id'    => 1235,
-                'name'  => 'Sammy Smith',
-                'email' => 'sammys@mysite.com'
+                'id' => 1235,
+                'name' => 'Sammy Smith',
+                'email' => 'sammys@mysite.com',
             ],
             [
-                'id'    => 1236,
-                'name'  => 'Tommy Jingles',
-                'email' => 'tjingles@gmail.com'
+                'id' => 1236,
+                'name' => 'Tommy Jingles',
+                'email' => 'tjingles@gmail.com',
             ],
             [
-                'id'    => 1237,
-                'name'  => 'Brent Sanders',
-                'email' => 'bsanders@yahoo.com'
+                'id' => 1237,
+                'name' => 'Brent Sanders',
+                'email' => 'bsanders@yahoo.com',
             ],
             [
-                'id'    => 1238,
-                'name'  => 'Michael Blanton',
-                'email' => 'mblanton@outlook.com'
+                'id' => 1238,
+                'name' => 'Michael Blanton',
+                'email' => 'mblanton@outlook.com',
             ],
         ];
 
@@ -262,14 +254,13 @@ class CollectionFinderTest extends TruckerTests
         return $result;
     }
 
-
     /**
-     * Function to mock a request for us and 
+     * Function to mock a request for us and
      * expect test data
-     * 
-     * @param  array $options 
+     *
+     * @param  array $options
      * @param  array $config_overrides
-     * @param  int   $status 
+     * @param  int   $status
      * @param  string $content_type
      * @return void
      */
@@ -298,8 +289,8 @@ class CollectionFinderTest extends TruckerTests
             //HTTP response headers
             //
             [
-                'Location'     => $base_uri.'/'.$uri,
-                'Content-Type' => $content_type
+                'Location' => $base_uri . '/' . $uri,
+                'Content-Type' => $content_type,
             ],
             //
             //response to return

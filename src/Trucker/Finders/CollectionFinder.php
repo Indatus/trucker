@@ -11,14 +11,14 @@
 namespace Trucker\Finders;
 
 use Illuminate\Container\Container;
+use Trucker\Facades\AuthFactory;
+use Trucker\Facades\Config;
 use Trucker\Facades\RequestFactory;
 use Trucker\Facades\UrlGenerator;
-use Trucker\Facades\Config;
-use Trucker\Facades\AuthFactory;
-use Trucker\Responses\Collection;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 use Trucker\Resource\Model;
+use Trucker\Responses\Collection;
 
 /**
  * Class for finding collections of models over the remote API
@@ -35,7 +35,6 @@ class CollectionFinder
      */
     protected $app;
 
-
     /**
      * Build a new CollectionFinder
      *
@@ -46,11 +45,10 @@ class CollectionFinder
         $this->app = $app;
     }
 
-
     /**
      * Function to fetch a collection of Trucker\Resource\Model object
      * from the remote API.
-     * 
+     *
      * @param  Model                      $model       Instance of entity type being fetched
      * @param  QueryConditionInterface    $condition   Query conditions for the request
      * @param  QueryResultOrderInterface  $resultOrder Result ordering requirements for the request
@@ -66,7 +64,7 @@ class CollectionFinder
 
         //get a request object
         $request = RequestFactory::build();
-        
+
         //init the request
         $request->createRequest(
             Config::get('request.base_uri'),
@@ -124,7 +122,7 @@ class CollectionFinder
             //add the instance to the records array
             $records[] = $instance;
 
-        }//end foreach
+        } //end foreach
 
         //create a collection object to return
         $collection = new Collection($records);

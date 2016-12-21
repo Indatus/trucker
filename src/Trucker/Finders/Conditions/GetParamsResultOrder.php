@@ -37,7 +37,7 @@ class GetParamsResultOrder implements QueryResultOrderInterface
     /**
      * Var to hold the order by field
      * that the results shoudl be sorted on
-     * 
+     *
      * @var string
      */
     protected $orderByField;
@@ -45,16 +45,15 @@ class GetParamsResultOrder implements QueryResultOrderInterface
     /**
      * Var to hold the order direction
      * for results to be returned
-     * 
+     *
      * @var string
      */
     protected $orderDirection;
 
-
     /**
      * Constructor, likely never called in implementation
      * but rather through the service provider
-     * 
+     *
      * @param Container $app
      */
     public function __construct(Container $app)
@@ -62,11 +61,10 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         $this->app = $app;
     }
 
-
     /**
      * Function to create a new instance that should
      * be setup with the IoC Container etc
-     * 
+     *
      * @return QueryConditionInterface
      */
     public function newInstance()
@@ -75,11 +73,10 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         return $instance;
     }
 
-
     /**
-     * Function to set the property which the results 
+     * Function to set the property which the results
      * should be ordered by
-     * 
+     *
      * @param string $propertyName
      */
     public function setOrderByField($propertyName)
@@ -87,11 +84,10 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         $this->orderByField = $propertyName;
     }
 
-
     /**
      * Function to set the direction which the results
      * should be sorted by, ascending, descending.
-     * 
+     *
      * @param string $direction
      */
     public function setOrderDirection($direction)
@@ -106,11 +102,10 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         $this->orderDirection = $direction;
     }
 
-
     /**
      * Getter function to return the string that represents
      * the ascending sort direction
-     * 
+     *
      * @return string
      */
     public function getOrderDirectionAscending()
@@ -118,11 +113,10 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         return Config::get('result_order.get_params.order_dir_ascending');
     }
 
-
     /**
      * Getter function to return the string that represents
      * the descending sort direction
-     * 
+     *
      * @return string
      */
     public function getOrderDirectionDescending()
@@ -130,11 +124,10 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         return Config::get('result_order.get_params.order_dir_descending');
     }
 
-
     /**
      * Function to add all the directives that have been
      * given to the class to a given request object
-     * 
+     *
      * @param Guzzle\Http\Message\Request $request Request passed by reference
      * @return  void
      */
@@ -157,30 +150,28 @@ class GetParamsResultOrder implements QueryResultOrderInterface
         }
     }
 
-
     /**
      * Function to convert the directives represented in this class
      * to an array, this is useful for testing
-     * 
+     *
      * @return array
      */
     public function toArray()
     {
-        $order_by  = Config::get('result_order.get_params.order_by');
+        $order_by = Config::get('result_order.get_params.order_by');
         $order_dir = Config::get('result_order.get_params.order_dir');
 
-        $params             = [];
-        $params[$order_by]  = $this->orderByField;
+        $params = [];
+        $params[$order_by] = $this->orderByField;
         $params[$order_dir] = $this->orderDirection;
 
         return $params;
     }
 
-
     /**
-     * Function to convert the directives represented in this class 
+     * Function to convert the directives represented in this class
      * to a querystring, this is useful for testing
-     * 
+     *
      * @return string
      */
     public function toQueryString()

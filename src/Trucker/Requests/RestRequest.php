@@ -10,17 +10,17 @@
  */
 namespace Trucker\Requests;
 
-use Illuminate\Container\Container;
 use Guzzle\Http\Client;
-use Trucker\Facades\TransporterFactory;
-use Trucker\Facades\ResponseInterpreterFactory;
-use Trucker\Facades\ErrorHandlerFactory;
+use Illuminate\Container\Container;
 use Trucker\Facades\Config;
-use Trucker\Responses\RawResponse;
+use Trucker\Facades\ErrorHandlerFactory;
+use Trucker\Facades\ResponseInterpreterFactory;
+use Trucker\Facades\TransporterFactory;
 use Trucker\Finders\Conditions\QueryConditionInterface;
 use Trucker\Finders\Conditions\QueryResultOrderInterface;
 use Trucker\Requests\Auth\AuthenticationInterface;
 use Trucker\Resource\Model;
+use Trucker\Responses\RawResponse;
 
 class RestRequest implements RequestableInterface
 {
@@ -33,8 +33,8 @@ class RestRequest implements RequestableInterface
     protected $app;
 
     /**
-     * Request client 
-     * 
+     * Request client
+     *
      * @var \Guzzle\Http\Client
      */
     protected $client;
@@ -46,7 +46,6 @@ class RestRequest implements RequestableInterface
      * @var \Guzzle\Http\Message\Request
      */
     protected $request;
-
 
     /**
      * Build a new RestRequest
@@ -60,17 +59,15 @@ class RestRequest implements RequestableInterface
         $this->client = $client == null ? new Client : $client;
     }
 
-
     /**
      * Getter function to access the HTTP Client
-     * 
+     *
      * @return \Guzzle\Http\Client
      */
     public function &getClient()
     {
         return $this->client;
     }
-
 
     /**
      * Function to create a Guzzle HTTP request
@@ -110,7 +107,6 @@ class RestRequest implements RequestableInterface
         return $this->request;
     }
 
-
     /**
      * Function to set headers on the request
      *
@@ -124,7 +120,6 @@ class RestRequest implements RequestableInterface
         }
     }
 
-
     /**
      * Function to set given file parameters
      * on the request
@@ -133,11 +128,10 @@ class RestRequest implements RequestableInterface
      */
     public function setBody($body, $contentType = null)
     {
-        if(method_exists($this->request, 'setBody')){
+        if (method_exists($this->request, 'setBody')) {
             $this->request->setBody($body, $contentType);
         }
     }
-
 
     /**
      * Function to set POST parameters onto the request
@@ -150,7 +144,6 @@ class RestRequest implements RequestableInterface
             $this->request->setPostField($key, $value);
         }
     }
-
 
     /**
      * Functio to set GET parameters onto the
@@ -166,7 +159,6 @@ class RestRequest implements RequestableInterface
         }
     }
 
-
     /**
      * Function to set given file parameters
      * on the request
@@ -179,7 +171,6 @@ class RestRequest implements RequestableInterface
             $this->request->addPostFile($key, $value);
         }
     }
-
 
     /**
      * Function to set the entities properties on the
@@ -217,7 +208,6 @@ class RestRequest implements RequestableInterface
         $transporter->setHeaderOnRequest($this->request);
     }
 
-
     /**
      * Function to add an error handler to the request.  This could be used
      *
@@ -245,7 +235,6 @@ class RestRequest implements RequestableInterface
         );
     }
 
-
     /**
      * Function to add Query conditions to the request
      *
@@ -256,7 +245,6 @@ class RestRequest implements RequestableInterface
     {
         $condition->addToRequest($this->request);
     }
-
 
     /**
      * Function to add Query result ordering conditions to the request
@@ -269,8 +257,6 @@ class RestRequest implements RequestableInterface
         $resultOrder->addToRequest($this->request);
     }
 
-
-
     /**
      * Function to add authentication to the request
      *
@@ -281,7 +267,6 @@ class RestRequest implements RequestableInterface
     {
         $auth->authenticateRequest($this->request);
     }
-
 
     /**
      * Function to send the request to the remote API
@@ -299,7 +284,6 @@ class RestRequest implements RequestableInterface
         return $this->app->make('trucker.response')->newInstance($this->app, $response);
     }
 
-
     /**
      * Function to execute a raw GET request
      *
@@ -312,7 +296,6 @@ class RestRequest implements RequestableInterface
     {
         return $this->rawRequest($uri, 'GET', array(), $params, array(), $headers);
     }
-
 
     /**
      * Function to execute a raw POST request
@@ -329,7 +312,6 @@ class RestRequest implements RequestableInterface
         return $this->rawRequest($uri, 'POST', $params, $getParams, $files, $headers);
     }
 
-
     /**
      * Function to execute a raw PUT request
      *
@@ -344,7 +326,6 @@ class RestRequest implements RequestableInterface
     {
         return $this->rawRequest($uri, 'PUT', $params, $getParams, $files, $headers);
     }
-
 
     /**
      * Function to execute a raw PATCH request
@@ -361,7 +342,6 @@ class RestRequest implements RequestableInterface
         return $this->rawRequest($uri, 'PATCH', $params, $getParams, $files, $headers);
     }
 
-
     /**
      * Function to execute a raw DELETE request
      *
@@ -374,7 +354,6 @@ class RestRequest implements RequestableInterface
     {
         return $this->rawRequest($uri, 'DELETE', array(), $params, array(), $headers);
     }
-
 
     /**
      * Function to execute a raw request on the base URI with the given uri path
@@ -416,10 +395,10 @@ class RestRequest implements RequestableInterface
             $errors = (array) ErrorHandlerFactory::build()->parseErrors($response);
 
             return new RawResponse(false, $response, $errors);
-     
-        }//end if
+
+        } //end if
 
         return new RawResponse(true, $response);
 
-    }//end rawRequest
+    } //end rawRequest
 }

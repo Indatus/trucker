@@ -1,8 +1,8 @@
 <?php
 
-use Trucker\Facades\Response;
-use Trucker\Facades\Config;
 use Mockery as m;
+use Trucker\Facades\Config;
+use Trucker\Facades\Response;
 
 class ResponseTest extends TruckerTests
 {
@@ -11,20 +11,18 @@ class ResponseTest extends TruckerTests
     {
         $gResponse = m::mock('Guzzle\Http\Message\Response');
         $gResponse->shouldReceive('getStatusCode')
-            ->once()
-            ->andReturn(200);
+                  ->once()
+                  ->andReturn(200);
         $response = new \Trucker\Responses\Response($this->app, $gResponse);
         $this->assertEquals(200, $response->getStatusCode());
     }
-
-
 
     public function testGetOption()
     {
         $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
         $config->shouldReceive('get')->with('trucker::transporter.driver')
-            ->andReturn('json');
+               ->andReturn('json');
 
         $app = m::mock('Illuminate\Container\Container');
         $app->shouldIgnoreMissing();
@@ -35,14 +33,12 @@ class ResponseTest extends TruckerTests
         $this->assertEquals('json', $transporter);
     }
 
-
-
     public function testNewInstanceCreator()
     {
         $gResponse = m::mock('Guzzle\Http\Message\Response');
         $gResponse->shouldReceive('getStatusCode')
-            ->times(2)
-            ->andReturn(200);
+                  ->times(2)
+                  ->andReturn(200);
 
         $i = Response::newInstance($this->app, $gResponse);
         $this->assertTrue(
@@ -56,14 +52,12 @@ class ResponseTest extends TruckerTests
         $this->assertEquals(200, $i->__call('getStatusCode', []));
     }
 
-
-
     public function testParseJsonResponseToData()
     {
         $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
         $config->shouldReceive('get')->with('trucker::transporter.driver')
-            ->andReturn('json');
+               ->andReturn('json');
 
         $app = m::mock('Illuminate\Container\Container');
         $app->shouldIgnoreMissing();
@@ -73,22 +67,20 @@ class ResponseTest extends TruckerTests
 
         $gResponse = m::mock('Guzzle\Http\Message\Response');
         $gResponse->shouldReceive('json')
-            ->once()
-            ->andReturn($data);
+                  ->once()
+                  ->andReturn($data);
         $response = new \Trucker\Responses\Response($app, $gResponse);
         $this->assertTrue(
             $this->arraysAreSimilar($data, $response->parseResponseToData())
         );
     }
 
-
-
     public function testParseJsonResponseStringToObject()
     {
         $config = m::mock('Illuminate\Config\Repository');
         $config->shouldIgnoreMissing();
         $config->shouldReceive('get')->with('trucker::transporter.driver')
-            ->andReturn('json');
+               ->andReturn('json');
 
         $app = m::mock('Illuminate\Container\Container');
         $app->shouldIgnoreMissing();
@@ -100,9 +92,9 @@ class ResponseTest extends TruckerTests
 
         $gResponse = m::mock('Guzzle\Http\Message\Response');
         $gResponse->shouldReceive('getBody')
-            ->with(true)
-            ->once()
-            ->andReturn($dataJson);
+                  ->with(true)
+                  ->once()
+                  ->andReturn($dataJson);
         $response = new \Trucker\Responses\Response($app, $gResponse);
         $this->assertEquals(
             $decodedJson,
