@@ -58,14 +58,17 @@ $results = Product::all(); //find a collection
 
 
 <a name="install"/>
+
 ## Installation
 
 <a name="requirements"/>
+
 ### Requirements
 
 - Any flavour of PHP 5.4+ should do
 
 <a name="install-composer"/>
+
 ### Install With Composer
 
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
@@ -81,6 +84,7 @@ Next run `composer install`, now you need to publish the config files.
 Trucker's config files are where you'd define constant things about the API your interacting with, like the end-point, what drivers you want to use etc.
 
 <a name="config-laravel"/>
+
 ### Configure in Laravel
 
 Trucker works well with the [Laravel](http://laravel.com) framework.  If your using Trucker within Laravel, you just need to run the following command to publish the Trucker config files to the **app/config/packages/indatus/trucker** folder.
@@ -96,6 +100,7 @@ The final step is to add the service provider. Open `app/config/app.php`, and ad
 Now you should be ready to go.    
 
 <a name="config-non-laravel"/>
+
 ### Configure outside Laravel
 
 If your using Trucker outside Laravel you just need to create the `.trucker` folder in your project root and copy the package's config files there.  Here's the *nix command for that.
@@ -105,11 +110,13 @@ mkdir .trucker && cp vendor/indatus/trucker/src/config/* .trucker/
 ````
 
 <a name="config"/>
+
 ## Configuration Options
 
 Trucker comes with its own configuration file where you can specify options that are constant to your configuration.
 
 <a name="config-auth" />
+
 ### Auth (auth.php)
 
 Setting | Default | Description
@@ -126,6 +133,7 @@ Option | Details
 
 
 <a name="config-error-handler" />
+
 ### Error Handler (error_handler.php)
 
 Setting | Default | Description
@@ -142,6 +150,7 @@ Option | Details
 
 
 <a name="config-query-condition" />
+
 ### Query Condition (query_condition.php)
 
 When making a request for a collection you may specify conditions similar to a SQL WHERE clause.  These will be sent along with your request as an array parameter which contains a grouping of key / values that define the set of conditions.
@@ -178,6 +187,7 @@ logical_operator=AND
 
 
 <a name="config-request" />
+
 ### Request (request.php)
 
 Setting | Default | Description
@@ -195,6 +205,7 @@ Option | Details
 
 
 <a name="config-resource" />
+
 ### Resource (resource.php)
 
 Setting | Default | Description
@@ -206,6 +217,7 @@ Setting | Default | Description
 
 
 <a name="config-response" />
+
 ### Response (response.php)
 
 Setting | Default | Description
@@ -226,6 +238,7 @@ Option | Details
 
 
 <a name="config-result-order" />
+
 ### Result Order (result_order.php)
 
 Setting | Default | Description
@@ -244,6 +257,7 @@ Option | Details
 
 
 <a name="config-transporter" />
+
 ### Transporter (transporter.php)
 
 Setting | Default | Description
@@ -252,6 +266,7 @@ Setting | Default | Description
 
 
 <a name="entity-create"/>
+
 ## Creating an entity
 
 Now you can create an entity object for a noun in your API (this is the minimum code you'll need to get started):
@@ -267,16 +282,19 @@ class Product extends Trucker\Resource\Model
 Trucker uses convention over configuration, so it will infer what the URI should be based on your class name.  In the example of 'Product' the URI will be assumed to be */products*.
 
 <a name="entity-work"/>
+
 ## Working with your entity
 
 Now that you have Trucker object you can use it with CRUD operations as you may expect you would with an ORM.
 
 <a name="fetch"/>
+
 ### Fetching Records
 
 Trucker splits fetching records over your API into 2 categories.  Getting an instance and getting a collection.
 
 <a name="fetch-instance"/>
+
 #### Fetch an Instance
 
 If you have an entity where you know the value of it's `identity_property` you can fetch it with the `find()` method.  
@@ -290,6 +308,7 @@ $p = Product::find(1);
 
 
 <a name="fetch-collection"/>
+
 #### Fetch a Collection
 
 When you want to fetch a collection of records you can use the `all()` function.
@@ -301,6 +320,7 @@ $results = Product::all();
 The `all()` function takes arguments that allow you to specify conditions on the results that you'll get back.  How the request will be made to the API depends on `collection_query_condition_driver` and `collection_result_order_driver` you are using.
 
 <a name="fetch-collection-complex"/>
+
 ##### Fetch a collection using query conditions and result ordering
 
 ```php
@@ -320,9 +340,11 @@ $results = Product::all($conditions, $order);
 > **Note:** You may also provide a third array parameter to the `all()` function containing an associative array of values to include in the request as querystring parameters.
 
 <a name="crud"/>
+
 ### Create, Update & Destroy Operations
 
 <a name="crud-create"/>
+
 #### Create
 
 ```php
@@ -363,6 +385,7 @@ if ($success) {
 ```
 
 <a name="crud-update"/>
+
 #### Update
 
 Update works quite similar to the create functionality, from the code perspective it is nearly identicial.
@@ -379,6 +402,7 @@ if ($p->save()) {
 ```
 
 <a name="crud-destroy"/>
+
 #### Destroy
 
 The destroy function requires an existing instance, and returns a boolen based on the success of the request.
@@ -395,11 +419,13 @@ if ($p->destroy()){
 ```
 
 <a name="customizing-entities"/>
+
 ## Customizing Entities
 
 Trucker uses sensible defaults for its default configuration, but allows you to customize it via the config settings.  Additionally you can override the config settings for an individual class by overriding properties on the concrete implementation; by setting values at runtime on the class or in the config.
 
 <a name="custom-concrete"/>
+
 ### Setting concrete class properties.
   
 The following fields can be set on a class implementation to override interpreted values, default values or just to define the class functionality.  
@@ -430,6 +456,7 @@ class Product extends Trucker\Resource\Model
 ```
 
 <a name="custom-runtime" />
+
 ### Setting runtime properties
 
 There may be situations where you can't set a property in the concrete class implementation because it's value is variable and changes at runtime.  For this situation you could set the property before it is used in a request.
@@ -446,6 +473,7 @@ $found = Product::find(1, [], $p);
 ```
 
 <a name="advanced-config-runtime" />
+
 ### Setting config values at runtime
 
 There may be times where you need to change values that are set in your Trucker config files at runtime before a request is made that uses those values.  You can use Trucker's config manager for this.
