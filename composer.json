@@ -1,5 +1,5 @@
 {
-    "name": "noga/trucker",
+    "name": "rbl00/trucker",
     "description": "A simple active resource implementation written in PHP to consume any REST API",
     "keywords":["trucker", "activeresource", "active resource"],
     "type": "library",

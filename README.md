@@ -76,10 +76,10 @@ $results = Product::all(); //find a collection
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
-"indatus/trucker": "dev-master"
+"rbl00/trucker": "dev-master"
 ````
 
-> For Laravel 5 support, see the [`laravel-5` branch](https://github.com/Indatus/trucker/tree/laravel-5#config-laravel)
+> For Laravel 5 support, see the [`laravel-5` branch](https://github.com/rbl00/trucker/tree/laravel-5#config-laravel)
 
 Next run `composer install`, now you need to publish the config files.
 
