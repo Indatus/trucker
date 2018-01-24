@@ -1,5 +1,5 @@
 {
-    "name": "indatus/trucker",
+    "name": "rbl00/trucker",
     "description": "A simple active resource implementation written in PHP to consume any REST API",
     "keywords":["trucker", "activeresource", "active resource"],
     "type": "library",
@@ -7,9 +7,9 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Brian Webb",
-            "homepage": "http://indatus.com/",
-            "email": "bwebb@indatus.com",
+            "name": "Noga",
+            "homepage": "",
+            "email": "michael@noga.us",
             "role": "Developer"
         }
     ],
@@ -24,12 +24,12 @@
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=7.0",
         "illuminate/support": "~4",
         "illuminate/config": "~4",
         "illuminate/container": "~4",
         "guzzle/guzzle": "3.8.1",
-        "doctrine/inflector": "1.0",
+        "doctrine/inflector": "1.1.0",
         "patchwork/utf8": "1.1.*"
     },
     "require-dev": {

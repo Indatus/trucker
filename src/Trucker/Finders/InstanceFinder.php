@@ -51,9 +51,10 @@ class InstanceFinder
      * @param  Trucker\Resource\Model $model       Model to use for URL generation etc.
      * @param  int           $id          The primary identifier value for the record
      * @param  array         $getParams   Array of GET parameters to pass
+     * @param  array         $headers   Array of request headers to pass
      * @return Trucker\Resource\Model              An instance of the entity requested
      */
-    public function fetch($model, $id, $getParams = array())
+    public function fetch($model, $id, $getParams = array(), $headers = array())
     {
         $instance = null;
 
@@ -64,7 +65,8 @@ class InstanceFinder
         $request->createRequest(
             Config::get('request.base_uri'),
             UrlGenerator::getInstanceUri($model, [':id' => $id]),
-            'GET'
+            'GET',
+            $headers
         );
 
         //add auth if it is needed

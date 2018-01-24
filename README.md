@@ -1,7 +1,5 @@
 # Trucker
 
-[![Latest Stable Version](https://poser.pugx.org/indatus/trucker/v/stable.png)](https://packagist.org/packages/indatus/trucker) [![Total Downloads](https://poser.pugx.org/indatus/trucker/downloads.png)](https://packagist.org/packages/indatus/trucker) [![Build Status](https://travis-ci.org/Indatus/trucker.png?branch=master)](https://travis-ci.org/Indatus/trucker) [![Coverage Status](https://coveralls.io/repos/Indatus/trucker/badge.png?branch=master)](https://coveralls.io/r/Indatus/trucker?branch=master) [![Dependency Status](https://www.versioneye.com/user/projects/530271f4ec1375bab10004bb/badge.png)](https://www.versioneye.com/user/projects/530271f4ec1375bab10004bb)
-
 Trucker is a PHP package for mapping remote API resources (usually RESTful) as models in an ActiveResource style. The benefit is easier use of remote APIs in a fast and clean programming interface.
 
 <img align="left" height="300" src="https://s3-us-west-2.amazonaws.com/oss-avatars/trucker_round_readme.png">
@@ -67,7 +65,7 @@ $results = Product::all(); //find a collection
 
 ### Requirements
 
-- Any flavour of PHP 5.4+ should do
+- Any flavour of PHP 7.0+ should do
 
 <a name="install-composer"/>
 
@@ -76,10 +74,10 @@ $results = Product::all(); //find a collection
 You can install the library via [Composer](http://getcomposer.org) by adding the following line to the **require** block of your *composer.json* file:
 
 ````
-"indatus/trucker": "dev-master"
+"rbl00/trucker": "dev-master"
 ````
 
-> For Laravel 5 support, see the [`laravel-5` branch](https://github.com/Indatus/trucker/tree/laravel-5#config-laravel)
+> For Laravel 5 support, see the [`laravel-5` branch](https://github.com/rbl00/trucker/tree/laravel-5#config-laravel)
 
 Next run `composer install`, now you need to publish the config files.
 

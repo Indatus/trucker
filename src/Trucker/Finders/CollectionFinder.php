@@ -55,13 +55,15 @@ class CollectionFinder
      * @param  QueryConditionInterface    $condition   Query conditions for the request
      * @param  QueryResultOrderInterface  $resultOrder Result ordering requirements for the request
      * @param  array                      $getParams   Additional GET parameters to send w/ request
+     * @param  array                      $headers     Headers to send along with the request
      * @return Trucker\Responses\Collection
      */
     public function fetch(
         Model $model,
         QueryConditionInterface $condition = null,
         QueryResultOrderInterface $resultOrder = null,
-        array $getParams = []
+        array $getParams = [],
+		array $headers = []
     ) {
 
         //get a request object
@@ -71,7 +73,8 @@ class CollectionFinder
         $request->createRequest(
             Config::get('request.base_uri'),
             UrlGenerator::getCollectionUri($model),
-            'GET'
+            'GET',
+            $headers
         );
 
         //add auth if it is needed
