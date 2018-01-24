@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
+        "php": ">=7.0",
         "illuminate/support": "~4",
         "illuminate/config": "~4",
         "illuminate/container": "~4",

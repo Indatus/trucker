@@ -65,7 +65,7 @@ $results = Product::all(); //find a collection
 
 ### Requirements
 
-- Any flavour of PHP 5.4+ should do
+- Any flavour of PHP 7.0+ should do
 
 <a name="install-composer"/>
 
