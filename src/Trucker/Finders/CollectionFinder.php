@@ -104,6 +104,11 @@ class CollectionFinder
         //figure out wether a collection key is used
         $collection_key = Config::get('resource.collection_key');
 
+        //if collection key is a CLosure, call the closure
+        if ($collection_key instanceof \Closure) {
+            $collection_key = $collection_key($model);
+        }
+
         //set records array appropriatley
         if (isset($collection_key)) {
             $recordCollection = $data[$collection_key];

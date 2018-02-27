@@ -63,9 +63,9 @@ class ConfigManager
      *
      * @return mixed
      */
-    public function get($option)
+    public function get($option, $default = null)
     {
-        return $this->app['config']->get('trucker::'.$option);
+        return $this->app['config']->get('trucker::'.$option, $default);
     }
 
 

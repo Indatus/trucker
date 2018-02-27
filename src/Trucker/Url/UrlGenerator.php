@@ -12,6 +12,7 @@ namespace Trucker\Url;
 
 use Illuminate\Container\Container;
 use Doctrine\Common\Inflector\Inflector;
+use Trucker\Facades\Config;
 
 class UrlGenerator
 {
@@ -145,11 +146,7 @@ class UrlGenerator
             return $uri;
         }
 
-        $uri = Inflector::pluralize(
-            Inflector::tableize(
-                $model->getResourceName()
-            )
-        );
+        $uri = $model->pluralize();
 
         $uriResult = [];
         if (!empty($model->nestedUnder)) {
@@ -172,6 +169,7 @@ class UrlGenerator
             $uri = implode("/", $uriResult) . "/$uri";
         }
 
-        return "/$uri";
+        $prefix = Config::get('request.path_prefix','/');
+        return "{$prefix}{$uri}";
     }
 }
